@@ -36,12 +36,13 @@ Full specs in `docs/`. Read `docs/01` through `docs/05` before substantial work.
   the live package.
 - `templates` are **versioned**; `invitations.template_version` pins the render.
 - Affiliate balance is computed from an **append-only ledger**. Never `UPDATE` a balance column.
+- **Database engine: MySQL 8.** Decided at Session 2. `docs/03-database-erd.md` is written
+  for it and stays authoritative. Cloud images ship PostgreSQL and no MySQL, so cloud
+  sessions install it via the setup script in `docs/06` § Cloud vs local — the schema is
+  not portable by accident, write migrations for MySQL.
 
 ### Decisions still open — ask before assuming
 
-- **Database engine: MySQL 8 vs PostgreSQL 16** → *(record here before Session 1)*. The docs
-  are written for MySQL 8, but Claude Code cloud sessions ship PostgreSQL 16 and no MySQL.
-  Nothing in the schema requires MySQL. See `docs/06` § Cloud vs local.
 - Payment gateway: Midtrans vs Xendit → *(record the choice here when made)*
 - WhatsApp provider: Wablas / Fonnte / Cloud API → *(record here)*
 - Guest link format: `?to={token}` is the default assumption
@@ -49,13 +50,18 @@ Full specs in `docs/`. Read `docs/01` through `docs/05` before substantial work.
 ### If this is a cloud session
 
 Cloud VMs ship PHP 8.3, Composer, Node, Redis and PostgreSQL — **not MySQL**, and no browser.
-Redis and any DB installed via setup script are present but **stopped**. Start them before
+We run on MySQL 8, so it has to come from the environment setup script in `docs/06`
+§ Cloud vs local. Redis and MySQL are then present but **stopped**. Start them before
 anything else:
 
 ```bash
 service redis-server start
-service mysql start        # only if MySQL was installed via the environment setup script
+service mysql start
 ```
+
+If `mysql` isn't installed at all, the setup script hasn't been configured on this
+environment — install it with `apt-get install -y mysql-server` for the session and say so,
+rather than silently switching connection.
 
 Then confirm `php artisan migrate:status` runs before beginning the session's work.
 
