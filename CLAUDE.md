@@ -39,9 +39,29 @@ Full specs in `docs/`. Read `docs/01` through `docs/05` before substantial work.
 
 ### Decisions still open — ask before assuming
 
+- **Database engine: MySQL 8 vs PostgreSQL 16** → *(record here before Session 1)*. The docs
+  are written for MySQL 8, but Claude Code cloud sessions ship PostgreSQL 16 and no MySQL.
+  Nothing in the schema requires MySQL. See `docs/06` § Cloud vs local.
 - Payment gateway: Midtrans vs Xendit → *(record the choice here when made)*
 - WhatsApp provider: Wablas / Fonnte / Cloud API → *(record here)*
 - Guest link format: `?to={token}` is the default assumption
+
+### If this is a cloud session
+
+Cloud VMs ship PHP 8.3, Composer, Node, Redis and PostgreSQL — **not MySQL**, and no browser.
+Redis and any DB installed via setup script are present but **stopped**. Start them before
+anything else:
+
+```bash
+service redis-server start
+service mysql start        # only if MySQL was installed via the environment setup script
+```
+
+Then confirm `php artisan migrate:status` runs before beginning the session's work.
+
+Sessions whose verification needs a browser — anything touching AdminLTE rendering, the
+invitation templates, WhatsApp link previews, or Lighthouse — can't be completed in the cloud.
+`docs/06` marks each session 💻 local, ☁️ cloud, or 🔀 either.
 
 ---
 
@@ -84,6 +104,17 @@ Split by surface — `web.php`, `admin.php`, `client.php`, `public.php`, `api.ph
 - Actions: verb-first — `PublishInvitation`, `ProvisionInvitation`, `ImportGuests`
 - Jobs: `{Verb}{Noun}Job` · Enums: `App\Enums\{Noun}Status`
 - Commits: conventional, referencing the spec ID — `feat(M5.3): guest CSV import`
+- Branches: `session/NN-slug` — e.g. `session/10-payment-webhook`. One branch per session
+  from `docs/06`, one PR each, merged before the next session starts
+
+### Git workflow
+- **Never commit directly to `main`.** Every session works on its own `session/NN-slug`
+  branch and lands via a squash-merged PR.
+- Open the PR with `gh pr create --fill --base main` at the end of a session, once the
+  session's Verify block passes.
+- CI runs pint, phpstan and `php artisan test` on every PR. A red PR is not done.
+- In a cloud session, push protection means you can only push to the branch the session
+  started on. If the branch doesn't exist yet, create and push it as the first action.
 
 ---
 
@@ -111,6 +142,9 @@ Split by surface — `web.php`, `admin.php`, `client.php`, `public.php`, `api.ph
 A slice is done when: migration runs on a fresh DB, model has fillable/casts/relations/factory,
 validation is in a FormRequest, authorization is in a Policy, no N+1, feature test passes,
 Pint is clean, and you've clicked through it in a browser.
+
+A **session** is done when its slice is done, the PR is open and green, and it has been
+squash-merged into `main`. An open PR is work in progress, not a finished session.
 
 ---
 

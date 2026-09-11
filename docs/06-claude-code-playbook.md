@@ -14,74 +14,78 @@ Lost your place? Jump to [§ Where am I?](#where-am-i) at the bottom.
 ## Progress tracker
 
 Update Status as you go. `⬜ not started · 🟡 in progress · ✅ done · ⏭ skipped`
+**PR** is the merged pull request number for that session — see [§ Branch and PR workflow](#branch-and-pr-workflow).
+
+**Where** tells you whether a session suits a cloud session or needs your local machine —
+see [§ Cloud vs local](#cloud-vs-local). `☁️ cloud · 💻 local · 🔀 either`
 
 ### Phase 1 — Foundation
-| # | Session | Status | Commit hash |
-|---|---|:--:|---|
-| 0 | Environment setup | ⬜ | |
-| 1 | Install & configure packages | ⬜ | |
-| 2 | Auth, roles & permissions | ⬜ | |
-| 3 | AdminLTE layout & Vite | ⬜ | |
-| 4 | Settings module | ⬜ | |
-| 5 | Event types & template categories | ⬜ | |
-| 6 | Templates | ⬜ | |
-| 7 | Packages & entitlements | ⬜ | |
+| # | Session | Where | Status | PR |
+|---|---|:--:|:--:|---|
+| 0 | Environment setup | 💻 | ⬜ | |
+| 1 | Install & configure packages | 💻 | ⬜ | |
+| 2 | Auth, roles & permissions | ☁️ | ⬜ | |
+| 3 | AdminLTE layout & Vite | 💻 | ⬜ | |
+| 4 | Settings module | ☁️ | ⬜ | |
+| 5 | Event types & template categories | ☁️ | ⬜ | |
+| 6 | Templates | 🔀 | ⬜ | |
+| 7 | Packages & entitlements | ☁️ | ⬜ | |
 
 ### Phase 2 — Commerce
-| # | Session | Status | Commit hash |
-|---|---|:--:|---|
-| 8 | Orders & checkout | ⬜ | |
-| 9 | Payment gateway abstraction | ⬜ | |
-| 10 | Webhook handler (test-first) | ⬜ | |
-| 11 | Provisioning job | ⬜ | |
-| 12 | Manual payment verification | ⬜ | |
-| 13 | Invoices | ⬜ | |
+| # | Session | Where | Status | PR |
+|---|---|:--:|:--:|---|
+| 8 | Orders & checkout | 🔀 | ⬜ | |
+| 9 | Payment gateway abstraction | 🔀 | ⬜ | |
+| 10 | Webhook handler (test-first) | ☁️ | ⬜ | |
+| 11 | Provisioning job | ☁️ | ⬜ | |
+| 12 | Manual payment verification | 🔀 | ⬜ | |
+| 13 | Invoices | 🔀 | ⬜ | |
 
 ### Phase 3 — Core invitation
-| # | Session | Status | Commit hash |
-|---|---|:--:|---|
-| 14 | Invitation schema | ⬜ | |
-| 15 | Policies & tenant isolation | ⬜ | |
-| 16 | Builder shell | ⬜ | |
-| 17 | Builder: persons & event sessions | ⬜ | |
-| 18 | Builder: media pipeline | ⬜ | |
-| 19 | Builder: gifts, story, sections | ⬜ | |
-| 20 | Payload resource & caching | ⬜ | |
-| 21 | Public renderer shell | ⬜ | |
-| 22 | First invitation template | ⬜ | |
-| 23 | Publish flow | ⬜ | |
+| # | Session | Where | Status | PR |
+|---|---|:--:|:--:|---|
+| 14 | Invitation schema | ☁️ | ⬜ | |
+| 15 | Policies & tenant isolation | ☁️ | ⬜ | |
+| 16 | Builder shell | 💻 | ⬜ | |
+| 17 | Builder: persons & event sessions | 💻 | ⬜ | |
+| 18 | Builder: media pipeline | 💻 | ⬜ | |
+| 19 | Builder: gifts, story, sections | 💻 | ⬜ | |
+| 20 | Payload resource & caching | ☁️ | ⬜ | |
+| 21 | Public renderer shell | 💻 | ⬜ | |
+| 22 | First invitation template | 💻 | ⬜ | |
+| 23 | Publish flow | 💻 | ⬜ | |
 
 ### Phase 4 — Guests & responses
-| # | Session | Status | Commit hash |
-|---|---|:--:|---|
-| 24 | Guest CRUD & groups | ⬜ | |
-| 25 | Guest import | ⬜ | |
-| 26 | Guest links & WhatsApp share | ⬜ | |
-| 27 | Personalization on public page | ⬜ | |
-| 28 | RSVP | ⬜ | |
-| 29 | Wishes & moderation | ⬜ | |
+| # | Session | Where | Status | PR |
+|---|---|:--:|:--:|---|
+| 24 | Guest CRUD & groups | 🔀 | ⬜ | |
+| 25 | Guest import | ☁️ | ⬜ | |
+| 26 | Guest links & WhatsApp share | 💻 | ⬜ | |
+| 27 | Personalization on public page | 💻 | ⬜ | |
+| 28 | RSVP | 🔀 | ⬜ | |
+| 29 | Wishes & moderation | ☁️ | ⬜ | |
 
 ### 🚩 MVP CUT LINE
 
 ### Phase 5 — Operations
-| # | Session | Status | Commit hash |
-|---|---|:--:|---|
-| 30 | Analytics | ⬜ | |
-| 31 | Admin dashboard | ⬜ | |
-| 32 | Notifications | ⬜ | |
-| 33 | Scheduled tasks | ⬜ | |
-| 34 | Hardening & load test | ⬜ | |
+| # | Session | Where | Status | PR |
+|---|---|:--:|:--:|---|
+| 30 | Analytics | ☁️ | ⬜ | |
+| 31 | Admin dashboard | 💻 | ⬜ | |
+| 32 | Notifications | 🔀 | ⬜ | |
+| 33 | Scheduled tasks | ☁️ | ⬜ | |
+| 34 | Hardening & load test | 💻 | ⬜ | |
 
 ### Phase 6 — Growth
-| # | Session | Status | Commit hash |
-|---|---|:--:|---|
-| 35 | QR code generation | ⬜ | |
-| 36 | Usher scanner page | ⬜ | |
-| 37 | WhatsApp blast | ⬜ | |
-| 38 | Affiliate program | ⬜ | |
-| 39 | Coupons | ⬜ | |
-| 40 | Custom domains | ⬜ | |
-| 41 | Support tickets | ⬜ | |
+| # | Session | Where | Status | PR |
+|---|---|:--:|:--:|---|
+| 35 | QR code generation | ☁️ | ⬜ | |
+| 36 | Usher scanner page | 💻 | ⬜ | |
+| 37 | WhatsApp blast | ☁️ | ⬜ | |
+| 38 | Affiliate program | ☁️ | ⬜ | |
+| 39 | Coupons | ☁️ | ⬜ | |
+| 40 | Custom domains | 💻 | ⬜ | |
+| 41 | Support tickets | 🔀 | ⬜ | |
 
 ---
 
@@ -99,9 +103,19 @@ can't debug.
 Do this every session. It's the thing that keeps you from losing track.
 
 **Before:**
-1. Open this file. Find your session. Read its Goal and Done-when.
-2. `git status` — the working tree must be clean. If not, commit or stash.
-3. In Claude Code: `/clear`
+1. Open this file. Find your session. Read its Goal, Where, and Done-when.
+2. Sync and branch:
+   ```powershell
+   git checkout main && git pull
+   git checkout -b session/NN-slug     # the branch name is in the session's Commit & PR block
+   ```
+   The working tree must be clean before you branch. **For a cloud session, push the branch
+   first** — the cloud VM clones your GitHub remote at your current branch, not your local
+   checkout, and push protection means it can only push back to that same branch.
+3. Start a fresh context:
+    - **Local:** `/clear`
+    - **Cloud:** `/clear` doesn't exist in cloud sessions. Start a new session from the
+      sidebar at claude.ai/code instead.
 4. Paste the session's **Prep prompt**. Read the plan it returns. Approve or correct it.
 
 **During:**
@@ -110,18 +124,270 @@ Do this every session. It's the thing that keeps you from losing track.
 
 **After:**
 7. Run the session's full **Verify** block.
-8. Commit with the session's commit message.
-9. Come back here: set Status ✅ and paste the commit hash.
+8. Commit, push, and open the PR — see the session's **Commit & PR** block.
+9. [Close out](#close-out-a-session): review the diff, merge, sync `main`.
+10. Come back here: set Status ✅ and record the PR number.
 
-Steps 1, 3, 8 and 9 are the ones people skip, and they're exactly the ones that prevent
+Steps 1, 3, 9 and 10 are the ones people skip, and they're exactly the ones that prevent
 losing track.
+
+---
+
+## Branch and PR workflow
+
+One branch and one PR per session. The PR is your review gate: a self-contained diff you read
+before it reaches `main`, plus a permanent record of what each session actually changed.
+
+### Prerequisites
+
+```powershell
+gh --version        # GitHub CLI — install from https://cli.github.com if missing
+gh auth login
+```
+
+`gh` is pre-installed in cloud sessions and authenticates through the GitHub proxy, so you
+don't need `gh auth login` there.
+
+### Branch naming
+
+`session/NN-slug` — e.g. `session/10-payment-webhook`. Each session's **Commit & PR** block
+names its branch. The number keeps branches sorted and makes it obvious which session a stale
+branch belongs to.
+
+### Close out a session
+
+```powershell
+gh pr view --web          # read the diff yourself — this is the point of the PR
+gh pr merge --squash --delete-branch
+git checkout main && git pull
+```
+
+Squash-merge keeps `main` at one commit per session, which makes the "Where am I?" recovery
+below work cleanly: `git log --oneline` on `main` reads as a list of completed sessions.
+
+### Merge promptly — don't stack PRs
+
+This matters more here than on a team project. The sessions are sequentially dependent:
+Session 15 needs Session 14's schema, Session 20 needs Session 19's editors. If Session 14's
+PR is still open when you start 15, you either branch off an unmerged branch (and get a PR
+diff containing both sessions) or branch off `main` and lose the schema entirely.
+
+**Merge each PR before starting the next session.** You're reviewing your own work, so the PR
+is a checkpoint, not an approval queue. If you're not comfortable merging it, the session
+isn't done — go back to its Done-when.
+
+If you genuinely need to work ahead while a PR is open, branch from the open branch rather
+than `main`, and set the PR base accordingly:
+
+```powershell
+git checkout -b session/15-policies-isolation session/14-invitation-schema
+gh pr create --fill --base session/14-invitation-schema
+```
+
+Then merge in order, bottom-up. GitHub retargets the child PR to `main` automatically when
+the parent merges.
+
+### Cloud sessions and PRs
+
+Cloud sessions create PRs from the web UI when a task finishes, and `gh pr create` works
+inside them too. Two things to know:
+
+- **Push protection**: a cloud session can only push to the branch it started on. Create and
+  push the branch before starting the session, or ask Claude to create it as its first action.
+- **Auto-fix**: once a PR is open, you can have Claude watch it and respond to CI failures and
+  review comments automatically. Requires the Claude GitHub App installed on the repo. Useful
+  from Session 1 onward if you add CI — see below.
+
+### Add CI so the PRs mean something
+
+A PR with no checks is just a diff viewer. Add this early — ideally as part of Session 1 — and
+every subsequent PR tells you whether the session actually passed before you merge it.
+
+`.github/workflows/ci.yml`:
+
+```yaml
+name: CI
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: undangyu_test
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping" --health-interval=10s
+          --health-timeout=5s --health-retries=5
+      redis:
+        image: redis:7
+        ports: ["6379:6379"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - run: composer install --no-interaction --prefer-dist
+      - run: cp .env.example .env && php artisan key:generate
+      - run: php artisan migrate --force
+        env:
+          DB_DATABASE: undangyu_test
+          DB_USERNAME: root
+          DB_PASSWORD: ""
+      - run: ./vendor/bin/pint --test
+      - run: ./vendor/bin/phpstan analyse
+      - run: php artisan test
+```
+
+Swap the MySQL service for `postgres:16` if you took the PostgreSQL route.
+
+### Where this replaces the old advice
+
+Earlier drafts said "commit after every session." That still holds — the commit is just no
+longer the end of the session. The end is a merged PR and a clean `main`.
+
+---
+
+## Cloud vs local
+
+Claude Code runs either on your machine or on Anthropic's cloud infrastructure at
+claude.ai/code. Cloud sessions are worth using — they run in parallel, persist when you close
+the browser, and you can steer them from your phone. But they can't do everything this
+project needs.
+
+### What the cloud sandbox gives you
+
+Each session gets a fresh Ubuntu 24.04 VM (4 vCPU, 16 GB RAM, 30 GB disk) with your repo
+cloned and toolchains pre-installed:
+
+| Relevant to us | Status |
+|---|---|
+| PHP 8.3 + Composer | ✅ pre-installed |
+| Node 20 / 21 / 22 + npm | ✅ pre-installed (22 on PATH) |
+| Redis 7.0 | ✅ pre-installed, **not running** — ask Claude to `service redis-server start` |
+| packagist.org, registry.npmjs.org | ✅ on the default Trusted allowlist |
+| Docker + compose | ✅ available |
+| **MySQL** | ❌ **not pre-installed.** Only PostgreSQL 16 ships |
+| Browser | ❌ none |
+| Shell access for you | ❌ none — Claude runs every command |
+
+### The database decision
+
+Our ERD specifies MySQL 8, which isn't in the cloud image. Three options:
+
+1. **Install MySQL via setup script** (below). Runs once, then Anthropic snapshots the
+   filesystem and reuses it, so later sessions start with it already on disk.
+2. **Run MySQL in Docker** via a `compose.yaml` in the repo. Docker Hub is on the Trusted
+   allowlist. Note the cache keeps pulled images but not running containers — Claude starts
+   them each session.
+3. **Switch the project to PostgreSQL 16.** Worth considering seriously. Nothing in our
+   schema needs MySQL specifically, Postgres has stronger JSON support for the `theme_config`
+   and `entitlements` columns we lean on, and it's zero-config in the cloud.
+
+**Decide before Session 1** and record it in `CLAUDE.md`. Changing this at Session 14 means
+rewriting migrations.
+
+### Setup script (option 1)
+
+Paste into the **Setup script** field of your cloud environment at claude.ai/code
+(cloud icon above the message box → environment settings):
+
+```bash
+#!/bin/bash
+apt-get update -qq || true
+DEBIAN_FRONTEND=noninteractive apt-get install -y -qq mysql-server || true
+service mysql start || true
+mysql -e "CREATE DATABASE IF NOT EXISTS undangyu CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" || true
+mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';" || true
+exit 0
+```
+
+Two constraints to respect: the script **must exit zero** or the session fails to start
+(hence the `|| true` on every line), and it must **finish within about five minutes** or the
+environment cache won't build.
+
+The cache keeps files, not processes — so MySQL is installed but stopped at the start of each
+new session. Add this to your **environment variables** and ask Claude to start the services
+at the top of each cloud session:
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_DATABASE=undangyu
+DB_USERNAME=root
+DB_PASSWORD=
+CACHE_STORE=redis
+QUEUE_CONNECTION=redis
+```
+
+Opening line for any cloud session:
+
+> Start MySQL and Redis (`service mysql start`, `service redis-server start`), then confirm
+> `php artisan migrate:status` runs before we begin.
+
+### Which sessions go where
+
+The rule is simple: **if the session's Verify block has a manual browser check, it needs your
+machine.**
+
+**☁️ Cloud** — backend work fully verified by `php artisan test`. Sessions 2, 4, 5, 7, 10, 11,
+14, 15, 20, 25, 29, 30, 33, 35, 37, 38, 39. Session 10 (the test-first webhook) and Session 15
+(tenant isolation) are near-perfect fits: pure test-driven, no UI.
+
+**💻 Local** — anything with a visual or device check. Sessions 0, 1, 3, 16–19, 21, 22, 23, 26,
+27, 31, 34, 36, 40. Session 21 needs a real phone to confirm the WhatsApp preview card renders;
+Session 22 needs Lighthouse and a real Android; Session 36 needs a camera.
+
+**🔀 Either** — build in cloud, verify locally. Sessions 6, 8, 9, 12, 13, 24, 28, 32, 41.
+
+### Moving between them
+
+```powershell
+claude --cloud "Execute Session 10 from docs/06-claude-code-playbook.md"   # start in cloud
+claude --teleport                                                           # pull it back local
+```
+
+`--teleport` fetches the cloud session's branch and loads the full conversation into your
+terminal. It needs a clean working tree, the same repository (not a fork), and the same
+claude.ai account. Handy pattern: run a cloud session, then teleport in to do the manual
+browser verification before committing.
+
+### Cloud caveats worth knowing
+
+- Cloud sessions are a **research preview** for Pro, Max, and Team plans, and for Enterprise
+  users with premium or Chat + Claude Code seats.
+- They share your account's rate limits; parallel sessions consume proportionately more.
+- Sessions stop after inactivity and the VM is reclaimed. Reopening provisions a fresh VM with
+  history restored, but background work that was running is not.
+- Only your repo's `CLAUDE.md`, `.claude/` directory, and committed files come along. Anything
+  configured only on your machine doesn't.
+
+### The prompt to actually use
+
+"Do session 1" won't work — `CLAUDE.md` loads automatically, but `docs/06` is just another
+file Claude hasn't read. Name it:
+
+> Read `docs/06-claude-code-playbook.md` and find "Session N — {title}".
+>
+> Run its Prep prompt first: list the exact commands and the files you'll create or modify,
+> and wait for my approval before writing anything.
+>
+> Then work the numbered steps in order, running each step's verification before moving on.
+> Stop and tell me if any verification fails.
 
 ---
 
 ## Session 0 — Environment setup
 
 **Goal:** a running Laravel app with docs in place and Claude Code connected.
-**Depends on:** nothing.
+**Depends on:** nothing. **Where:** 💻 local — this one can't be done in the cloud, since
+cloud sessions clone an existing GitHub repo and there isn't one yet.
 
 **0.1** Verify toolchain (PowerShell):
 ```powershell
@@ -187,13 +453,33 @@ undangyu/
 **0.7** Record your open decisions in `CLAUDE.md` § "Decisions still open":
 - [ ] Payment gateway chosen — see [05 § 6](05-technical-architecture.md#6-payments)
 - [ ] Guest link format confirmed (default `?to={token}`)
+- [ ] **Database engine** — MySQL 8 or PostgreSQL 16. See
+  [§ The database decision](#the-database-decision). Deciding this at Session 14 instead
+  of now means rewriting migrations.
 
-**0.8** Initial commit:
+**0.7b** If you plan to use cloud sessions, set the environment up now — GitHub connection,
+setup script, and environment variables — per [§ Cloud vs local](#cloud-vs-local). Push the
+repo to GitHub before any cloud session; the cloud VM clones your remote, not your local
+checkout.
+
+**0.8** Initial commit and remote. This one goes straight to `main` — there's nothing to
+review yet, and every later session branches from it:
 ```powershell
 git init
 git add .
 git commit -m "chore: scaffold + project documentation"
+gh repo create undangyu --private --source=. --remote=origin --push
 ```
+- [ ] The repo exists on GitHub and `main` has your scaffold and docs.
+
+**0.8b** Protect `main` so sessions can't bypass their own PRs:
+```powershell
+gh api -X PUT repos/:owner/undangyu/branches/main/protection `
+  -F required_pull_request_reviews.required_approving_review_count=0 `
+  -F enforce_admins=false -F required_status_checks=null -F restrictions=null
+```
+Optional, but it turns "I'll just commit straight to main this once" from a habit into a
+deliberate override.
 
 **0.9** Start Claude Code and verify comprehension:
 ```powershell
@@ -219,7 +505,7 @@ Laravel runs at `undangyu.test`, docs are committed, Claude answered 0.9 correct
 ## Session 1 — Install & configure packages
 
 **Goal:** every dependency installed, route files split, tooling configured.
-**Depends on:** Session 0.
+**Depends on:** Session 0. **Where:** 💻 local.
 
 ### Prep prompt
 > Read `CLAUDE.md` and `docs/05-technical-architecture.md` § 3 and § 4.
@@ -262,6 +548,12 @@ php artisan route:list
 > 3. In `AppServiceProvider::boot()`, add `Model::preventLazyLoading(!app()->isProduction())`
      >    and `Model::shouldBeStrict(!app()->isProduction())`.
 
+**1.5b** > Create `.github/workflows/ci.yml` running pint, phpstan and `php artisan test` on
+> pull requests against `main`, with MySQL 8 and Redis 7 service containers. Use the workflow
+> in [§ Add CI](#add-ci-so-the-prs-mean-something) as the starting point.
+
+- [ ] The workflow file exists. It'll first run on this session's own PR.
+
 **1.6** Frontend packages:
 ```powershell
 npm install vue @vitejs/plugin-vue admin-lte@^4 bootstrap @popperjs/core axios @vueuse/core vuedraggable@next html5-qrcode swiper aos dayjs
@@ -278,10 +570,17 @@ php artisan migrate:status      # vendor migrations ran
 npm run build                   # builds
 ```
 
-### Commit
+### Commit & PR
+
+Branch: `session/01-setup-packages`
+
 ```powershell
-git add . && git commit -m "chore(setup): install packages, split routes, configure tooling"
+git add -A && git commit -m "chore(setup): install packages, split routes, configure tooling"
+git push -u origin session/01-setup-packages
+gh pr create --fill --base main
 ```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ### Done when
 All five verify commands pass. Nothing renders yet — expected.
@@ -291,7 +590,7 @@ All five verify commands pass. Nothing renders yet — expected.
 ## Session 2 — Auth, roles & permissions
 
 **Goal:** working auth with the six roles from M1.4, enforced by middleware.
-**Depends on:** Session 1.
+**Depends on:** Session 1. **Where:** ☁️ cloud.
 
 ### Prep prompt
 > Read `CLAUDE.md`, `docs/02-functional-spec.md` § M1, and `docs/04-flowcharts.md` § 11
@@ -343,10 +642,17 @@ php artisan tinker --execute="dd(Spatie\Permission\Models\Role::pluck('name'));"
 - [ ] Six roles listed. Tests pass.
 - [ ] Manually register, log in, land on `/dashboard`.
 
-### Commit
+### Commit & PR
+
+Branch: `session/02-auth-roles`
+
 ```powershell
-git commit -am "feat(M1): auth, roles and permissions"
+git add -A && git commit -m "feat(M1): auth, roles and permissions"
+git push -u origin session/02-auth-roles
+gh pr create --fill --base main
 ```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ### Done when
 You can register, log in, and are correctly blocked from `/admin` as a client.
@@ -356,7 +662,7 @@ You can register, log in, and are correctly blocked from `/admin` as a client.
 ## Session 3 — AdminLTE layout & Vite
 
 **Goal:** the shell every dashboard page extends, plus a proven Vue island mount.
-**Depends on:** Session 2.
+**Depends on:** Session 2. **Where:** 💻 local — the AdminLTE + Vue check must be seen in a browser.
 
 ### Prep prompt
 > Read `CLAUDE.md` and `docs/05-technical-architecture.md` § 2 (the AdminLTE + Vue islands
@@ -406,10 +712,17 @@ php artisan test
 ```
 - [ ] `/admin`, `/dashboard`, `/login` styled. Sidebar toggles. No console errors.
 
-### Commit
+### Commit & PR
+
+Branch: `session/03-adminlte-layout`
+
 ```powershell
-git commit -am "feat(M11): AdminLTE layout, Vite dual-bundle, Vue island pattern"
+git add -A && git commit -m "feat(M11): AdminLTE layout, Vite dual-bundle, Vue island pattern"
+git push -u origin session/03-adminlte-layout
+gh pr create --fill --base main
 ```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ### Done when
 Both dashboards render, the sidebar works, and you've seen Vue mount without breaking AdminLTE.
@@ -419,7 +732,7 @@ Both dashboards render, the sidebar works, and you've seen Vue mount without bre
 ## Session 4 — Settings module
 
 **Goal:** cached, typed global settings with an admin UI.
-**Depends on:** Session 3.
+**Depends on:** Session 3. **Where:** ☁️ cloud.
 
 **4.1** > Migration + model for `settings` per `docs/03-database-erd.md` § 3.9. Unique on
 > (`group`,`key`).
@@ -444,15 +757,24 @@ php artisan tinker --execute="Setting::set('site.name','Undangyu'); dd(Setting::
 ```
 - [ ] The admin page saves and the value survives a reload.
 
-### Commit
-`git commit -am "feat(M11.8): settings module"`
+### Commit & PR
+
+Branch: `session/04-settings`
+
+```powershell
+git add -A && git commit -m "feat(M11.8): settings module"
+git push -u origin session/04-settings
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 5 — Event types & template categories
 
 **Goal:** the taxonomy that makes the product event-agnostic.
-**Depends on:** Session 4.
+**Depends on:** Session 4. **Where:** ☁️ cloud.
 
 **5.1** > Migrations + models for `event_types` and `template_categories` per § 3.3.
 > `person_roles` and `default_sections` are JSON casts.
@@ -475,15 +797,24 @@ php artisan tinker --execute="dd(App\Models\EventType::pluck('slug'));"
 ```
 - [ ] 8 event types. Admin CRUD works end to end.
 
-### Commit
-`git commit -am "feat(M3.1,M3.2): event types and template categories"`
+### Commit & PR
+
+Branch: `session/05-event-types`
+
+```powershell
+git add -A && git commit -m "feat(M3.1,M3.2): event types and template categories"
+git push -u origin session/05-event-types
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 6 — Templates
 
 **Goal:** template catalog with admin CRUD and a public gallery.
-**Depends on:** Session 5.
+**Depends on:** Session 5. **Where:** 🔀 either.
 
 **6.1** > Migrations + models for `templates`, `template_screenshots`, and the
 > `event_type_template` pivot per § 3.3. `config_schema`, `default_config`, `demo_data` are
@@ -514,15 +845,24 @@ php artisan test --filter=Template
 ```
 - [ ] `/templates` lists seeded templates, filters work, no N+1 (check the Debugbar query count).
 
-### Commit
-`git commit -am "feat(M3.3-M3.5): template catalog and public gallery"`
+### Commit & PR
+
+Branch: `session/06-templates`
+
+```powershell
+git add -A && git commit -m "feat(M3.3-M3.5): template catalog and public gallery"
+git push -u origin session/06-templates
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 7 — Packages & entitlements
 
 **Goal:** packages with feature flags and a resolver that snapshots them.
-**Depends on:** Session 6.
+**Depends on:** Session 6. **Where:** ☁️ cloud.
 
 **7.1** > Migrations + models for `packages` and `package_features` per § 3.2. Unique on
 > (`package_id`,`feature_key`).
@@ -558,13 +898,21 @@ php artisan tinker --execute="dd(app(App\Services\Entitlements\EntitlementResolv
 ```
 - [ ] Resolver returns a flat array. `/harga` renders the comparison table.
 
-### Commit
-`git commit -am "feat(M2.1-M2.3): packages, feature flags, entitlement resolver"`
+### Commit & PR
+
+Branch: `session/07-packages-entitlements`
+
+```powershell
+git add -A && git commit -m "feat(M2.1-M2.3): packages, feature flags, entitlement resolver"
+git push -u origin session/07-packages-entitlements
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ### 🔍 Checkpoint — Phase 1 review
-```
-/clear
-```
+Start a fresh context first (`/clear` locally, or a new session from the sidebar in cloud).
+
 > Review all code since the initial commit against `CLAUDE.md` conventions. Report,
 > prioritised, **without fixing anything**:
 > 1. Convention violations
@@ -580,7 +928,7 @@ Fix categories 2 and 4 before continuing.
 ## Session 8 — Orders & checkout
 
 **Goal:** an order can be created from a package + template selection.
-**Depends on:** Session 7.
+**Depends on:** Session 7. **Where:** 🔀 either.
 
 **8.1** > Migrations + models for `orders`, `order_items`, `invoices` per § 3.2.
 > `order_items` is polymorphic (`itemable`).
@@ -612,15 +960,24 @@ php artisan orders:expire
 ```
 - [ ] Checkout creates a `pending` order. The list shows only your own.
 
-### Commit
-`git commit -am "feat(M2.4,M2.9,M2.10): orders and checkout"`
+### Commit & PR
+
+Branch: `session/08-orders-checkout`
+
+```powershell
+git add -A && git commit -m "feat(M2.4,M2.9,M2.10): orders and checkout"
+git push -u origin session/08-orders-checkout
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 9 — Payment gateway abstraction
 
 **Goal:** a gateway-agnostic interface with one concrete driver.
-**Depends on:** Session 8. **Blocked until you've recorded a gateway choice in `CLAUDE.md`.**
+**Depends on:** Session 8. **Blocked until you've recorded a gateway choice in `CLAUDE.md`.** **Where:** 🔀 either.
 
 **9.1** > Create the contract and DTOs from `docs/05-technical-architecture.md` § 6:
 > `App\Services\Payment\Contracts\PaymentGateway`, plus `PaymentSession`, `PaymentUpdate`,
@@ -651,15 +1008,24 @@ php artisan test --filter=Payment
 - [ ] Sandbox credentials in `.env`; checkout reaches the real gateway page.
 - [ ] Flipping `config('payment.driver')` actually swaps implementations.
 
-### Commit
-`git commit -am "feat(M2.5): payment gateway abstraction and driver"`
+### Commit & PR
+
+Branch: `session/09-payment-gateway`
+
+```powershell
+git add -A && git commit -m "feat(M2.5): payment gateway abstraction and driver"
+git push -u origin session/09-payment-gateway
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 10 — Webhook handler (test-first)
 
 **Goal:** a bulletproof, idempotent webhook endpoint.
-**Depends on:** Session 9.
+**Depends on:** Session 9. **Where:** ☁️ cloud — pure test-driven, ideal cloud fit.
 
 > ⚠️ **Write the tests before the implementation here.** This endpoint handles money and gets
 > replayed by the gateway. It's the one place where test-first genuinely pays.
@@ -697,15 +1063,24 @@ php artisan test --filter=Webhook
 - [ ] **All six green.** Especially #3.
 - [ ] Fire a real sandbox payment; confirm the webhook lands (check `payments.raw_payload`).
 
-### Commit
-`git commit -am "feat(M2.6): idempotent payment webhook handler"`
+### Commit & PR
+
+Branch: `session/10-payment-webhook`
+
+```powershell
+git add -A && git commit -m "feat(M2.6): idempotent payment webhook handler"
+git push -u origin session/10-payment-webhook
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 11 — Provisioning job
 
 **Goal:** a paid order becomes a draft invitation with snapshotted entitlements.
-**Depends on:** Session 10 **and** Session 14's schema.
+**Depends on:** Session 10 **and** Session 14's schema. **Where:** ☁️ cloud.
 
 > **Ordering note:** Sessions 12–13 don't block this. If you'd rather not work against a stub,
 > do Session 14 first, then come back here.
@@ -732,15 +1107,24 @@ php artisan queue:work --once
 ```
 - [ ] End to end: sandbox payment → webhook → job → draft invitation with entitlements.
 
-### Commit
-`git commit -am "feat(M2.9): invitation provisioning job"`
+### Commit & PR
+
+Branch: `session/11-provisioning`
+
+```powershell
+git add -A && git commit -m "feat(M2.9): invitation provisioning job"
+git push -u origin session/11-provisioning
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 12 — Manual payment verification
 
 **Goal:** bank-transfer path with admin approval.
-**Depends on:** Session 11.
+**Depends on:** Session 11. **Where:** 🔀 either.
 
 **12.1** > At checkout, offer "Transfer Bank Manual" alongside the gateway. Selecting it
 > creates a `manual` payment and shows the destination account from settings.
@@ -760,15 +1144,24 @@ php artisan queue:work --once
 ### Verify
 - [ ] Full manual flow: checkout → upload proof → admin approves → invitation exists.
 
-### Commit
-`git commit -am "feat(M2.7): manual payment verification"`
+### Commit & PR
+
+Branch: `session/12-manual-payment`
+
+```powershell
+git add -A && git commit -m "feat(M2.7): manual payment verification"
+git push -u origin session/12-manual-payment
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 13 — Invoices
 
 **Goal:** downloadable PDF invoices.
-**Depends on:** Session 12.
+**Depends on:** Session 12. **Where:** 🔀 either.
 
 **13.1** > On order `paid`, queue `GenerateInvoiceJob`: sequential `invoice_number`, render a
 > Blade view to PDF via dompdf, store privately, persist the path.
@@ -783,13 +1176,21 @@ php artisan queue:work --once
 ### Verify
 - [ ] Download a generated invoice. Check formatting and IDR amounts.
 
-### Commit
-`git commit -am "feat(M2.8): invoice generation"`
+### Commit & PR
+
+Branch: `session/13-invoices`
+
+```powershell
+git add -A && git commit -m "feat(M2.8): invoice generation"
+git push -u origin session/13-invoices
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ### 🔍 Checkpoint — Phase 2 review
-```
-/clear
-```
+Start a fresh context first (`/clear` locally, or a new session from the sidebar in cloud).
+
 > Review the commerce module (Sessions 8–13). Report only:
 > 1. Any path where an order could be provisioned twice
 > 2. Any place reading a live package price instead of the order snapshot
@@ -801,7 +1202,7 @@ php artisan queue:work --once
 ## Session 14 — Invitation schema
 
 **Goal:** every invitation table, model, relationship and factory.
-**Depends on:** Session 7.
+**Depends on:** Session 7. **Where:** ☁️ cloud.
 
 > The largest schema session. Work the sub-steps — do not do this in one prompt.
 
@@ -838,15 +1239,24 @@ php artisan tinker --execute="dd(App\Models\Invitation::with(['persons','events'
 ```
 - [ ] The full object graph loads. `entitlements` and `theme_config` deserialise as arrays.
 
-### Commit
-`git commit -am "feat(M4): invitation schema, models, factories"`
+### Commit & PR
+
+Branch: `session/14-invitation-schema`
+
+```powershell
+git add -A && git commit -m "feat(M4): invitation schema, models, factories"
+git push -u origin session/14-invitation-schema
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 15 — Policies & tenant isolation
 
 **Goal:** provable isolation between clients.
-**Depends on:** Session 14.
+**Depends on:** Session 14. **Where:** ☁️ cloud — pure test-driven, ideal cloud fit.
 
 > Do not postpone this. Retrofitting authorization after the UI exists means auditing every
 > controller you've already written.
@@ -874,15 +1284,24 @@ php artisan test --filter=TenantIsolation
 ```
 - [ ] Every case passes. This suite runs in CI forever.
 
-### Commit
-`git commit -am "feat(M1.4): invitation policies and tenant isolation"`
+### Commit & PR
+
+Branch: `session/15-policies-isolation`
+
+```powershell
+git add -A && git commit -m "feat(M1.4): invitation policies and tenant isolation"
+git push -u origin session/15-policies-isolation
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 16 — Builder shell
 
 **Goal:** the client's invitation list and builder page skeleton.
-**Depends on:** Session 15.
+**Depends on:** Session 15. **Where:** 💻 local.
 
 **16.1** > `/dashboard/invitations` — list with status badge, event date, guest count, view
 > count, quick actions. Policy-scoped. Empty state links to `/harga`.
@@ -904,15 +1323,24 @@ php artisan test --filter=TenantIsolation
 - [ ] Builder loads for your own invitation, 403s for someone else's.
 - [ ] Slug availability check works. Basic info saves.
 
-### Commit
-`git commit -am "feat(M4.1,M4.2): builder shell and invitation list"`
+### Commit & PR
+
+Branch: `session/16-builder-shell`
+
+```powershell
+git add -A && git commit -m "feat(M4.1,M4.2): builder shell and invitation list"
+git push -u origin session/16-builder-shell
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 17 — Builder: persons & event sessions
 
 **Goal:** the first real Vue islands with autosave.
-**Depends on:** Session 16.
+**Depends on:** Session 16. **Where:** 💻 local.
 
 **17.1** > Vue island `PersonsEditor`: repeatable person cards, roles restricted to the event
 > type's `person_roles`, photo upload, drag-reorder via vuedraggable, debounced autosave
@@ -938,15 +1366,24 @@ php artisan test --filter=EventSession
 - [ ] Add two persons and two sessions, reload, data persists.
 - [ ] Reorder, reload, order persists.
 
-### Commit
-`git commit -am "feat(M4.3,M4.4): persons and event sessions builder"`
+### Commit & PR
+
+Branch: `session/17-builder-persons-events`
+
+```powershell
+git add -A && git commit -m "feat(M4.3,M4.4): persons and event sessions builder"
+git push -u origin session/17-builder-persons-events
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 18 — Builder: media pipeline
 
 **Goal:** uploads that don't fall over on 8MB phone photos.
-**Depends on:** Session 17.
+**Depends on:** Session 17. **Where:** 💻 local.
 
 **18.1** > Client-side compression before upload (canvas resize, max 2000px, quality 0.85).
 > Show original vs compressed size.
@@ -974,15 +1411,24 @@ php artisan queue:work --once
 ```
 - [ ] Upload 5 photos. Conversions exist on disk. Quota blocks at the limit with an upsell message.
 
-### Commit
-`git commit -am "feat(M12): media upload and conversion pipeline"`
+### Commit & PR
+
+Branch: `session/18-builder-media`
+
+```powershell
+git add -A && git commit -m "feat(M12): media upload and conversion pipeline"
+git push -u origin session/18-builder-media
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 19 — Builder: gifts, story, sections
 
 **Goal:** the remaining content editors plus section ordering.
-**Depends on:** Session 18.
+**Depends on:** Session 18. **Where:** 💻 local.
 
 **19.1** > Vue island `GiftsEditor`: repeatable, type switch (bank / e-wallet / QRIS /
 > address), conditional fields per type, QRIS image upload, reorder.
@@ -1010,15 +1456,24 @@ php artisan tinker --execute="dd(DB::table('invitation_gifts')->value('account_n
 - [ ] The raw value is ciphertext, not a readable account number.
 - [ ] All builder tabs save and reload correctly.
 
-### Commit
-`git commit -am "feat(M4.5-M4.12): gifts, story, sections, theme, settings editors"`
+### Commit & PR
+
+Branch: `session/19-builder-gifts-sections`
+
+```powershell
+git add -A && git commit -m "feat(M4.5-M4.12): gifts, story, sections, theme, settings editors"
+git push -u origin session/19-builder-gifts-sections
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 20 — Payload resource & caching
 
 **Goal:** one cached JSON payload the public renderer consumes.
-**Depends on:** Session 19.
+**Depends on:** Session 19. **Where:** ☁️ cloud.
 
 **20.1** > Create `App\Http\Resources\InvitationPayload` — the complete public shape:
 > invitation meta, resolved theme (`theme_config` merged over `default_config`), ordered
@@ -1044,15 +1499,24 @@ php artisan test --filter=Payload
 - [ ] Cold payload build query count is in single digits.
 - [ ] Edit a gift → payload reflects it immediately.
 
-### Commit
-`git commit -am "feat(M4): invitation payload resource and cache invalidation"`
+### Commit & PR
+
+Branch: `session/20-payload-caching`
+
+```powershell
+git add -A && git commit -m "feat(M4): invitation payload resource and cache invalidation"
+git push -u origin session/20-payload-caching
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 21 — Public renderer shell
 
 **Goal:** the Blade shell with correct SSR meta tags. **The WhatsApp preview session.**
-**Depends on:** Session 20.
+**Depends on:** Session 20. **Where:** 💻 local — needs a real phone for the WhatsApp preview check.
 
 **21.1** > Route `GET /{slug}` in `public.php`, registered **last** so it doesn't swallow
 > other routes. Add a reserved-slug blocklist.
@@ -1089,15 +1553,24 @@ curl -s http://undangyu.test/demo-slug | Select-String "og:image"
 - [ ] Paste a published URL into WhatsApp Web. **A preview card with the image appears.**
 - [ ] Test on a real iOS device and a real Android device.
 
-### Commit
-`git commit -am "feat(M4.16): public renderer shell with SSR meta tags"`
+### Commit & PR
+
+Branch: `session/21-public-renderer`
+
+```powershell
+git add -A && git commit -m "feat(M4.16): public renderer shell with SSR meta tags"
+git push -u origin session/21-public-renderer
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 22 — First invitation template
 
 **Goal:** one complete, beautiful Vue template.
-**Depends on:** Session 21.
+**Depends on:** Session 21. **Where:** 💻 local — needs Lighthouse and a real Android device.
 
 > Budget more time than you think. This sets the visual bar for every template after it.
 
@@ -1132,15 +1605,24 @@ npm run build
 - [ ] Test on a real mid-range Android over throttled 4G.
 - [ ] Change a colour in the Tema tab → the invitation reflects it.
 
-### Commit
-`git commit -am "feat(M3): first invitation template (floral-elegant)"`
+### Commit & PR
+
+Branch: `session/22-first-template`
+
+```powershell
+git add -A && git commit -m "feat(M3): first invitation template (floral-elegant)"
+git push -u origin session/22-first-template
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 23 — Publish flow
 
 **Goal:** draft → published, with the validation gate and post-publish jobs.
-**Depends on:** Session 22.
+**Depends on:** Session 22. **Where:** 💻 local.
 
 **23.1** > Create `App\Actions\Invitations\PublishInvitation` implementing every check in the
 > publish validation gate table (`docs/04-flowcharts.md` § 4). Return structured per-check
@@ -1173,13 +1655,21 @@ php artisan invitations:expire
 - [ ] Publish blocked with a clear checklist when incomplete.
 - [ ] After publish: OG image exists, WhatsApp preview shows it.
 
-### Commit
-`git commit -am "feat(M4.14,M4.18): publish flow, OG generation, expiry"`
+### Commit & PR
+
+Branch: `session/23-publish-flow`
+
+```powershell
+git add -A && git commit -m "feat(M4.14,M4.18): publish flow, OG generation, expiry"
+git push -u origin session/23-publish-flow
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ### 🔍 Checkpoint — Phase 3 review
-```
-/clear
-```
+Start a fresh context first (`/clear` locally, or a new session from the sidebar in cloud).
+
 > Review Sessions 14–23. Report only:
 > 1. Any child model missing the cache-invalidation observer
 > 2. Any builder endpoint without a policy check
@@ -1192,7 +1682,7 @@ php artisan invitations:expire
 ## Session 24 — Guest CRUD & groups
 
 **Goal:** guest list management with unique tokens.
-**Depends on:** Session 23.
+**Depends on:** Session 23. **Where:** 🔀 either.
 
 **24.1** > Migrations + models for `guest_groups` and `guests` per § 3.5. Unique index on
 > `guests.token`.
@@ -1218,15 +1708,24 @@ php artisan test --filter=Guest
 ```
 - [ ] Seed 1000 guests; the table paginates without lag.
 
-### Commit
-`git commit -am "feat(M5.1,M5.2,M5.4): guest management and groups"`
+### Commit & PR
+
+Branch: `session/24-guests`
+
+```powershell
+git add -A && git commit -m "feat(M5.1,M5.2,M5.4): guest management and groups"
+git push -u origin session/24-guests
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 25 — Guest import
 
 **Goal:** queued spreadsheet import with a per-row error report.
-**Depends on:** Session 24.
+**Depends on:** Session 24. **Where:** ☁️ cloud.
 
 **25.1** > Migration + model for `guest_imports` per § 3.5.
 
@@ -1254,15 +1753,24 @@ php artisan queue:work --once
 ```
 - [ ] Import a real 500-row file. Check timing and the error report.
 
-### Commit
-`git commit -am "feat(M5.3,M5.9): guest import and export"`
+### Commit & PR
+
+Branch: `session/25-guest-import`
+
+```powershell
+git add -A && git commit -m "feat(M5.3,M5.9): guest import and export"
+git push -u origin session/25-guest-import
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 26 — Guest links & WhatsApp share
 
 **Goal:** the actual distribution workflow clients use.
-**Depends on:** Session 25.
+**Depends on:** Session 25. **Where:** 💻 local.
 
 **26.1** > Migration + model for `message_templates` per § 3.6. Seed default Indonesian
 > invitation and reminder texts with `{guest_name}`, `{invitation_url}`, `{event_date}`,
@@ -1283,15 +1791,24 @@ php artisan queue:work --once
 ### Verify
 - [ ] Copy a guest's WhatsApp link, open it on your phone, confirm the prefilled text and working link.
 
-### Commit
-`git commit -am "feat(M5.5-M5.7): guest links and WhatsApp share workflow"`
+### Commit & PR
+
+Branch: `session/26-guest-links`
+
+```powershell
+git add -A && git commit -m "feat(M5.5-M5.7): guest links and WhatsApp share workflow"
+git push -u origin session/26-guest-links
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 27 — Personalization on the public page
 
 **Goal:** guests see their own name.
-**Depends on:** Session 26.
+**Depends on:** Session 26. **Where:** 💻 local.
 
 **27.1** > Resolve `?to={token}` in `Public\InvitationController`. An invalid token renders the
 > generic greeting, **never an error** — a guest seeing an error page is a lost RSVP.
@@ -1311,15 +1828,24 @@ php artisan queue:work --once
 - [ ] Open a personalized link → your name appears, `opened_at` populates.
 - [ ] Open with a garbage token → generic greeting, HTTP 200.
 
-### Commit
-`git commit -am "feat(M5.5,M5.11): guest personalization and open tracking"`
+### Commit & PR
+
+Branch: `session/27-personalization`
+
+```powershell
+git add -A && git commit -m "feat(M5.5,M5.11): guest personalization and open tracking"
+git push -u origin session/27-personalization
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 28 — RSVP
 
 **Goal:** attendance collection, with and without tokens.
-**Depends on:** Session 27.
+**Depends on:** Session 27. **Where:** 🔀 either.
 
 **28.1** > Migration + model for `rsvps` per § 3.5. `ip_hash`, never raw IP.
 
@@ -1345,15 +1871,24 @@ php artisan test --filter=Rsvp
 ```
 - [ ] Submit an RSVP from a phone. Counts update on the dashboard.
 
-### Commit
-`git commit -am "feat(M6.1-M6.3,M6.7,M6.9): RSVP collection and dashboard"`
+### Commit & PR
+
+Branch: `session/28-rsvp`
+
+```powershell
+git add -A && git commit -m "feat(M6.1-M6.3,M6.7,M6.9): RSVP collection and dashboard"
+git push -u origin session/28-rsvp
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
 ## Session 29 — Wishes & moderation
 
 **Goal:** the guestbook, safely.
-**Depends on:** Session 28.
+**Depends on:** Session 28. **Where:** ☁️ cloud.
 
 **29.1** > Migration + model for `wishes` per § 3.5.
 
@@ -1374,8 +1909,17 @@ php artisan test --filter=Wish
 ```
 - [ ] Submit `<script>alert(1)</script>` as a wish. It renders as literal text, no execution.
 
-### Commit
-`git commit -am "feat(M6.4-M6.6,M6.8): wishes and moderation"`
+### Commit & PR
+
+Branch: `session/29-wishes`
+
+```powershell
+git add -A && git commit -m "feat(M6.4-M6.6,M6.8): wishes and moderation"
+git push -u origin session/29-wishes
+gh pr create --fill --base main
+```
+
+Then [close out the session](#close-out-a-session): review the diff, merge, sync `main`.
 
 ---
 
@@ -1408,7 +1952,7 @@ Same protocol. Condensed, because the patterns are established by now.
 6. Tests: rollup accuracy, prune boundary
 
 **Verify:** charts render from the rollup; the UI never queries the raw table.
-**Commit:** `feat(M9): analytics tracking and rollups`
+**Commit & PR:** branch `session/30-analytics`, message `feat(M9): analytics tracking and rollups`, then [close out](#close-out-a-session).
 
 ### Session 31 — Admin dashboard
 1. Revenue widgets: today, MTD, by package, by template
@@ -1420,7 +1964,7 @@ Same protocol. Condensed, because the patterns are established by now.
 7. Horizon dashboard, admin-gated
 
 **Verify:** impersonate a client; confirm the banner and the audit entry.
-**Commit:** `feat(M11): admin dashboard and management tools`
+**Commit & PR:** branch `session/31-admin-dashboard`, message `feat(M11): admin dashboard and management tools`, then [close out](#close-out-a-session).
 
 ### Session 32 — Notifications
 1. Transactional emails: order created, payment received, invitation published, expiry H-7/H-1
@@ -1429,7 +1973,7 @@ Same protocol. Condensed, because the patterns are established by now.
 4. Branded email templates driven from settings
 
 **Verify:** trigger each email in Mailpit; check mobile rendering.
-**Commit:** `feat(M8.1,M8.6,M8.7): notifications`
+**Commit & PR:** branch `session/32-notifications`, message `feat(M8.1,M8.6,M8.7): notifications`, then [close out](#close-out-a-session).
 
 ### Session 33 — Scheduled tasks
 1. Consolidate the schedule: `orders:expire` hourly · `invitations:expire` daily ·
@@ -1440,7 +1984,7 @@ Same protocol. Condensed, because the patterns are established by now.
 4. Configure `spatie/laravel-backup` to off-server storage
 
 **Verify:** `php artisan schedule:list`; run each command manually; **restore a backup**.
-**Commit:** `feat(M13.2,M13.6): scheduled tasks and backups`
+**Commit & PR:** branch `session/33-scheduled-tasks`, message `feat(M13.2,M13.6): scheduled tasks and backups`, then [close out](#close-out-a-session).
 
 ### Session 34 — Hardening & load test
 1. Rate limits on every public endpoint (view, RSVP, wishes, token lookup)
@@ -1452,15 +1996,15 @@ Same protocol. Condensed, because the patterns are established by now.
 7. `guests:purge-expired` implementing the retention policy (M13.10)
 
 **Verify:** load test passes with p95 under 500ms; security headers present.
-**Commit:** `chore: security hardening and performance tuning`
+**Commit & PR:** branch `session/34-hardening`, message `chore: security hardening and performance tuning`, then [close out](#close-out-a-session).
 
 ---
 
 ## Sessions 35–41 — Growth
 
-Build in **this order** — distribution before features.
+Build in **this order** — distribution before features. Same branch-and-PR workflow: `session/NN-slug`, one PR each, merged before the next starts.
 
-| # | Session | Key steps | Commit prefix |
+| # | Session | Key steps | Branch / commit prefix |
 |---|---|---|---|
 | 35 | QR generation | QR per guest token; downloadable sheet; embed in the guest's invitation view | `feat(M7.1)` |
 | 36 | Usher scanner | `checkins` table; scoped token access (no login); html5-qrcode scanner; **manual name-search fallback**; actual-pax entry; souvenir tracking; live counter | `feat(M7.2-M7.6,M7.8)` |
@@ -1474,45 +2018,65 @@ Build in **this order** — distribution before features.
 
 ## Where am I?
 
-Lost track? Run:
+Lost track? Run these:
 
 ```powershell
-git log --oneline -15
+git checkout main && git pull
+git log --oneline -15        # one squashed commit per completed session
+gh pr list --state open      # anything still unmerged
+git branch -a                # stale session branches
 ```
 
-Your last commit message names the last completed session. Then:
+With squash-merges, `main`'s log reads as a list of completed sessions. Then:
 
-1. Find that session in the [progress tracker](#progress-tracker).
-2. Mark it ✅ and record the hash.
-3. Read its **Done when**. Is it actually true? If not, close the gap first.
+1. Find the last session in that log. Mark it ✅ in the [progress tracker](#progress-tracker)
+   and record its PR number.
+2. Read its **Done when**. Is it actually true? If not, close the gap before moving on.
+3. If `gh pr list` shows an open PR, that session is mid-flight. Finish or close it before
+   starting anything new — see [merge promptly](#merge-promptly--dont-stack-prs).
 4. Move to the next ⬜ session and follow the [session protocol](#session-protocol).
 
-**Working tree dirty and you don't know why:**
+**An open PR you don't remember:**
 ```powershell
-git diff --stat          # what changed
-git stash                # park it
-php artisan test         # is the committed state healthy?
+gh pr diff <number>          # what's in it
+gh pr checks <number>        # did CI pass
 ```
-If tests pass on the committed state, `git stash drop` and redo the session cleanly. A lost
-session is cheaper than debugging half-finished work.
+If the diff matches a session's Done-when and checks pass, merge it. If it's half-finished,
+close it and delete the branch — redoing one session is cheaper than reconstructing intent.
+
+**Working tree dirty on a session branch:**
+```powershell
+git diff --stat
+git stash
+php artisan test             # is the committed state healthy?
+```
+If tests pass on the committed state, `git stash drop` and redo the session cleanly.
 
 **A session went badly:**
 ```powershell
-git reset --hard HEAD
+git checkout main && git pull
+git branch -D session/NN-slug
+git push origin --delete session/NN-slug
 ```
-You lose one session. `/clear`, re-read it, start again with a tighter prep prompt.
+You lose one session, and `main` was never touched. Start a fresh context, re-read the
+session, begin again with a tighter prep prompt.
+
+**Stale branches piling up:** `--delete-branch` on merge handles the common case. To clean up
+what's left: `git fetch --prune` then delete anything in `git branch` that isn't in
+`gh pr list --state merged`.
 
 ---
 
 ## Working practices
 
-**Commit after every session.** No exceptions — it's what makes the tracker meaningful.
+**One branch, one PR, one merge per session.** No exceptions — it's what makes the tracker
+meaningful and keeps `main` readable as a build log. Merge before starting the next session.
 
 **Run the code.** After every slice. Claude Code writes plausible Laravel; plausible is not
 working. The gap shows at runtime, not in review.
 
-**`/clear` between sessions.** Long contexts drift and start referencing decisions that no
-longer apply.
+**Fresh context between sessions.** `/clear` locally; in cloud, start a new session from the
+sidebar. Long contexts drift and start referencing decisions that no longer apply.
 
 **Keep `CLAUDE.md` current.** Decided on Xendit mid-build? Add it immediately. That file is
 what makes Session 20 start correctly instead of re-litigating Session 9.
