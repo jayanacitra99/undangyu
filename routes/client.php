@@ -15,4 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Breeze's placeholder view. Session 3 replaces it with the AdminLTE shell.
+Route::get('/', fn () => view('dashboard'))->name('dashboard');
+
 Route::get('/ping', fn () => response()->json(['surface' => 'client']))->name('client.ping');

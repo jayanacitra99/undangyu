@@ -24,7 +24,7 @@ see [§ Cloud vs local](#cloud-vs-local). `☁️ cloud · 💻 local · 🔀 ei
 |---|---|:--:|:--:|---|
 | 0 | Environment setup | 💻 | ⬜ | |
 | 1 | Install & configure packages | 💻 | ⬜ | |
-| 2 | Auth, roles & permissions | ☁️ | ⬜ | |
+| 2 | Auth, roles & permissions | ☁️ | 🟡 | |
 | 3 | AdminLTE layout & Vite | 💻 | ⬜ | |
 | 4 | Settings module | ☁️ | ⬜ | |
 | 5 | Event types & template categories | ☁️ | ⬜ | |
@@ -290,8 +290,8 @@ Our ERD specifies MySQL 8, which isn't in the cloud image. Three options:
    schema needs MySQL specifically, Postgres has stronger JSON support for the `theme_config`
    and `entitlements` columns we lean on, and it's zero-config in the cloud.
 
-**Decide before Session 1** and record it in `CLAUDE.md`. Changing this at Session 14 means
-rewriting migrations.
+**Decided at Session 2: MySQL 8** (option 1 — installed via the setup script). Recorded in
+`CLAUDE.md` § Decisions already made. `docs/03-database-erd.md` stays authoritative.
 
 ### Setup script (option 1)
 
