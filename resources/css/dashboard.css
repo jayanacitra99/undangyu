@@ -1,0 +1,19 @@
+/*
+| Dashboard bundle — admin panel + client dashboard (docs/05 § 2).
+|
+| AdminLTE 4 already compiles Bootstrap 5 into its stylesheet, so Bootstrap is
+| NOT imported separately here. Tailwind never loads on these pages; it belongs
+| to public.css and the two must not meet on one page.
+*/
+@import 'admin-lte/dist/css/adminlte.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+/* Sidebar brand: keep the wordmark from wrapping on a collapsed sidebar. */
+.app-sidebar .brand-text {
+    white-space: nowrap;
+}
+
+/* The client layout ships a denser content area — clients edit on phones. */
+.app-content > .container-fluid {
+    padding-bottom: 2rem;
+}

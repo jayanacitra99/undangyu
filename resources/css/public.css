@@ -1,0 +1,17 @@
+/*
+| Public bundle — the published invitation at undangyu.id/{slug} (docs/05 § 2).
+|
+| Tailwind only. Bootstrap and AdminLTE never load here.
+*/
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/forms';
+
+@source '../js/invitation/**/*.vue';
+@source '../views/public/**/*.blade.php';
+@source '../views/templates/**/*.blade.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}

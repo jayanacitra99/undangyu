@@ -4,6 +4,21 @@ import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'node:path';
 
+/*
+| Two bundles, never on the same page (docs/05 § 2):
+|
+|   dashboard.*  Bootstrap 5 + AdminLTE — admin panel and client dashboard
+|   public.*     Tailwind — the published invitation
+|
+| Vue islands are extra entries under resources/js/islands/. Each one mounts a
+| component into a single container div and is pulled in per page with
+| @push('scripts') @vite('resources/js/islands/<name>.js') @endpush, e.g.
+|
+|   input: [..., 'resources/js/islands/invitation-builder.js']
+|
+| Island entries stay out of dashboard.js so a page only ships the widget it
+| actually renders.
+*/
 export default defineConfig({
     resolve: {
         alias: {
@@ -13,7 +28,12 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'resources/css/dashboard.css',
+                'resources/js/dashboard.js',
+                'resources/css/public.css',
+                'resources/js/public.js',
+            ],
             refresh: true,
         }),
         vue(),
