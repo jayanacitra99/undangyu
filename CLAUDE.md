@@ -17,7 +17,7 @@ Full specs in `docs/`. Read `docs/01` through `docs/05` before substantial work.
 
 ## Stack
 
-- Laravel 12, PHP 8.3+, MySQL 8, Redis (cache + queue + session)
+- Laravel 13, PHP 8.3+, MySQL 8, Redis (cache + queue + session)
 - **Admin panel:** Blade + AdminLTE 4 (Bootstrap 5). No Vue.
 - **Client dashboard:** Blade + AdminLTE shell with **Vue 3 islands** for complex widgets
 - **Public invitation:** Blade shell (SSR `<head>` for OG tags) + Vue 3 app, **Tailwind**
