@@ -6,7 +6,7 @@
 
 | Layer | Choice | Why |
 |---|---|---|
-| Framework | Laravel 12 (PHP 8.3+) | Your stack |
+| Framework | Laravel 13 (PHP 8.3+) | Your stack |
 | Admin & client dashboard | **Blade + AdminLTE 4 + Vue 3 islands** | See §2 — this is the important decision |
 | Public invitation renderer | **Vue 3 + Vite, mounted on a Blade-rendered shell** | SSR head for OG tags, SPA-quality animation below |
 | CSS (dashboard) | AdminLTE's Bootstrap 5 | Comes with the template |
@@ -168,13 +168,13 @@ composer require spatie/laravel-activitylog
 composer require spatie/laravel-backup
 composer require spatie/laravel-sluggable
 composer require laravel/horizon
-composer require laravel/sanctum
+php artisan install:api                      # installs sanctum + creates routes/api.php
 
 # Domain
 composer require maatwebsite/excel          # guest import/export
 composer require simplesoftwareio/simple-qrcode
 composer require barryvdh/laravel-dompdf    # invoices
-composer require intervention/image         # OG image generation
+composer require intervention/image intervention/image-laravel  # OG image generation
 composer require propaganistas/laravel-phone # phone normalisation — essential for WA
 composer require sentry/sentry-laravel
 
