@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Facades\Setting;
 use App\Models\User;
+use App\Support\Settings;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +17,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // One instance per request: the store memoises the cache read, so every
+        // Setting::get() after the first costs nothing.
+        $this->app->singleton(Settings::class);
     }
 
     /**
@@ -32,5 +37,9 @@ class AppServiceProvider extends ServiceProvider
         // moment they exist, and there is one place to audit.
         // Returning null (not false) lets the normal checks run for everyone else.
         Gate::before(fn (User $user, string $ability) => $user->hasRole('super-admin') ? true : null);
+
+        // Laravel 12 ships no aliases array, and the facade is worth the short
+        // name: settings are read from Blade all over the admin panel.
+        AliasLoader::getInstance()->alias('Setting', Setting::class);
     }
 }
