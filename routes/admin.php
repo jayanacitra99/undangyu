@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', fn () => response()->json(['surface' => 'admin', 'user' => auth()->id()]))
-    ->name('admin.home');
+Route::get('/', DashboardController::class)->name('admin.dashboard');
 
 Route::get('/ping', fn () => response()->json(['surface' => 'admin']))->name('admin.ping');
