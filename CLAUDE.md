@@ -130,6 +130,13 @@ Split by surface — `web.php`, `admin.php`, `client.php`, `public.php`, `api.ph
 - CI runs pint, phpstan and `php artisan test` on every PR. A red PR is not done.
 - In a cloud session, push protection means you can only push to the branch the session
   started on. If the branch doesn't exist yet, create and push it as the first action.
+- **Nothing on GitHub mentions AI.** Commits, PRs, issues and comments are written as the
+  developer's own work — no `Co-Authored-By: Claude`, no "Generated with Claude Code"
+  footer, no session links, no attribution of any kind.
+- **A new test file is not committed.** Write it, run it, leave it untracked. Only changes
+  to a test file that already exists get committed and pushed.
+- Don't run `vendor/bin/pint --dirty --format agent` unless explicitly asked. Plain
+  `./vendor/bin/pint` before committing is what this project wants.
 
 ---
 
