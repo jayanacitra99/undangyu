@@ -61,6 +61,20 @@ return [
                     'active' => ['admin/templates', 'admin/templates/*'],
                 ],
                 [
+                    'label' => 'Jenis Acara',
+                    'route' => 'admin.event-types.index',
+                    'icon' => 'bi-calendar-event',
+                    'permission' => 'templates.manage',
+                    'active' => ['admin/event-types', 'admin/event-types/*'],
+                ],
+                [
+                    'label' => 'Kategori Template',
+                    'route' => 'admin.template-categories.index',
+                    'icon' => 'bi-tags',
+                    'permission' => 'templates.manage',
+                    'active' => ['admin/template-categories', 'admin/template-categories/*'],
+                ],
+                [
                     'label' => 'Paket',
                     'route' => 'admin.packages.index',
                     'icon' => 'bi-box-seam',

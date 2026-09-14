@@ -27,7 +27,7 @@ see [§ Cloud vs local](#cloud-vs-local). `☁️ cloud · 💻 local · 🔀 ei
 | 2 | Auth, roles & permissions | ☁️ | 🟡 | |
 | 3 | AdminLTE layout & Vite | 💻 | 🟡 | |
 | 4 | Settings module | ☁️ | 🟡 | |
-| 5 | Event types & template categories | ☁️ | ⬜ | |
+| 5 | Event types & template categories | ☁️ | 🟡 | |
 | 6 | Templates | 🔀 | ⬜ | |
 | 7 | Packages & entitlements | ☁️ | ⬜ | |
 
