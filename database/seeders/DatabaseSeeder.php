@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             EventTypeSeeder::class,
             TemplateCategorySeeder::class,
             TemplateSeeder::class,
+            PackageSeeder::class,
             AdminUserSeeder::class,
         ]);
     }

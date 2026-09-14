@@ -20,6 +20,7 @@
             <a href="{{ url('/') }}" class="text-lg font-semibold tracking-tight">{{ config('app.name') }}</a>
             <nav class="flex items-center gap-6 text-sm">
                 <a href="{{ route('templates.index') }}" class="hover:text-stone-950">{{ __('Template') }}</a>
+                <a href="{{ route('pricing.index') }}" class="hover:text-stone-950">{{ __('Harga') }}</a>
                 <a href="{{ route('login') }}" class="rounded-md bg-stone-900 px-3 py-2 text-white hover:bg-stone-700">
                     {{ __('Masuk') }}
                 </a>

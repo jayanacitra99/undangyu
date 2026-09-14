@@ -19,11 +19,11 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
 /**
- * One design in the catalog (docs/03 Â§ 3.3).
+ * One design in the catalog (docs/03 § 3.3).
  *
  * `view_key` is the folder under resources/js/invitation/templates/ that
  * actually renders it; `config_schema` bounds what a client may customise
- * (docs/05 Â§ 5). Rows are versioned and invitations pin the version, so an
+ * (docs/05 § 5). Rows are versioned and invitations pin the version, so an
  * edit here never re-renders an invitation that is already published.
  *
  * @property string $name

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventTypeController;
+use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TemplateCategoryController;
 use App\Http\Controllers\Admin\TemplateController;
@@ -46,6 +47,15 @@ Route::middleware('permission:templates.manage')->group(function (): void {
     Route::resource('templates', TemplateController::class)
         ->except('show')
         ->names('admin.templates');
+});
+
+// Packages carry their own permission (M2.1, M2.2) — a support user who may
+// touch templates has no business editing what anything costs.
+Route::middleware('permission:packages.manage')->group(function (): void {
+    Route::post('/packages/reorder', [PackageController::class, 'reorder'])->name('admin.packages.reorder');
+    Route::resource('packages', PackageController::class)
+        ->except('show')
+        ->names('admin.packages');
 });
 
 Route::get('/ping', fn () => response()->json(['surface' => 'admin']))->name('admin.ping');

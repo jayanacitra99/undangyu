@@ -34,6 +34,7 @@ export default defineConfig({
                 'resources/css/public.css',
                 'resources/js/public.js',
                 'resources/js/islands/sortable-rows.js',
+                'resources/js/islands/feature-flags.js',
             ],
             refresh: true,
         }),
