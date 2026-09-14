@@ -38,11 +38,13 @@ Full specs in `docs/`. Read `docs/01` through `docs/05` before substantial work.
 - Affiliate balance is computed from an **append-only ledger**. Never `UPDATE` a balance column.
 - **Composer resolves for PHP 8.3.0**, pinned in `composer.json` → `config.platform`. Without it
   the lock drifts to whatever PHP the machine that ran `composer update` had — a cloud session on
-  8.4 locked packages that then refused to install on a developer's 8.3. `ext-pcntl` is faked in
-  the same block because Horizon requires it and Windows has no pcntl at all; the Linux boxes that
-  actually run Horizon do have it. Consequence: `spatie/laravel-activitylog` stays on **v4** — its
-  whole v5 line requires PHP 8.4. v4 supports Laravel 13 and nothing uses it yet, but the v4 API is
-  what to write against in the activity-log work.
+  8.4 locked packages that then refused to install on a developer's 8.3.
+- **`ext-pcntl` and `ext-posix` are faked in that same block.** Horizon requires both and Windows
+  has neither; the Linux hosts that actually run Horizon do have them. They are the only two
+  POSIX-only extensions in the whole tree — a Windows install tripping over any other extension can
+  just enable it. Horizon does not run on Windows: use `php artisan queue:work` locally.
+- **`spatie/laravel-activitylog` stays on v4.** Its entire v5 line requires PHP 8.4. v4 supports
+  Laravel 13 and nothing uses the package yet, but v4 is the API to write against.
 - **Database engine: MySQL 8.** Decided at Session 2. `docs/03-database-erd.md` is written
   for it and stays authoritative. Cloud images ship PostgreSQL and no MySQL, so cloud
   sessions install it via the setup script in `docs/06` § Cloud vs local — the schema is
