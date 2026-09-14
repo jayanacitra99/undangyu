@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Client\DashboardController;
+use App\Http\Controllers\Client\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,5 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', DashboardController::class)->name('dashboard');
+
+// The client's own orders (M2.4). Ownership is enforced by OrderPolicy, and
+// the binding resolves on order_number rather than the id.
+Route::get('/orders', [OrderController::class, 'index'])->name('client.orders.index');
+Route::get('/orders/{order}', [OrderController::class, 'show'])->name('client.orders.show');
 
 Route::get('/ping', fn () => response()->json(['surface' => 'client']))->name('client.ping');

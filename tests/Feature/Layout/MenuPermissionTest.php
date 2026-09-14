@@ -60,13 +60,18 @@ class MenuPermissionTest extends TestCase
         $client = User::factory()->create();
         $client->assignRole('client');
 
-        // affiliates.view belongs to reseller, not client.
-        $this->assertSame(['Dashboard'], $this->labels(Menu::for('client', $client)));
+        // affiliates.view belongs to reseller, not client. "Pesanan" carries no
+        // permission at all — a client owns their orders, and OrderPolicy is
+        // what decides whose rows they see.
+        $this->assertSame(['Dashboard', 'Pesanan'], $this->labels(Menu::for('client', $client)));
 
         $reseller = User::factory()->create();
         $reseller->assignRole('reseller');
 
-        $this->assertSame(['Dashboard', 'Affiliate'], $this->labels(Menu::for('client', $reseller)));
+        $this->assertSame(
+            ['Dashboard', 'Pesanan', 'Affiliate'],
+            $this->labels(Menu::for('client', $reseller)),
+        );
     }
 
     public function test_a_guest_gets_no_menu_at_all(): void

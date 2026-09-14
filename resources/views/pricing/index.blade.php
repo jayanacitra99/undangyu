@@ -50,7 +50,8 @@
                         <p class="mt-3 text-sm text-stone-600">{{ $package['description'] }}</p>
                     @endif
 
-                    <a href="{{ route('register') }}"
+                    {{-- A guest is sent to login and returned here afterwards. --}}
+                    <a href="{{ route('checkout.show', ['package' => $package['slug']]) }}"
                        class="mt-5 block rounded-md bg-stone-900 px-4 py-2 text-center text-sm text-white hover:bg-stone-700">
                         {{ __('Pilih paket') }}
                     </a>

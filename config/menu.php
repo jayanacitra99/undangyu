@@ -122,6 +122,15 @@ return [
             'active' => ['dashboard/blasts', 'dashboard/blasts/*'],
         ],
         [
+            // Orders carry no permission: a client owns theirs, and OrderPolicy
+            // is what decides whose rows they see.
+            'label' => 'Pesanan',
+            'route' => 'client.orders.index',
+            'icon' => 'bi-receipt',
+            'permission' => null,
+            'active' => ['dashboard/orders', 'dashboard/orders/*'],
+        ],
+        [
             'label' => 'Affiliate',
             'route' => 'client.affiliate.index',
             'icon' => 'bi-cash-coin',
