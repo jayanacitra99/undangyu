@@ -27,10 +27,13 @@ class MenuPermissionTest extends TestCase
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
-        // Sessions 4-7 register these; until then the sidebar must not link to them.
+        // Later sessions register these; until then the sidebar must not link to
+        // them. Session 5 registered the catalog taxonomy, so "Katalog" is here
+        // now — "Pengguna" and "Pesanan" still are not.
         $this->assertFalse(Route::has('admin.users.index'));
+        $this->assertFalse(Route::has('admin.orders.index'));
 
-        $this->assertSame(['Dashboard'], $this->labels(Menu::for('admin', $admin)));
+        $this->assertSame(['Dashboard', 'Katalog'], $this->labels(Menu::for('admin', $admin)));
     }
 
     public function test_a_parent_disappears_once_every_child_is_filtered_out(): void

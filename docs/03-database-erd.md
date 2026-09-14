@@ -268,9 +268,14 @@ Unique: (`coupon_id`,`order_id`).
 | default_sections | json | ordered section keys enabled by default |
 | is_active | boolean | |
 | sort_order | smallint | |
+| timestamps | | |
+
+Index: (`is_active`, `sort_order`) — every client-facing list filters and orders on exactly
+those two columns.
 
 #### `template_categories`
-`id`, `name`, `slug` unique, `description` null, `sort_order`, `is_active`.
+`id`, `name`, `slug` unique, `description` null, `sort_order`, `is_active`, timestamps.
+Index: (`is_active`, `sort_order`), same reason as above.
 
 #### `templates`
 | Column | Type | Notes |

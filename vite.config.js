@@ -33,6 +33,7 @@ export default defineConfig({
                 'resources/js/dashboard.js',
                 'resources/css/public.css',
                 'resources/js/public.js',
+                'resources/js/islands/sortable-rows.js',
             ],
             refresh: true,
         }),
