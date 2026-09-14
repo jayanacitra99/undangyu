@@ -92,7 +92,8 @@
     "config": {
         "platform": {
             "php": "8.3.0",
-            "ext-pcntl": "8.3.0"
+            "ext-pcntl": "8.3.0",
+            "ext-posix": "8.3.0"
         },
         "optimize-autoloader": true,
         "preferred-install": "dist",
