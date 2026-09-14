@@ -17,6 +17,13 @@ use Illuminate\Contracts\Validation\ValidationRule;
  */
 final class JsonObject implements ValidationRule
 {
+    /**
+     * @param  bool  $allowList  true where a JSON array is also a legitimate
+     *                           value — `media.allowed_mimes` is a list of MIME
+     *                           types, while a template's config_schema is not.
+     */
+    public function __construct(private readonly bool $allowList = false) {}
+
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (! is_string($value)) {
@@ -33,9 +40,19 @@ final class JsonObject implements ValidationRule
             return;
         }
 
+        if (! is_array($decoded)) {
+            $fail('Kolom :attribute harus berupa objek JSON, bukan nilai tunggal.')->translate();
+
+            return;
+        }
+
+        if ($this->allowList) {
+            return;
+        }
+
         // An empty array decodes as a list, so `[]` and `{}` are both rejected
         // here — a schema with no keys is as useless as a JSON array.
-        if (! is_array($decoded) || array_is_list($decoded)) {
+        if (array_is_list($decoded)) {
             $fail('Kolom :attribute harus berupa objek JSON dengan minimal satu kunci.')->translate();
         }
     }

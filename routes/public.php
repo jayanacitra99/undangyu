@@ -22,10 +22,15 @@ use Illuminate\Support\Facades\Route;
 // other public endpoint; the per-template preview arrives in Session 21.
 Route::middleware('throttle:60,1')->group(function (): void {
     Route::get('/templates', [TemplateGalleryController::class, 'index'])->name('templates.index');
-    Route::get('/templates/{slug}', [TemplateGalleryController::class, 'show'])->name('templates.show');
+    // The slug becomes a cache key, so it is constrained here rather than
+    // letting any string through to mint entries under the templates tag.
+    Route::get('/templates/{slug}', [TemplateGalleryController::class, 'show'])
+        ->where('slug', '[a-z0-9]([a-z0-9\-]{0,138}[a-z0-9])?')
+        ->name('templates.show');
 
     // The pricing table (M2.3), generated from the packages' feature flags.
     Route::get('/harga', PricingController::class)->name('pricing.index');
-});
 
-Route::get('/ping', fn () => response()->json(['surface' => 'public']))->name('public.ping');
+    // A debug endpoint is still a public endpoint (hard rule 2).
+    Route::get('/ping', fn () => response()->json(['surface' => 'public']))->name('public.ping');
+});

@@ -5,9 +5,12 @@ namespace App\Providers;
 use App\Facades\Setting;
 use App\Models\User;
 use App\Support\Settings;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -37,6 +40,12 @@ class AppServiceProvider extends ServiceProvider
         // moment they exist, and there is one place to audit.
         // Returning null (not false) lets the normal checks run for everyone else.
         Gate::before(fn (User $user, string $ability) => $user->hasRole('super-admin') ? true : null);
+
+        // The "api" limiter the api stack throttles on (bootstrap/app.php).
+        // Keyed by token first so one noisy IP behind a NAT cannot exhaust the
+        // budget for everyone else on it.
+        RateLimiter::for('api', fn (Request $request) => Limit::perMinute(60)
+            ->by($request->user()?->getAuthIdentifier() ?? $request->ip()));
 
         // Laravel 12 ships no aliases array, and the facade is worth the short
         // name: settings are read from Blade all over the admin panel.
