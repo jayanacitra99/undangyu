@@ -1,0 +1,33 @@
+@extends('layouts.admin')
+
+@section('title', __('Paket'))
+
+@section('content')
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <p class="text-secondary mb-0">
+            {{ __('Geser baris untuk mengubah urutan tampil di halaman harga.') }}
+        </p>
+        <a href="{{ route('admin.packages.create') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> {{ __('Paket baru') }}
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div
+                data-island="sortable-rows"
+                data-columns='@json($columns)'
+                data-rows='@json($rows)'
+                data-reorder-url="{{ route('admin.packages.reorder') }}"
+                data-edit-url-template="{{ route('admin.packages.edit', ['package' => '__ID__']) }}"
+                data-delete-url-template="{{ route('admin.packages.destroy', ['package' => '__ID__']) }}"
+                data-csrf-token="{{ csrf_token() }}"
+                data-delete-confirm="{{ __('Hapus paket ini?') }}"
+            ></div>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+    @vite('resources/js/islands/sortable-rows.js')
+@endpush

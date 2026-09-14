@@ -110,5 +110,11 @@ class DashboardLayoutTest extends TestCase
         if (! file_exists(public_path('build/manifest.json'))) {
             $this->markTestSkipped('Needs `npm run build`: this asserts which Vite bundle a page loads.');
         }
+
+        // With `npm run dev` running, public/hot makes @vite emit dev-server
+        // URLs instead of the built ones, and there is nothing to assert.
+        if (file_exists(public_path('hot'))) {
+            $this->markTestSkipped('Vite dev server is running: @vite emits dev URLs, not built ones.');
+        }
     }
 }
