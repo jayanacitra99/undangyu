@@ -25,7 +25,21 @@ const props = defineProps({
 const items = ref([...props.rows]);
 const status = ref('idle');
 
-const urlFor = (template, id) => template.replace('__ID__', id);
+/*
+| Reordering always posts ids, but a model bound on something else — templates
+| bind on their slug — sends route_key for the edit and delete links.
+*/
+const urlFor = (template, row) => template.replace('__ID__', row.route_key ?? row.id);
+
+/*
+| Two-state resources send is_active and get Aktif/Nonaktif. A resource with
+| more states than that — templates are draft, published or archived — sends
+| its own badge_label and badge_class per row instead.
+*/
+const badgeLabelFor = (row) => row.badge_label ?? (row.is_active ? 'Aktif' : 'Nonaktif');
+
+const badgeClassFor = (row) =>
+    `badge ${row.badge_class ?? (row.is_active ? 'text-bg-success' : 'text-bg-secondary')}`;
 
 async function persistOrder() {
     status.value = 'saving';
@@ -87,12 +101,10 @@ async function persistOrder() {
                                 <span :class="{ 'fw-semibold': index === 0 }">{{ cell }}</span>
                             </td>
                             <td class="text-end">
-                                <span :class="row.is_active ? 'badge text-bg-success' : 'badge text-bg-secondary'">
-                                    {{ row.is_active ? 'Aktif' : 'Nonaktif' }}
-                                </span>
-                                <a :href="urlFor(editUrlTemplate, row.id)" class="btn btn-sm btn-outline-primary ms-2">Ubah</a>
+                                <span :class="badgeClassFor(row)">{{ badgeLabelFor(row) }}</span>
+                                <a :href="urlFor(editUrlTemplate, row)" class="btn btn-sm btn-outline-primary ms-2">Ubah</a>
                                 <form
-                                    :action="urlFor(deleteUrlTemplate, row.id)"
+                                    :action="urlFor(deleteUrlTemplate, row)"
                                     method="POST"
                                     class="d-inline"
                                     @submit="(event) => { if (!confirm(deleteConfirm)) event.preventDefault(); }"
