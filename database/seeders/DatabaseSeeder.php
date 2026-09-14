@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             SettingSeeder::class,
             EventTypeSeeder::class,
             TemplateCategorySeeder::class,
+            TemplateSeeder::class,
             AdminUserSeeder::class,
         ]);
     }

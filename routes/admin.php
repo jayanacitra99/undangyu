@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventTypeController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TemplateCategoryController;
+use App\Http\Controllers\Admin\TemplateController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +39,13 @@ Route::middleware('permission:templates.manage')->group(function (): void {
     Route::resource('template-categories', TemplateCategoryController::class)
         ->except('show')
         ->names('admin.template-categories');
+
+    // The catalog itself (M3.3). Route-model binding resolves on the slug, so
+    // the reorder endpoint is declared first to keep "reorder" off the binding.
+    Route::post('/templates/reorder', [TemplateController::class, 'reorder'])->name('admin.templates.reorder');
+    Route::resource('templates', TemplateController::class)
+        ->except('show')
+        ->names('admin.templates');
 });
 
 Route::get('/ping', fn () => response()->json(['surface' => 'admin']))->name('admin.ping');
