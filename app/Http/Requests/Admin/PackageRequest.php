@@ -20,6 +20,12 @@ use Illuminate\Validation\Validator;
 abstract class PackageRequest extends FormRequest
 {
     /**
+     * The largest number a quota flag may hold. Well under PHP_INT_MAX, so a
+     * snapshot of it stays a sane integer wherever it is read back.
+     */
+    public const MAX_QUOTA = 1_000_000;
+
+    /**
      * @return array<string, mixed>
      */
     public function rules(): array
@@ -29,7 +35,9 @@ abstract class PackageRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:2000'],
             'price' => ['required', 'numeric', 'min:0', 'max:9999999999'],
             'discount_price' => ['nullable', 'numeric', 'min:0', 'max:9999999999', 'lt:price'],
-            'currency' => ['required', 'string', 'size:3'],
+            // char(3) accepts any three characters; the product sells in Rupiah,
+            // and a stray "ZZZ" would render as a currency on the public page.
+            'currency' => ['required', 'string', 'size:3', Rule::in(['IDR'])],
             'active_days' => ['required', 'integer', 'min:1', 'max:32767'],
             'is_featured' => ['required', 'boolean'],
             'is_active' => ['required', 'boolean'],
@@ -72,10 +80,25 @@ abstract class PackageRequest extends FormRequest
                 $unlimited = filter_var($feature['is_unlimited'] ?? false, FILTER_VALIDATE_BOOL);
                 $value = $feature['feature_value'] ?? null;
 
-                if (! $unlimited && ! is_numeric($value)) {
+                if ($unlimited) {
+                    continue;
+                }
+
+                // A quota is a whole non-negative count. is_numeric alone let
+                // "-5" and "1e30" through, and featureRows() casts with (int).
+                if (! is_string($value) || filter_var($value, FILTER_VALIDATE_INT) === false) {
                     $validator->errors()->add(
                         "features.{$index}.feature_value",
-                        "Fitur {$key->label()} butuh angka atau centang tanpa batas.",
+                        "Fitur {$key->label()} butuh angka bulat atau centang tanpa batas.",
+                    );
+
+                    continue;
+                }
+
+                if ((int) $value < 0 || (int) $value > self::MAX_QUOTA) {
+                    $validator->errors()->add(
+                        "features.{$index}.feature_value",
+                        "Fitur {$key->label()} harus antara 0 dan ".self::MAX_QUOTA.'.',
                     );
                 }
             }
@@ -150,6 +173,10 @@ abstract class PackageRequest extends FormRequest
         $features = [];
 
         foreach ((array) $this->input('features', []) as $index => $feature) {
+            if (! is_array($feature)) {
+                continue;
+            }
+
             $features[$index] = [
                 'feature_key' => $feature['feature_key'] ?? null,
                 'feature_value' => $feature['feature_value'] ?? null,
@@ -157,8 +184,14 @@ abstract class PackageRequest extends FormRequest
             ];
         }
 
+        $currency = $this->input('currency');
+
         $this->merge([
-            'currency' => Str::upper((string) ($this->input('currency') ?: 'IDR')),
+            // Non-strings pass through untouched so the rules reject the type
+            // rather than validating the string "Array".
+            'currency' => is_string($currency) && $currency !== ''
+                ? Str::upper($currency)
+                : ($currency ?? 'IDR'),
             'discount_price' => $this->input('discount_price') === '' ? null : $this->input('discount_price'),
             'is_featured' => $this->boolean('is_featured'),
             'is_active' => $this->boolean('is_active'),

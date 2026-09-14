@@ -22,7 +22,10 @@ class StorePackageRequest extends PackageRequest
     {
         return [
             ...parent::rules(),
-            'slug' => ['nullable', 'string', 'max:120', 'alpha_dash', Rule::unique('packages', 'slug')],
+            // Required, not nullable: prepareForValidation already derived it
+            // from the name, and Str::slug() of a name with no latin characters
+            // is an empty string that must fail here rather than at the column.
+            'slug' => ['required', 'string', 'max:120', 'alpha_dash', Rule::unique('packages', 'slug')],
         ];
     }
 
@@ -30,8 +33,15 @@ class StorePackageRequest extends PackageRequest
     {
         parent::prepareForValidation();
 
+        $slug = $this->input('slug');
+        $name = $this->input('name');
+
         $this->merge([
-            'slug' => Str::slug((string) ($this->input('slug') ?: $this->input('name'))),
+            // Only strings are slugged: a `slug[]` post must reach the rules as
+            // an array and be rejected, not be cast to the word "Array".
+            'slug' => is_string($slug) && $slug !== ''
+                ? Str::slug($slug)
+                : (is_string($name) ? Str::slug($name) : $name),
         ]);
     }
 

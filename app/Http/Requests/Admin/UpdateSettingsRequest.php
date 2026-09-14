@@ -6,9 +6,12 @@ namespace App\Http\Requests\Admin;
 
 use App\Enums\SettingType;
 use App\Models\Setting;
+use App\Rules\JsonObject;
+use App\Support\Settings;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 
 /**
  * Validates a settings save against the rows that actually exist.
@@ -36,13 +39,19 @@ class UpdateSettingsRequest extends FormRequest
     {
         $rules = [
             'settings' => ['required', 'array'],
+            // Echoed back into the redirect URL, so it is validated input, not
+            // a free-form string the controller reads off the request.
+            'tab' => ['nullable', 'string', Rule::in(Settings::GROUP_ORDER)],
         ];
 
         foreach ($this->editableSettings() as $key => $setting) {
             $rules["settings.{$key}"] = match ($setting->type) {
                 SettingType::Int => ['nullable', 'integer', 'min:0'],
                 SettingType::Bool => ['nullable', 'boolean'],
-                SettingType::Json => ['nullable', 'string', 'json'],
+                // `json` alone accepts "5" and "\"x\"", which then decode into
+                // the column as a scalar. A JSON setting is an object, and the
+                // text column caps at 65,535 bytes.
+                SettingType::Json => ['nullable', 'string', 'max:60000', new JsonObject(allowList: true)],
                 SettingType::String => ['nullable', 'string', 'max:1000'],
             };
         }

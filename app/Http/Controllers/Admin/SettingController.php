@@ -38,7 +38,7 @@ final class SettingController extends Controller
     {
         SettingStore::setMany($request->settingsToSave());
 
-        return to_route('admin.settings.edit', ['tab' => $request->string('tab')->toString()])
+        return to_route('admin.settings.edit', ['tab' => $request->validated('tab')])
             ->with('status', __('Pengaturan tersimpan.'));
     }
 }

@@ -34,6 +34,11 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Laravel 13 ships the api stack unthrottled. Hard rule 2 says every
+        // public endpoint is rate limited, and both api.php and webhooks.php
+        // run on this stack — the payment webhook lands there in Session 10.
+        $middleware->throttleApi('api');
+
         $middleware->alias([
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,

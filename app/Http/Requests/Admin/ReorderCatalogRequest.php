@@ -16,8 +16,9 @@ class ReorderCatalogRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        // The controller authorizes against its own model — a request class
-        // shared by two resources can't know which policy applies.
+        // A request class shared by four resources cannot know which policy
+        // applies, so each reorder route carries `can:reorder,<Model>` in
+        // routes/admin.php — that middleware runs before this class does.
         return true;
     }
 
@@ -27,8 +28,10 @@ class ReorderCatalogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ids' => ['required', 'array', 'min:1'],
-            'ids.*' => ['required', 'integer'],
+            // ReorderCatalog writes one UPDATE per id inside a transaction, so
+            // an unbounded array is an unbounded transaction.
+            'ids' => ['required', 'array', 'min:1', 'max:500'],
+            'ids.*' => ['required', 'integer', 'min:1'],
         ];
     }
 

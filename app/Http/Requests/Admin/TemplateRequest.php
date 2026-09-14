@@ -31,9 +31,11 @@ abstract class TemplateRequest extends FormRequest
             'version' => ['required', 'string', 'max:20', 'regex:/^\d+\.\d+\.\d+$/'],
             'event_type_ids' => ['required', 'array', 'min:1'],
             'event_type_ids.*' => ['integer', Rule::exists('event_types', 'id')],
-            'config_schema' => ['required', 'string', new JsonObject],
-            'default_config' => ['required', 'string', new JsonObject],
-            'demo_data' => ['nullable', 'string', new JsonObject],
+            // The columns are json; the cap keeps one paste from writing a
+            // megabyte of schema into every render of this template.
+            'config_schema' => ['required', 'string', 'max:60000', new JsonObject],
+            'default_config' => ['required', 'string', 'max:60000', new JsonObject],
+            'demo_data' => ['nullable', 'string', 'max:60000', new JsonObject],
             'is_premium' => ['required', 'boolean'],
             'extra_price' => ['required', 'numeric', 'min:0', 'max:9999999999'],
             'status' => ['required', Rule::enum(TemplateStatus::class)],
@@ -43,10 +45,12 @@ abstract class TemplateRequest extends FormRequest
             'screenshots.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'screenshot_captions' => ['nullable', 'array'],
             'screenshot_captions.*' => ['nullable', 'string', 'max:160'],
-            'remove_screenshots' => ['nullable', 'array'],
-            'remove_screenshots.*' => ['integer'],
-            'screenshot_order' => ['nullable', 'array'],
-            'screenshot_order.*' => ['integer'],
+            // Both are scoped to this template's own rows in the action, but an
+            // unbounded array is still one UPDATE per element in a transaction.
+            'remove_screenshots' => ['nullable', 'array', 'max:50'],
+            'remove_screenshots.*' => ['integer', 'min:1'],
+            'screenshot_order' => ['nullable', 'array', 'max:50'],
+            'screenshot_order.*' => ['integer', 'min:1'],
         ];
     }
 
