@@ -28,10 +28,15 @@ return [
     |
     */
 
-    'drivers' => [
+    'drivers' => array_filter([
         'midtrans' => MidtransGateway::class,
-        'fake' => FakeGateway::class,
-    ],
+
+        // FakeGateway accepts every webhook signature by design. Registering
+        // it in production would put an unauthenticated "mark this order paid"
+        // endpoint on the internet, so it exists only where APP_ENV is not
+        // production — tests, local, and a staging box that says so.
+        'fake' => env('APP_ENV') === 'production' ? null : FakeGateway::class,
+    ]),
 
     /*
     |--------------------------------------------------------------------------

@@ -55,7 +55,11 @@ final class ApplyPaymentUpdate
             &$needsInvitation,
             &$needsInvoice,
         ): bool {
+            // Scoped to the gateway that delivered this notification. Without
+            // it, any driver — including one with a weaker signature scheme —
+            // holds authority over every other gateway's payments.
             $payment = Payment::query()
+                ->where('gateway', $gateway)
                 ->where('gateway_ref', $update->reference)
                 ->lockForUpdate()
                 ->first();
