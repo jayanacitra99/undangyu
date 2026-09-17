@@ -364,6 +364,10 @@ Drives ordering and visibility of the flexible block system (M4.11).
 
 Unique: (`invitation_id`, `section_key`, `sort_order`) — or just index (`invitation_id`,`sort_order`).
 
+Built with both: the unique on all three columns, plus the (`invitation_id`,`sort_order`) index
+every read uses. The unique covers the sort order rather than the key alone because `custom`
+sections repeat within one invitation.
+
 #### `invitation_persons`
 | Column | Type | Notes |
 |---|---|---|
@@ -431,7 +435,7 @@ An invitation has many sessions (Akad + Resepsi, or Day 1 + Day 2).
 | type | enum | `bank`, `ewallet`, `qris`, `address` |
 | provider_name | varchar(100) null | BCA, Mandiri, GoPay, OVO |
 | account_name | varchar(190) null | |
-| account_number | varchar(100) null | **encrypted at rest** |
+| account_number | text null | **encrypted at rest** — `text`, not `varchar(100)`: the column holds ciphertext, which is several times longer than the account number it wraps |
 | qris_image | varchar(255) null | |
 | recipient_name | varchar(190) null | for `address` type |
 | address | text null | |
