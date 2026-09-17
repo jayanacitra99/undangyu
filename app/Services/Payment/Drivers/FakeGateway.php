@@ -68,6 +68,26 @@ final class FakeGateway implements PaymentGateway
         );
     }
 
+    /**
+     * The fake gateway agrees with whatever the local record says, so
+     * reconciliation reports no discrepancies against it.
+     */
+    public function fetchStatus(Payment $payment): ?PaymentUpdate
+    {
+        if ($payment->gateway_ref === null) {
+            return null;
+        }
+
+        return new PaymentUpdate(
+            reference: $payment->gateway_ref,
+            status: $payment->status,
+            method: $payment->method,
+            amount: (float) $payment->amount,
+            paidAt: $payment->paid_at?->toIso8601String(),
+            raw: ['driver' => 'fake'],
+        );
+    }
+
     public function refund(Payment $payment, ?float $amount = null): RefundResult
     {
         return new RefundResult(

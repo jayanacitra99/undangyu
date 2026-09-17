@@ -128,6 +128,31 @@ final class MidtransGateway implements PaymentGateway
         );
     }
 
+    public function fetchStatus(Payment $payment): ?PaymentUpdate
+    {
+        if ($payment->gateway_ref === null) {
+            return null;
+        }
+
+        try {
+            $response = Http::withBasicAuth((string) config('payment.midtrans.server_key'), '')
+                ->acceptJson()
+                ->timeout((int) config('payment.midtrans.timeout', 15))
+                ->baseUrl((string) config('payment.midtrans.api_url'))
+                ->get("/{$payment->gateway_ref}/status");
+        } catch (ConnectionException) {
+            return null;
+        }
+
+        // 404 means Midtrans never heard of this order id, which is itself a
+        // discrepancy worth reporting rather than an error to throw.
+        if ($response->failed()) {
+            return null;
+        }
+
+        return $this->parseWebhook(Request::create('/', 'POST', (array) $response->json()));
+    }
+
     public function refund(Payment $payment, ?float $amount = null): RefundResult
     {
         if ($payment->gateway_ref === null) {
