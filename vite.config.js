@@ -35,6 +35,8 @@ export default defineConfig({
                 'resources/js/public.js',
                 'resources/js/islands/sortable-rows.js',
                 'resources/js/islands/feature-flags.js',
+                'resources/js/islands/persons-editor.js',
+                'resources/js/islands/event-sessions-editor.js',
             ],
             refresh: true,
         }),
