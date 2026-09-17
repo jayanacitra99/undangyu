@@ -43,6 +43,28 @@ class InvitationMedia extends Model implements BelongsToInvitation
      */
     protected $table = 'invitation_media';
 
+    /**
+     * Uploads land on the private disk (18.2). A draft invitation's photos
+     * are the client's until they publish, and `storage/app/public` is a
+     * guessable path — so nothing reaches a browser except through
+     * MediaController, which asks the policy first.
+     */
+    public const UPLOAD_DISK = 'local';
+
+    /**
+     * The renditions ProcessMediaJob writes, longest edge in pixels. `full` is
+     * the cap 18.1 compresses to client-side; it exists here too because a
+     * client with scripting off, or an upload from the API, still must not put
+     * a 6000px original in front of a guest on mobile data.
+     *
+     * @var array<string, int>
+     */
+    public const CONVERSIONS = [
+        'thumb' => 400,
+        'medium' => 1000,
+        'full' => 2000,
+    ];
+
     protected $fillable = [
         'invitation_id',
         'type',
@@ -80,7 +102,19 @@ class InvitationMedia extends Model implements BelongsToInvitation
             return null;
         }
 
-        return Storage::disk($this->disk ?? 'public')->url($this->path);
+        return $this->isPrivate()
+            ? route('media.show', ['media' => $this->getKey()])
+            : Storage::disk($this->disk ?? 'public')->url($this->path);
+    }
+
+    /**
+     * A row on the private disk has no public path, so its URL is the route
+     * that streams it. Library audio and the seeded demo rows sit on the
+     * public disk and keep their direct URL.
+     */
+    public function isPrivate(): bool
+    {
+        return ($this->disk ?? 'public') === self::UPLOAD_DISK;
     }
 
     /**
@@ -95,7 +129,31 @@ class InvitationMedia extends Model implements BelongsToInvitation
             return $this->url();
         }
 
-        return Storage::disk($this->disk ?? 'public')->url($path);
+        return $this->isPrivate()
+            ? route('media.show', ['media' => $this->getKey(), 'variant' => $name])
+            : Storage::disk($this->disk ?? 'public')->url($path);
+    }
+
+    /**
+     * Every file this row owns — the original and whatever the queue made of
+     * it — for deleting them together.
+     *
+     * @return list<string>
+     */
+    public function storedPaths(): array
+    {
+        $paths = array_values(array_filter([
+            $this->path,
+            $this->thumbnail,
+            ...array_values($this->conversions ?? []),
+        ]));
+
+        return array_values(array_unique(array_filter(
+            $paths,
+            // A thumbnail can be a remote URL (an embed's poster frame), which
+            // is not ours to delete.
+            fn (string $path): bool => ! str_starts_with($path, 'http'),
+        )));
     }
 
     /**

@@ -6,12 +6,17 @@ namespace App\Http\Controllers\Client;
 
 use App\Actions\Invitations\CheckPublishReadiness;
 use App\Actions\Invitations\UpdateInvitationBasics;
+use App\Actions\Media\AttachLibraryAudio;
+use App\Enums\FeatureKey;
 use App\Enums\PersonRole;
+use App\Facades\Setting;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\UpdateInvitationRequest;
 use App\Http\Resources\InvitationEventResource;
+use App\Http\Resources\InvitationMediaResource;
 use App\Http\Resources\InvitationPersonResource;
 use App\Models\Invitation;
+use App\Services\Media\MediaQuota;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
@@ -126,6 +131,15 @@ final class InvitationController extends Controller
                     ],
                     $invitation->eventType->person_roles,
                 ),
+            ],
+            'galeri' => [
+                'media' => InvitationMediaResource::collection(
+                    $invitation->media()->get()
+                )->resolve(),
+                'mediaQuota' => app(MediaQuota::class)->summary($invitation),
+                'audioLibrary' => AttachLibraryAudio::library(),
+                'canUseMusic' => $invitation->entitlement(FeatureKey::Music) === true,
+                'maxUploadMb' => (int) Setting::get('media.max_upload_mb', 10),
             ],
             'acara' => [
                 // chaperone() on the relation hydrates each event's invitation,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\InvitationBuilderController;
 use App\Http\Controllers\Api\InvitationEventController;
+use App\Http\Controllers\Api\InvitationMediaController;
 use App\Http\Controllers\Api\InvitationPersonController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -65,4 +66,20 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         ->name('api.events.update');
     Route::delete('/events/{event}', [InvitationEventController::class, 'destroy'])
         ->name('api.events.destroy');
+
+    // Gallery (18.2, 18.4-18.6). Uploads are throttled harder than the rest:
+    // each one writes a file and queues a conversion job.
+    Route::post('/invitations/{invitation}/media', [InvitationMediaController::class, 'store'])
+        ->middleware('throttle:60,1')
+        ->name('api.media.store');
+    Route::post('/invitations/{invitation}/media/embedded', [InvitationMediaController::class, 'storeEmbedded'])
+        ->name('api.media.embedded');
+    Route::post('/invitations/{invitation}/media/reorder', [InvitationMediaController::class, 'reorder'])
+        ->name('api.media.reorder');
+    Route::patch('/media/{media}', [InvitationMediaController::class, 'update'])
+        ->name('api.media.update');
+    Route::post('/media/{media}/cover', [InvitationMediaController::class, 'cover'])
+        ->name('api.media.cover');
+    Route::delete('/media/{media}', [InvitationMediaController::class, 'destroy'])
+        ->name('api.media.destroy');
 });

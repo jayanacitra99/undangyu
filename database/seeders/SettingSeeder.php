@@ -79,6 +79,38 @@ class SettingSeeder extends Seeder
                 SettingType::Json,
                 false,
             ],
+            // The curated background music (M4.8, 18.6). A setting rather than
+            // a table: licensing is answered once for the whole catalogue, and
+            // adding a track is an admin edit instead of a deploy. `path` is on
+            // the public disk — one shared file per track, not a copy per
+            // invitation.
+            'audio_library' => [
+                [
+                    [
+                        'key' => 'akad-instrumental',
+                        'title' => 'Akad (Instrumental)',
+                        'artist' => 'Undangyu Studio',
+                        'path' => 'library/audio/akad-instrumental.mp3',
+                        'file_size' => 3_800_000,
+                    ],
+                    [
+                        'key' => 'sekali-seumur-hidup',
+                        'title' => 'Sekali Seumur Hidup',
+                        'artist' => 'Undangyu Studio',
+                        'path' => 'library/audio/sekali-seumur-hidup.mp3',
+                        'file_size' => 4_100_000,
+                    ],
+                    [
+                        'key' => 'gamelan-pagi',
+                        'title' => 'Gamelan Pagi',
+                        'artist' => 'Undangyu Studio',
+                        'path' => 'library/audio/gamelan-pagi.mp3',
+                        'file_size' => 3_200_000,
+                    ],
+                ],
+                SettingType::Json,
+                false,
+            ],
         ],
 
         'seo' => [
