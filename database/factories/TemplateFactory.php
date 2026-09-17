@@ -118,7 +118,7 @@ class TemplateFactory extends Factory
         return $this->state(fn (): array => ['status' => TemplateStatus::Archived]);
     }
 
-    public function premium(float $extraPrice = 150000): self
+    public function premium(int|string $extraPrice = 150000): self
     {
         return $this->state(fn (): array => [
             'is_premium' => true,

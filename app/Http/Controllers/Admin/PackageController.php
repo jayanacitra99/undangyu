@@ -12,6 +12,7 @@ use App\Http\Requests\Admin\ReorderCatalogRequest;
 use App\Http\Requests\Admin\StorePackageRequest;
 use App\Http\Requests\Admin\UpdatePackageRequest;
 use App\Models\Package;
+use App\Support\Money;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -35,7 +36,7 @@ final class PackageController extends Controller
                 'route_key' => $package->id,
                 'cells' => [
                     $package->name.($package->is_featured ? ' ★' : ''),
-                    'Rp '.number_format($package->effectivePrice(), 0, ',', '.'),
+                    Money::idr($package->effectivePrice()),
                     $package->active_days.' '.__('hari'),
                     (string) $package->features_count,
                 ],

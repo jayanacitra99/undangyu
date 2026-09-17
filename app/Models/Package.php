@@ -58,11 +58,14 @@ class Package extends Model
     }
 
     /**
-     * What the client actually pays.
+     * What the client actually pays, as the decimal string the column holds.
+     *
+     * Every downstream total is computed from this, so it must not become a
+     * float on the way out — see App\Support\Money.
      */
-    public function effectivePrice(): float
+    public function effectivePrice(): string
     {
-        return (float) ($this->discount_price ?? $this->price);
+        return (string) ($this->discount_price ?? $this->price);
     }
 
     /**

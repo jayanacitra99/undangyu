@@ -1,3 +1,4 @@
+@php use App\Support\Money; @endphp
 @extends('layouts.admin')
 
 @section('title', __('Verifikasi Pembayaran'))
@@ -36,12 +37,12 @@
                                         <div class="text-secondary small">{{ $payment->order->user->email }}</div>
                                     </td>
                                     <td>
-                                        Rp {{ number_format((float) $payment->amount, 0, ',', '.') }}
+                                        {{ Money::idr($payment->amount) }}
                                         @if ($payment->matchesOrderTotal())
                                             <span class="badge text-bg-success">{{ __('Cocok') }}</span>
                                         @else
                                             <div class="text-danger small">
-                                                {{ __('Tagihan Rp :total', ['total' => number_format((float) $payment->order->total, 0, ',', '.')]) }}
+                                                {{ __('Tagihan Rp :total', ['total' => Money::number($payment->order->total)]) }}
                                             </div>
                                         @endif
                                     </td>

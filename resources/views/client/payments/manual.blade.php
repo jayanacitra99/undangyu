@@ -1,3 +1,4 @@
+@php use App\Support\Money; @endphp
 @extends('layouts.client')
 
 @section('title', __('Transfer Bank Manual'))
@@ -20,7 +21,7 @@
 
                         <dt class="col-sm-4 fw-normal text-secondary">{{ __('Nominal') }}</dt>
                         <dd class="col-sm-8 fw-semibold">
-                            Rp {{ number_format((float) $order->total, 0, ',', '.') }}
+                            {{ Money::idr($order->total) }}
                         </dd>
                     </dl>
 

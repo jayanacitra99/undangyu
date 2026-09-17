@@ -1,3 +1,4 @@
+@php use App\Support\Money; @endphp
 @extends('layouts.public')
 
 @section('title', __('Harga'))
@@ -33,11 +34,11 @@
 
                     <p class="mt-2">
                         <span class="text-2xl font-semibold">
-                            Rp {{ number_format($package['effective_price'], 0, ',', '.') }}
+                            {{ Money::idr($package['effective_price']) }}
                         </span>
                         @if ($package['has_discount'])
                             <span class="ml-2 text-sm text-stone-400 line-through">
-                                Rp {{ number_format($package['price'], 0, ',', '.') }}
+                                {{ Money::idr($package['price']) }}
                             </span>
                         @endif
                     </p>

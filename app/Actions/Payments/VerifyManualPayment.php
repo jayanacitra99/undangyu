@@ -47,7 +47,7 @@ final class VerifyManualPayment
             reference: $reference,
             status: PaymentStatus::Settled,
             method: $payment->method ?? 'bank_transfer',
-            amount: (float) $payment->amount,
+            amount: (string) $payment->amount,
             paidAt: now()->toIso8601String(),
             raw: [
                 'source' => 'manual_verification',

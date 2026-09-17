@@ -1,3 +1,4 @@
+@php use App\Support\Money; @endphp
 @extends('layouts.client')
 
 @section('title', $order->order_number)
@@ -24,24 +25,24 @@
                                 <tr>
                                     <td>{{ $item->name }}</td>
                                     <td class="text-end">{{ $item->quantity }}</td>
-                                    <td class="text-end">Rp {{ number_format((float) $item->total, 0, ',', '.') }}</td>
+                                    <td class="text-end">{{ Money::idr($item->total) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th scope="row" colspan="2" class="text-end fw-normal">{{ __('Subtotal') }}</th>
-                                <td class="text-end">Rp {{ number_format((float) $order->subtotal, 0, ',', '.') }}</td>
+                                <td class="text-end">{{ Money::idr($order->subtotal) }}</td>
                             </tr>
-                            @if ((float) $order->discount_amount > 0)
+                            @if (Money::isPositive($order->discount_amount))
                                 <tr>
                                     <th scope="row" colspan="2" class="text-end fw-normal">{{ __('Diskon') }}</th>
-                                    <td class="text-end">− Rp {{ number_format((float) $order->discount_amount, 0, ',', '.') }}</td>
+                                    <td class="text-end">− {{ Money::idr($order->discount_amount) }}</td>
                                 </tr>
                             @endif
                             <tr class="border-top">
                                 <th scope="row" colspan="2" class="text-end">{{ __('Total') }}</th>
-                                <td class="text-end fw-semibold">Rp {{ number_format((float) $order->total, 0, ',', '.') }}</td>
+                                <td class="text-end fw-semibold">{{ Money::idr($order->total) }}</td>
                             </tr>
                         </tfoot>
                     </table>

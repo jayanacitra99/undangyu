@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Package;
 use App\Models\Template;
 use App\Models\User;
+use App\Support\Money;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
@@ -52,18 +53,21 @@ final class CreateOrder
     private function create(User $user, Package $package, ?Template $template): Order
     {
         return DB::transaction(function () use ($user, $package, $template): Order {
+            // Decimal strings throughout — see App\Support\Money. A total that
+            // is a hundredth of a Rupiah out is a total that does not
+            // reconcile against what the gateway charged.
             $packagePrice = $package->effectivePrice();
             $templatePrice = $template !== null && $template->is_premium
-                ? (float) $template->extra_price
-                : 0.0;
+                ? (string) $template->extra_price
+                : Money::ZERO;
 
-            $subtotal = $packagePrice + $templatePrice;
+            $subtotal = Money::add($packagePrice, $templatePrice);
 
             // No coupon engine (M2.12) and no tax rate is set for the product
             // yet. Both columns stay in the arithmetic so adding either later
             // is a change here and nowhere else.
-            $discount = 0.0;
-            $tax = 0.0;
+            $discount = Money::ZERO;
+            $tax = Money::ZERO;
 
             $order = Order::query()->create([
                 'order_number' => ($this->generateOrderNumber)(),
@@ -74,7 +78,7 @@ final class CreateOrder
                 'subtotal' => $subtotal,
                 'discount_amount' => $discount,
                 'tax_amount' => $tax,
-                'total' => $subtotal - $discount + $tax,
+                'total' => Money::add(Money::subtract($subtotal, $discount), $tax),
                 'status' => OrderStatus::Pending,
                 'payment_deadline' => now()->addHours(self::PAYMENT_WINDOW_HOURS),
             ]);
@@ -94,7 +98,7 @@ final class CreateOrder
 
             // A template only becomes a line of its own when it costs extra;
             // a template included in the tier is recorded on the order itself.
-            if ($template !== null && $templatePrice > 0) {
+            if ($template !== null && Money::isPositive($templatePrice)) {
                 $order->items()->create([
                     'itemable_type' => $template->getMorphClass(),
                     'itemable_id' => $template->getKey(),

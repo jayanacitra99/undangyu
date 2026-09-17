@@ -21,7 +21,9 @@ final readonly class PaymentUpdate
         public string $reference,
         public PaymentStatus $status,
         public ?string $method = null,
-        public ?float $amount = null,
+        // Money as a decimal string, never a float: whatever eventually
+        // reconciles this against `orders.total` must compare exactly.
+        public ?string $amount = null,
         public ?string $paidAt = null,
         public array $raw = [],
     ) {}

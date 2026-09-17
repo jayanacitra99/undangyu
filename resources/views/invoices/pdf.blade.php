@@ -119,13 +119,13 @@
             <td class="right" style="width: 78%">{{ __('Subtotal') }}</td>
             <td class="right">{{ Money::idr($order->subtotal) }}</td>
         </tr>
-        @if ((float) $order->discount_amount > 0)
+        @if (Money::isPositive($order->discount_amount))
             <tr>
                 <td class="right">{{ __('Diskon') }}</td>
                 <td class="right">− {{ Money::idr($order->discount_amount) }}</td>
             </tr>
         @endif
-        @if ((float) $order->tax_amount > 0)
+        @if (Money::isPositive($order->tax_amount))
             <tr>
                 <td class="right">{{ __('Pajak') }}</td>
                 <td class="right">{{ Money::idr($order->tax_amount) }}</td>

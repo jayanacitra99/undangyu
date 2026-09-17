@@ -1,3 +1,4 @@
+@php use App\Support\Money; @endphp
 @extends('layouts.public')
 
 @section('title', $template['name'])
@@ -54,7 +55,7 @@
                     <dt class="text-stone-500">{{ __('Tier') }}</dt>
                     <dd class="mt-1">
                         @if ($template['is_premium'])
-                            {{ __('Premium') }} · Rp {{ number_format($template['extra_price'], 0, ',', '.') }}
+                            {{ __('Premium') }} · {{ Money::idr($template['extra_price']) }}
                         @else
                             {{ __('Termasuk dalam paket') }}
                         @endif
