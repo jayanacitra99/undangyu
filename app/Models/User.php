@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\UserStatus;
+use App\Support\RoleHome;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -39,6 +40,19 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    /**
+     * Does this user work here?
+     *
+     * Staff read across every client by permission rather than by ownership,
+     * so the tenant scope in App\Models\Scopes\OwnedByUserScope steps aside
+     * for them. Roles, not permissions: a client can hold `invitations.update`
+     * for their own rows and must still be scoped.
+     */
+    public function isStaff(): bool
+    {
+        return $this->hasAnyRole(RoleHome::ADMIN_ROLES);
+    }
 
     /**
      * Get the attributes that should be cast.

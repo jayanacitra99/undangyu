@@ -8,6 +8,7 @@ use App\Enums\FeatureKey;
 use App\Enums\InvitationStatus;
 use App\Enums\InvitationVisibility;
 use App\Facades\Setting;
+use App\Models\Concerns\ScopedToUser;
 use Database\Factories\InvitationFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -61,6 +62,11 @@ class Invitation extends Model
 
     use HasSlug;
     use HasUuids;
+
+    // Defence in depth behind InvitationPolicy: a client's queries see only
+    // their own rows, so a controller that forgets to scope a listing leaks
+    // nothing. Staff and queue workers run unscoped — see ScopedToUser.
+    use ScopedToUser;
     use SoftDeletes;
 
     /**

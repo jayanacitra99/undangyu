@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\PartOfInvitation;
+use App\Models\Contracts\BelongsToInvitation;
 use Database\Factories\InvitationEventFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -36,10 +38,12 @@ use Illuminate\Support\Carbon;
  * @property-read Carbon $local_start_at
  * @property-read Carbon|null $local_end_at
  */
-class InvitationEvent extends Model
+class InvitationEvent extends Model implements BelongsToInvitation
 {
     /** @use HasFactory<InvitationEventFactory> */
     use HasFactory;
+
+    use PartOfInvitation;
 
     protected $fillable = [
         'invitation_id',

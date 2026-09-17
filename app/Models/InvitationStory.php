@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\PartOfInvitation;
+use App\Models\Contracts\BelongsToInvitation;
 use Database\Factories\InvitationStoryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,10 +25,12 @@ use Illuminate\Support\Carbon;
  * @property string|null $image
  * @property int $sort_order
  */
-class InvitationStory extends Model
+class InvitationStory extends Model implements BelongsToInvitation
 {
     /** @use HasFactory<InvitationStoryFactory> */
     use HasFactory;
+
+    use PartOfInvitation;
 
     protected $fillable = [
         'invitation_id',

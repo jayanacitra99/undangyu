@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Enums\MediaSource;
 use App\Enums\MediaType;
+use App\Models\Concerns\PartOfInvitation;
+use App\Models\Contracts\BelongsToInvitation;
 use Database\Factories\InvitationMediaFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,10 +31,12 @@ use Illuminate\Support\Facades\Storage;
  * @property bool $is_cover
  * @property int $sort_order
  */
-class InvitationMedia extends Model
+class InvitationMedia extends Model implements BelongsToInvitation
 {
     /** @use HasFactory<InvitationMediaFactory> */
     use HasFactory;
+
+    use PartOfInvitation;
 
     /**
      * Laravel would pluralise this to `invitation_medias`.
