@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Spatie\Sluggable\HasSlug;
@@ -78,6 +79,29 @@ class Invitation extends Model
     public const RESERVED_SLUGS = [
         'admin', 'api', 'dashboard', 'login', 'logout', 'register', 'checkout',
         'harga', 'templates', 'preview', 'scanner', 'webhooks', 'undangyu',
+    ];
+
+    /**
+     * The languages an invitation can be written in. Indonesian is the
+     * product; English is there for the guests who do not read it.
+     *
+     * @var array<string, string>
+     */
+    public const LANGUAGES = [
+        'id' => 'Bahasa Indonesia',
+        'en' => 'English',
+    ];
+
+    /**
+     * Indonesia's three zones, which is where the events are. Storage stays
+     * UTC — this is only what a guest reads off the invitation.
+     *
+     * @var array<string, string>
+     */
+    public const TIMEZONES = [
+        'Asia/Jakarta' => 'WIB (Jakarta)',
+        'Asia/Makassar' => 'WITA (Makassar)',
+        'Asia/Jayapura' => 'WIT (Jayapura)',
     ];
 
     protected $fillable = [
@@ -234,6 +258,21 @@ class Invitation extends Model
     public function events(): HasMany
     {
         return $this->hasMany(InvitationEvent::class)->orderBy('sort_order')->chaperone();
+    }
+
+    /**
+     * The earliest dated occasion — what the invitation list shows as "when",
+     * as a relation so a listing can eager load it instead of loading every
+     * event of every invitation.
+     *
+     * @return HasOne<InvitationEvent, $this>
+     */
+    public function firstEvent(): HasOne
+    {
+        // chaperone(), for the same reason events() has it: local_start_at
+        // reads the invitation's timezone off the inverse relation, and
+        // without this it silently falls back to the app's.
+        return $this->hasOne(InvitationEvent::class)->ofMany('start_at', 'min')->chaperone();
     }
 
     /**

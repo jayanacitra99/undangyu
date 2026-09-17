@@ -68,14 +68,15 @@ class MenuPermissionTest extends TestCase
 
         // affiliates.view belongs to reseller, not client. "Pesanan" carries no
         // permission at all — a client owns their orders, and OrderPolicy is
-        // what decides whose rows they see.
-        $this->assertSame(['Dashboard', 'Pesanan'], $this->labels(Menu::for('client', $client)));
+        // what decides whose rows they see. "Undangan" appears from Session 16,
+        // when its route exists; "Tamu" and "Blast WhatsApp" still do not.
+        $this->assertSame(['Dashboard', 'Undangan', 'Pesanan'], $this->labels(Menu::for('client', $client)));
 
         $reseller = User::factory()->create();
         $reseller->assignRole('reseller');
 
         $this->assertSame(
-            ['Dashboard', 'Pesanan', 'Affiliate'],
+            ['Dashboard', 'Undangan', 'Pesanan', 'Affiliate'],
             $this->labels(Menu::for('client', $reseller)),
         );
     }
