@@ -34,6 +34,16 @@ class SettingSeeder extends Seeder
             'logo' => [null, SettingType::String, true],
             'contact_email' => ['halo@undangyu.id', SettingType::String, true],
             'whatsapp_number' => ['+628123456789', SettingType::String, true],
+
+            // Printed on invoices (M2.8), so finance can correct the legal
+            // entity or the address without a deploy.
+            'legal_name' => ['PT Undangyu Digital Nusantara', SettingType::String, false],
+            'address' => [
+                'Jl. Tunjungan No. 65, Genteng, Surabaya, Jawa Timur 60275',
+                SettingType::String,
+                false,
+            ],
+            'tax_id' => ['01.234.567.8-901.000', SettingType::String, false],
         ],
 
         'payment' => [

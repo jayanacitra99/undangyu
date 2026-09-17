@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Client\DashboardController;
+use App\Http\Controllers\Client\InvoiceController;
 use App\Http\Controllers\Client\ManualPaymentController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\PaymentController;
@@ -31,6 +32,12 @@ Route::get('/orders/{order}', [OrderController::class, 'show'])->name('client.or
 Route::post('/orders/{order}/pay', [PaymentController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('client.orders.pay');
+
+// Invoice download (M2.8). Signed, so a link cannot be guessed or shared
+// forever; the policy still decides who it works for.
+Route::get('/invoices/{invoice}', [InvoiceController::class, 'download'])
+    ->middleware('signed')
+    ->name('client.invoices.download');
 
 // Bank transfer (M2.7): destination account, then proof upload. Still about a
 // third of Indonesian transactions, so it is a route of its own.

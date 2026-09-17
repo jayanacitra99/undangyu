@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Payments;
 
 use App\Enums\OrderStatus;
+use App\Jobs\GenerateInvoiceJob;
 use App\Jobs\ProvisionInvitationJob;
 use App\Models\Payment;
 use App\Services\Payment\Data\PaymentUpdate;
@@ -108,6 +109,9 @@ final class ApplyPaymentUpdate
 
         if ($provisionOrderId !== null) {
             Bus::dispatch(new ProvisionInvitationJob($provisionOrderId));
+            // The document for the sale, rendered off the queue for the same
+            // reason: the gateway is waiting on this response.
+            Bus::dispatch(new GenerateInvoiceJob($provisionOrderId));
         }
 
         return $found;

@@ -35,10 +35,11 @@ class Invoice extends Model
         'due_at',
     ];
 
-    public function getRouteKeyName(): string
-    {
-        return 'invoice_number';
-    }
+    /**
+     * Bound by id, not by `invoice_number`: the number is `INV/2026/000001`,
+     * and those slashes cannot live in a single URL path segment. The number
+     * is for humans and accountants; the id is for routing.
+     */
 
     /**
      * @return BelongsTo<Order, $this>
