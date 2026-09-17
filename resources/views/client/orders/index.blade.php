@@ -1,3 +1,4 @@
+@php use App\Support\Money; @endphp
 @extends('layouts.client')
 
 @section('title', __('Pesanan'))
@@ -26,7 +27,7 @@
                                 <tr>
                                     <td class="fw-semibold">{{ $order->order_number }}</td>
                                     <td>{{ $order->package->name }}</td>
-                                    <td>Rp {{ number_format((float) $order->total, 0, ',', '.') }}</td>
+                                    <td>{{ Money::idr($order->total) }}</td>
                                     <td>
                                         {{ $order->payment_deadline?->timezone(config('app.timezone'))->format('d M Y H:i') ?? '—' }}
                                     </td>

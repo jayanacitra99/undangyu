@@ -28,6 +28,12 @@ use Illuminate\Support\Facades\Log;
 final class ApplyPaymentUpdate
 {
     /**
+     * How long after payment a missing invitation or invoice counts as lost
+     * rather than merely still queued.
+     */
+    public const REPAIR_GRACE_MINUTES = 15;
+
+    /**
      * @return bool false when no local payment carries this reference
      */
     public function __invoke(PaymentUpdate $update, string $gateway): bool
@@ -37,8 +43,18 @@ final class ApplyPaymentUpdate
         }
 
         $provisionOrderId = null;
+        $repairOrderId = null;
+        $needsInvitation = false;
+        $needsInvoice = false;
 
-        $found = DB::transaction(function () use ($update, $gateway, &$provisionOrderId): bool {
+        $found = DB::transaction(function () use (
+            $update,
+            $gateway,
+            &$provisionOrderId,
+            &$repairOrderId,
+            &$needsInvitation,
+            &$needsInvoice,
+        ): bool {
             $payment = Payment::query()
                 ->where('gateway_ref', $update->reference)
                 ->lockForUpdate()
@@ -59,6 +75,24 @@ final class ApplyPaymentUpdate
                 // Already paid. Record what arrived and stop — no second job,
                 // no moved paid_at.
                 $payment->save();
+
+                // Unless the first delivery got half way: if that request
+                // dispatched provisioning and then failed before the invoice,
+                // the gateway's redelivery is the only chance to notice.
+                //
+                // Only once the queue has had time, though. A gateway retries
+                // within seconds, and a job that is merely still queued must
+                // not be mistaken for one that was lost.
+                $order = $payment->order()->first();
+
+                $settledLongEnough = $order?->paid_at !== null
+                    && $order->paid_at->lt(now()->subMinutes(self::REPAIR_GRACE_MINUTES));
+
+                if ($order !== null && $order->status->isSettled() && $settledLongEnough) {
+                    $repairOrderId = $order->getKey();
+                    $needsInvitation = ! $order->invitation()->withTrashed()->exists();
+                    $needsInvoice = ! $order->invoice()->exists();
+                }
 
                 return true;
             }
@@ -97,6 +131,20 @@ final class ApplyPaymentUpdate
                 return true;
             }
 
+            if ($order->status === OrderStatus::Refunded) {
+                // Money arriving on a refunded order is a bookkeeping problem,
+                // not a purchase. Reviving it would regress the status to Paid
+                // and dispatch a second provisioning and invoice pair for an
+                // order that already had both.
+                Log::warning('Pembayaran diterima untuk pesanan yang sudah direfund.', [
+                    'order' => $order->order_number,
+                    'gateway' => $gateway,
+                    'reference' => $update->reference,
+                ]);
+
+                return true;
+            }
+
             $order->update([
                 'status' => OrderStatus::Paid,
                 'paid_at' => $payment->paid_at,
@@ -112,6 +160,18 @@ final class ApplyPaymentUpdate
             // The document for the sale, rendered off the queue for the same
             // reason: the gateway is waiting on this response.
             Bus::dispatch(new GenerateInvoiceJob($provisionOrderId));
+        }
+
+        // A redelivery finishing what a failed first delivery started. Both
+        // jobs are idempotent, so re-dispatching a missing one is safe.
+        if ($repairOrderId !== null && $needsInvitation) {
+            Log::warning('Provisioning ulang untuk pesanan yang sudah dibayar.', ['order_id' => $repairOrderId]);
+            Bus::dispatch(new ProvisionInvitationJob($repairOrderId));
+        }
+
+        if ($repairOrderId !== null && $needsInvoice) {
+            Log::warning('Invoice ulang untuk pesanan yang sudah dibayar.', ['order_id' => $repairOrderId]);
+            Bus::dispatch(new GenerateInvoiceJob($repairOrderId));
         }
 
         return $found;

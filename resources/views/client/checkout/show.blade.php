@@ -1,3 +1,4 @@
+@php use App\Support\Money; @endphp
 @extends('layouts.client')
 
 @section('title', __('Checkout'))
@@ -23,7 +24,7 @@
                                         {{ __('Aktif :days hari', ['days' => $package->active_days]) }}
                                     </div>
                                 </td>
-                                <td class="text-end">Rp {{ number_format($packagePrice, 0, ',', '.') }}</td>
+                                <td class="text-end">{{ Money::idr($packagePrice) }}</td>
                             </tr>
 
                             @if ($template)
@@ -39,7 +40,7 @@
                                     </td>
                                     <td class="text-end">
                                         @if ($templatePrice > 0)
-                                            Rp {{ number_format($templatePrice, 0, ',', '.') }}
+                                            {{ Money::idr($templatePrice) }}
                                         @else
                                             <span class="text-secondary">Rp 0</span>
                                         @endif
@@ -50,7 +51,7 @@
                         <tfoot>
                             <tr class="border-top">
                                 <th scope="row" class="text-end">{{ __('Total') }}</th>
-                                <td class="text-end fw-semibold">Rp {{ number_format($total, 0, ',', '.') }}</td>
+                                <td class="text-end fw-semibold">{{ Money::idr($total) }}</td>
                             </tr>
                         </tfoot>
                     </table>

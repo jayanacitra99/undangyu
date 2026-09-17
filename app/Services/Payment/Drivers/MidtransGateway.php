@@ -10,6 +10,7 @@ use App\Services\Payment\Contracts\PaymentGateway;
 use App\Services\Payment\Data\PaymentSession;
 use App\Services\Payment\Data\PaymentUpdate;
 use App\Services\Payment\Data\RefundResult;
+use App\Support\Money;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Request;
@@ -45,8 +46,12 @@ final class MidtransGateway implements PaymentGateway
             'transaction_details' => [
                 'order_id' => $reference,
                 // Midtrans takes whole Rupiah only; the column is decimal(12,2)
-                // and Indonesian prices have no cents.
-                'gross_amount' => (int) round((float) $payment->amount),
+                // and Indonesian prices have no cents. Rounded from the decimal
+                // string, because this number is inside the sha512 preimage
+                // Midtrans signs its notifications with — a float rounding
+                // disagreement here breaks webhook verification, not just the
+                // charge.
+                'gross_amount' => Money::toWholeRupiah($payment->amount),
             ],
             'customer_details' => [
                 'first_name' => $user->name,
@@ -56,7 +61,7 @@ final class MidtransGateway implements PaymentGateway
             'item_details' => $order->items->map(fn ($item): array => [
                 'id' => (string) $item->getKey(),
                 'name' => mb_substr($item->name, 0, 50),
-                'price' => (int) round((float) $item->unit_price),
+                'price' => Money::toWholeRupiah($item->unit_price),
                 'quantity' => $item->quantity,
             ])->all(),
             'callbacks' => [
@@ -120,7 +125,7 @@ final class MidtransGateway implements PaymentGateway
                 (string) ($payload['fraud_status'] ?? 'accept'),
             ),
             method: isset($payload['payment_type']) ? (string) $payload['payment_type'] : null,
-            amount: isset($payload['gross_amount']) ? (float) $payload['gross_amount'] : null,
+            amount: isset($payload['gross_amount']) ? (string) $payload['gross_amount'] : null,
             paidAt: isset($payload['settlement_time'])
                 ? (string) $payload['settlement_time']
                 : (isset($payload['transaction_time']) ? (string) $payload['transaction_time'] : null),
@@ -153,7 +158,7 @@ final class MidtransGateway implements PaymentGateway
         return $this->parseWebhook(Request::create('/', 'POST', (array) $response->json()));
     }
 
-    public function refund(Payment $payment, ?float $amount = null): RefundResult
+    public function refund(Payment $payment, ?string $amount = null): RefundResult
     {
         if ($payment->gateway_ref === null) {
             return RefundResult::failed('Pembayaran ini belum punya referensi gateway.');
@@ -166,7 +171,7 @@ final class MidtransGateway implements PaymentGateway
                 ->timeout((int) config('payment.midtrans.timeout', 15))
                 ->baseUrl((string) config('payment.midtrans.api_url'))
                 ->post("/{$payment->gateway_ref}/refund", array_filter([
-                    'amount' => $amount === null ? null : (int) round($amount),
+                    'amount' => $amount === null ? null : Money::toWholeRupiah($amount),
                     'reason' => 'Refund dari admin Undangyu',
                 ]));
         } catch (ConnectionException $exception) {
@@ -186,7 +191,7 @@ final class MidtransGateway implements PaymentGateway
         return new RefundResult(
             successful: true,
             reference: isset($body['refund_key']) ? (string) $body['refund_key'] : null,
-            amount: $amount ?? (float) $payment->amount,
+            amount: $amount ?? (string) $payment->amount,
             message: isset($body['status_message']) ? (string) $body['status_message'] : null,
             raw: $body,
         );

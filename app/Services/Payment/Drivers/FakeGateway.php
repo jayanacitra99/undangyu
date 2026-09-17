@@ -62,7 +62,7 @@ final class FakeGateway implements PaymentGateway
             reference: (string) ($payload['reference'] ?? $payload['order_id'] ?? ''),
             status: $status,
             method: (string) ($payload['method'] ?? 'fake_transfer'),
-            amount: isset($payload['amount']) ? (float) $payload['amount'] : null,
+            amount: isset($payload['amount']) ? (string) $payload['amount'] : null,
             paidAt: now()->toIso8601String(),
             raw: $payload,
         );
@@ -82,18 +82,18 @@ final class FakeGateway implements PaymentGateway
             reference: $payment->gateway_ref,
             status: $payment->status,
             method: $payment->method,
-            amount: (float) $payment->amount,
+            amount: (string) $payment->amount,
             paidAt: $payment->paid_at?->toIso8601String(),
             raw: ['driver' => 'fake'],
         );
     }
 
-    public function refund(Payment $payment, ?float $amount = null): RefundResult
+    public function refund(Payment $payment, ?string $amount = null): RefundResult
     {
         return new RefundResult(
             successful: true,
             reference: 'FAKE-REFUND-'.Str::upper(Str::random(6)),
-            amount: $amount ?? (float) $payment->amount,
+            amount: $amount ?? (string) $payment->amount,
             message: 'Refund berhasil (driver fake).',
             raw: ['driver' => 'fake'],
         );

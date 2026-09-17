@@ -19,7 +19,8 @@ final readonly class RefundResult
     public function __construct(
         public bool $successful,
         public ?string $reference = null,
-        public ?float $amount = null,
+        // Decimal string, like every other money value in the system.
+        public ?string $amount = null,
         public ?string $message = null,
         public array $raw = [],
     ) {}

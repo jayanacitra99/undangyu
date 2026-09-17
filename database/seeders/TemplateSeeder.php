@@ -24,7 +24,7 @@ use Illuminate\Database\Seeder;
 class TemplateSeeder extends Seeder
 {
     /**
-     * @var list<array{name: string, view_key: string, category: string, description: string, event_types: list<string>, is_premium: bool, extra_price: float, screenshots: list<string>}>
+     * @var list<array{name: string, view_key: string, category: string, description: string, event_types: list<string>, is_premium: bool, extra_price: int, screenshots: list<string>}>
      */
     public const TEMPLATES = [
         [

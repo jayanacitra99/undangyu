@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\PaymentStatus;
+use App\Support\Money;
 use Database\Factories\PaymentFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -130,7 +131,9 @@ class Payment extends Model
      */
     public function matchesOrderTotal(): bool
     {
-        return (float) $this->amount === (float) $this->order->total;
+        // Decimal comparison, not float equality: two amounts that are exactly
+        // equal on paper can differ once they have been through a float.
+        return Money::equals($this->amount, $this->order->total);
     }
 
     public function isManual(): bool

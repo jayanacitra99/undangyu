@@ -52,7 +52,9 @@ interface PaymentGateway
     public function fetchStatus(Payment $payment): ?PaymentUpdate;
 
     /**
-     * Refund all of a payment, or part of it.
+     * Refund all of a payment, or part of it. The amount is a decimal string,
+     * like every money value in the system — a partial refund is the one place
+     * fractional money is plausible, and a float would round it away.
      */
-    public function refund(Payment $payment, ?float $amount = null): RefundResult;
+    public function refund(Payment $payment, ?string $amount = null): RefundResult;
 }

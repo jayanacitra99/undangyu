@@ -127,7 +127,7 @@ final class TemplateGalleryController extends Controller
             'category' => $template->category->name,
             'version' => $template->version,
             'is_premium' => $template->is_premium,
-            'extra_price' => (float) $template->extra_price,
+            'extra_price' => (string) $template->extra_price,
             'thumbnail_url' => Storage::disk('public')->url($template->thumbnail),
             'event_types' => $template->eventTypes->pluck('name')->all(),
             'screenshots' => $template->screenshots

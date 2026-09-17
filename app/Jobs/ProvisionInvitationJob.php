@@ -56,13 +56,12 @@ class ProvisionInvitationJob implements ShouldQueue
             return;
         }
 
-        $alreadyProvisioned = $order->invitation()->exists();
-
         $invitation = $provision($order);
 
-        if ($alreadyProvisioned) {
-            // A redelivered webhook or a retried job. The invitation stands;
-            // the client does not get told about it twice.
+        // `wasRecentlyCreated` is set inside the action's transaction, under
+        // the order lock. Reading `invitation()->exists()` out here instead
+        // let two overlapping runs both see "not provisioned" and both notify.
+        if (! $invitation->wasRecentlyCreated) {
             return;
         }
 

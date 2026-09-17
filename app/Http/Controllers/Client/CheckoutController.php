@@ -10,6 +10,7 @@ use App\Http\Requests\Client\StoreOrderRequest;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\Template;
+use App\Support\Money;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -47,16 +48,19 @@ final class CheckoutController extends Controller
             ->where('slug', $request->string('template')->toString())
             ->first();
 
+        // The same decimal arithmetic CreateOrder will do on POST. The summary
+        // and the charge have to agree, and two independent float additions
+        // are exactly how they stop agreeing.
         $templatePrice = $template !== null && $template->is_premium
-            ? (float) $template->extra_price
-            : 0.0;
+            ? (string) $template->extra_price
+            : Money::ZERO;
 
         return view('client.checkout.show', [
             'package' => $package,
             'template' => $template,
             'packagePrice' => $package->effectivePrice(),
             'templatePrice' => $templatePrice,
-            'total' => $package->effectivePrice() + $templatePrice,
+            'total' => Money::add($package->effectivePrice(), $templatePrice),
         ]);
     }
 

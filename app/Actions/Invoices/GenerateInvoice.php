@@ -73,6 +73,11 @@ final class GenerateInvoice
         for ($attempt = 1; ; $attempt++) {
             try {
                 return DB::transaction(function () use ($order): Invoice {
+                    // Lock the order first. A plain read would let two
+                    // overlapping renders each take their snapshot before the
+                    // other inserted, and both would see no invoice.
+                    Order::query()->whereKey($order->getKey())->lockForUpdate()->first();
+
                     $existing = Invoice::query()->where('order_id', $order->getKey())->first();
 
                     if ($existing !== null) {
@@ -96,6 +101,11 @@ final class GenerateInvoice
         }
     }
 
+    /**
+     * Both constraints exist: `invoice_number` unique from the original
+     * migration, `order_id` unique added at the Phase 2 checkpoint. A collision
+     * on either means another run committed first, so read again.
+     */
     private function isDuplicate(QueryException $exception): bool
     {
         return $exception->getCode() === '23000'

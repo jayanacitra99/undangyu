@@ -39,7 +39,11 @@ final class ProvisionInvitation
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            $existing = Invitation::query()->where('order_id', $order->getKey())->first();
+            // withTrashed: a soft-deleted invitation still occupies this
+            // order's slot, and the unique index on `invitations.order_id`
+            // counts it too. Reviving is a decision for a human, not a silent
+            // second invitation.
+            $existing = Invitation::withTrashed()->where('order_id', $order->getKey())->first();
 
             if ($existing !== null) {
                 return $existing;

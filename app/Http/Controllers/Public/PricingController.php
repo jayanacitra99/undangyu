@@ -48,7 +48,7 @@ final class PricingController extends Controller
                 'name' => $package->name,
                 'slug' => $package->slug,
                 'description' => $package->description,
-                'price' => (float) $package->price,
+                'price' => (string) $package->price,
                 'effective_price' => $package->effectivePrice(),
                 'has_discount' => $package->discount_price !== null,
                 'currency' => $package->currency,
