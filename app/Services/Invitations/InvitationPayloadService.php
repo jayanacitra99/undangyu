@@ -38,9 +38,19 @@ final class InvitationPayloadService
         'gifts',
     ];
 
+    /**
+     * Bumped whenever InvitationPayload's shape changes.
+     *
+     * A deploy that adds a key to the payload leaves an hour of caches built
+     * by the old code, and the new renderer reads them — which is a 500 on
+     * every published invitation until they expire. The version is part of the
+     * key, so old entries are simply never asked for again.
+     */
+    public const SHAPE_VERSION = 2;
+
     public static function key(string $slug): string
     {
-        return "invitation:payload:{$slug}";
+        return 'invitation:payload:v'.self::SHAPE_VERSION.":{$slug}";
     }
 
     /**

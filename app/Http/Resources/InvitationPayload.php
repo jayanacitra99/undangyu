@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Enums\MediaType;
 use App\Models\Invitation;
 use App\Models\InvitationEvent;
 use App\Models\InvitationGift;
@@ -14,6 +15,7 @@ use App\Models\InvitationStory;
 use App\Support\InvitationSettings;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Everything the public renderer needs about one invitation, and nothing else
@@ -49,10 +51,16 @@ class InvitationPayload extends JsonResource
                 'timezone' => $this->timezone,
                 'status' => $this->status->value,
                 'is_live' => $this->isLive(),
+                // The gate mode, not the password: which door a guest meets.
+                'visibility' => $this->visibility->value,
                 'meta' => [
                     'title' => $this->meta_title ?? $this->title,
                     'description' => $this->meta_description,
-                    'og_image' => $this->og_image_path,
+                    // Absolute, because WhatsApp and Facebook fetch this URL
+                    // from their own servers — a relative path is a broken
+                    // preview card, which is the one thing this product cannot
+                    // ship (M4.16).
+                    'og_image' => $this->ogImage(),
                 ],
                 'published_at' => $this->published_at?->toIso8601String(),
                 'expires_at' => $this->expires_at?->toIso8601String(),
@@ -154,6 +162,28 @@ class InvitationPayload extends JsonResource
                 'notes' => $gift->notes,
             ])->all(),
         ];
+    }
+
+    /**
+     * The link preview image, as an absolute URL.
+     *
+     * The generated 1200×630 composite (M12.7) when there is one; otherwise
+     * the cover photo, which is better than nothing and is what the client
+     * chose to lead with. A cover on the private disk resolves to its
+     * streaming route, which serves published invitations to anyone — exactly
+     * what a scraper is.
+     */
+    private function ogImage(): ?string
+    {
+        if ($this->og_image_path !== null) {
+            return Storage::disk('public')->url($this->og_image_path);
+        }
+
+        $cover = $this->media->first(
+            fn (InvitationMedia $media): bool => $media->is_cover && $media->type === MediaType::Image,
+        );
+
+        return $cover?->conversion('full');
     }
 
     /**
