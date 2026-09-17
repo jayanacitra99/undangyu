@@ -7,7 +7,9 @@ namespace App\Models;
 use App\Enums\SectionKey;
 use App\Models\Concerns\PartOfInvitation;
 use App\Models\Contracts\BelongsToInvitation;
+use App\Observers\InvalidatesInvitationCache;
 use Database\Factories\InvitationSectionFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool $is_visible
  * @property int $sort_order
  */
+#[ObservedBy(InvalidatesInvitationCache::class)]
 class InvitationSection extends Model implements BelongsToInvitation
 {
     /** @use HasFactory<InvitationSectionFactory> */

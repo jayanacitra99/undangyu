@@ -8,7 +8,9 @@ use App\Enums\MediaSource;
 use App\Enums\MediaType;
 use App\Models\Concerns\PartOfInvitation;
 use App\Models\Contracts\BelongsToInvitation;
+use App\Observers\InvalidatesInvitationCache;
 use Database\Factories\InvitationMediaFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,6 +33,7 @@ use Illuminate\Support\Facades\Storage;
  * @property bool $is_cover
  * @property int $sort_order
  */
+#[ObservedBy(InvalidatesInvitationCache::class)]
 class InvitationMedia extends Model implements BelongsToInvitation
 {
     /** @use HasFactory<InvitationMediaFactory> */

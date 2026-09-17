@@ -9,7 +9,9 @@ use App\Enums\InvitationStatus;
 use App\Enums\InvitationVisibility;
 use App\Facades\Setting;
 use App\Models\Concerns\ScopedToUser;
+use App\Observers\InvalidatesInvitationCache;
 use Database\Factories\InvitationFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -56,6 +58,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property Carbon|null $published_at
  * @property Carbon|null $expires_at
  */
+#[ObservedBy(InvalidatesInvitationCache::class)]
 class Invitation extends Model
 {
     /** @use HasFactory<InvitationFactory> */

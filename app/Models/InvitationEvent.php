@@ -6,7 +6,9 @@ namespace App\Models;
 
 use App\Models\Concerns\PartOfInvitation;
 use App\Models\Contracts\BelongsToInvitation;
+use App\Observers\InvalidatesInvitationCache;
 use Database\Factories\InvitationEventFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +40,7 @@ use Illuminate\Support\Carbon;
  * @property-read Carbon $local_start_at
  * @property-read Carbon|null $local_end_at
  */
+#[ObservedBy(InvalidatesInvitationCache::class)]
 class InvitationEvent extends Model implements BelongsToInvitation
 {
     /** @use HasFactory<InvitationEventFactory> */

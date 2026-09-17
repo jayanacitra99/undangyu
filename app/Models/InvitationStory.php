@@ -6,7 +6,9 @@ namespace App\Models;
 
 use App\Models\Concerns\PartOfInvitation;
 use App\Models\Contracts\BelongsToInvitation;
+use App\Observers\InvalidatesInvitationCache;
 use Database\Factories\InvitationStoryFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +27,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $image
  * @property int $sort_order
  */
+#[ObservedBy(InvalidatesInvitationCache::class)]
 class InvitationStory extends Model implements BelongsToInvitation
 {
     /** @use HasFactory<InvitationStoryFactory> */
