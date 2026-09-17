@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\PersonRole;
+use App\Models\Concerns\PartOfInvitation;
+use App\Models\Contracts\BelongsToInvitation;
 use Database\Factories\InvitationPersonFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,10 +31,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $instagram
  * @property int $sort_order
  */
-class InvitationPerson extends Model
+class InvitationPerson extends Model implements BelongsToInvitation
 {
     /** @use HasFactory<InvitationPersonFactory> */
     use HasFactory;
+
+    use PartOfInvitation;
 
     /**
      * Laravel's pluraliser says `invitation_people`; docs/03 § 3.4 says

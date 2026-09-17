@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\GiftType;
+use App\Models\Concerns\PartOfInvitation;
+use App\Models\Contracts\BelongsToInvitation;
 use Database\Factories\InvitationGiftFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,10 +31,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $notes
  * @property int $sort_order
  */
-class InvitationGift extends Model
+class InvitationGift extends Model implements BelongsToInvitation
 {
     /** @use HasFactory<InvitationGiftFactory> */
     use HasFactory;
+
+    use PartOfInvitation;
 
     protected $fillable = [
         'invitation_id',

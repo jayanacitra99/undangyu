@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\SectionKey;
+use App\Models\Concerns\PartOfInvitation;
+use App\Models\Contracts\BelongsToInvitation;
 use Database\Factories\InvitationSectionFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,10 +23,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool $is_visible
  * @property int $sort_order
  */
-class InvitationSection extends Model
+class InvitationSection extends Model implements BelongsToInvitation
 {
     /** @use HasFactory<InvitationSectionFactory> */
     use HasFactory;
+
+    use PartOfInvitation;
 
     protected $fillable = [
         'invitation_id',
