@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\Client\OrderController;
+use App\Http\Controllers\Client\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,5 +24,11 @@ Route::get('/', DashboardController::class)->name('dashboard');
 // the binding resolves on order_number rather than the id.
 Route::get('/orders', [OrderController::class, 'index'])->name('client.orders.index');
 Route::get('/orders/{order}', [OrderController::class, 'show'])->name('client.orders.show');
+
+// Opens a gateway transaction and sends the client to it (M2.5). Throttled:
+// each hit is an outbound call to the gateway, not just a local write.
+Route::post('/orders/{order}/pay', [PaymentController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('client.orders.pay');
 
 Route::get('/ping', fn () => response()->json(['surface' => 'client']))->name('client.ping');

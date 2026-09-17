@@ -93,6 +93,17 @@ class Order extends Model
     }
 
     /**
+     * Every attempt to pay this order — a failed card and the VA that worked
+     * are both rows here.
+     *
+     * @return HasMany<Payment, $this>
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
      * @return HasOne<Invoice, $this>
      */
     public function invoice(): HasOne

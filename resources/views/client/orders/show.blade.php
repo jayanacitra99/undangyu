@@ -71,12 +71,19 @@
 
                 @if ($order->isPayable())
                     <div class="card-footer">
-                        {{-- The gateway lands in Session 9; this is the placeholder it replaces. --}}
-                        <button type="button" class="btn btn-primary w-100" disabled>
-                            {{ __('Bayar sekarang (segera)') }}
-                        </button>
+                        @if (session('error'))
+                            <div class="alert alert-danger py-2">{{ session('error') }}</div>
+                        @endif
+
+                        <form method="POST" action="{{ route('client.orders.pay', $order) }}">
+                            @csrf
+                            <button type="submit" class="btn btn-primary w-100">
+                                {{ __('Bayar sekarang') }}
+                            </button>
+                        </form>
+
                         <p class="text-secondary small mb-0 mt-2">
-                            {{ __('Pembayaran online aktif pada rilis berikutnya.') }}
+                            {{ __('Anda akan diarahkan ke halaman pembayaran.') }}
                         </p>
                     </div>
                 @endif
