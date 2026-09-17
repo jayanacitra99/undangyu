@@ -43,6 +43,15 @@ interface PaymentGateway
     public function parseWebhook(Request $request): PaymentUpdate;
 
     /**
+     * What the gateway itself believes about a payment.
+     *
+     * A fifth method beyond the four in docs/05 § 6, added for M2.6's daily
+     * reconciliation: webhooks do get lost, and the only way to notice is to
+     * ask. Returns null when the gateway has no record of the reference.
+     */
+    public function fetchStatus(Payment $payment): ?PaymentUpdate;
+
+    /**
      * Refund all of a payment, or part of it.
      */
     public function refund(Payment $payment, ?float $amount = null): RefundResult;

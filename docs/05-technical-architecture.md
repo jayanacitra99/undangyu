@@ -283,12 +283,23 @@ at first. Either way, hide it behind an interface:
 ```php
 interface PaymentGateway
 {
-    public function createTransaction(Order $order): PaymentSession;
+    public function name(): string;
+    public function createTransaction(Payment $payment): PaymentSession;
     public function verifyWebhook(Request $request): bool;
     public function parseWebhook(Request $request): PaymentUpdate;
+    public function fetchStatus(Payment $payment): ?PaymentUpdate;
     public function refund(Payment $payment, ?float $amount = null): RefundResult;
 }
 ```
+
+Three additions to that sketch, made when it was built (Sessions 9 and 10):
+
+- `createTransaction()` takes the **`Payment`**, not the `Order`. The local row is written
+  first so the gateway's own order id can be keyed on it — a client who lets one attempt
+  expire and starts another needs a second reference against the same order.
+- `name()` is what goes into `payments.gateway`, so a row records which driver produced it.
+- `fetchStatus()` exists for the daily `payments:reconcile`. Webhooks get lost, and the only
+  way to notice is to ask.
 
 Bind the concrete driver in a service provider from `config('payment.driver')`. Swapping
 gateways later then costs one class, not a rewrite.
