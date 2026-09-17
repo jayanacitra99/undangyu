@@ -100,6 +100,21 @@
                 @endif
             </div>
 
+            @if ($order->invoice?->pdf_path)
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <div class="text-secondary small">{{ __('Invoice') }}</div>
+                        <div class="fw-semibold mb-2">{{ $order->invoice->invoice_number }}</div>
+
+                        {{-- Signed and short-lived: the link is not a permanent handle. --}}
+                        <a href="{{ URL::temporarySignedRoute('client.invoices.download', now()->addMinutes(30), ['invoice' => $order->invoice]) }}"
+                           class="btn btn-outline-secondary w-100">
+                            <i class="bi bi-file-earmark-pdf"></i> {{ __('Unduh invoice') }}
+                        </a>
+                    </div>
+                </div>
+            @endif
+
             <a href="{{ route('client.orders.index') }}" class="btn btn-link mt-2">
                 {{ __('Kembali ke daftar pesanan') }}
             </a>

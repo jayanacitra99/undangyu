@@ -37,7 +37,7 @@ final class OrderController extends Controller
     {
         Gate::authorize('view', $order);
 
-        $order->load(['items', 'package:id,name,slug', 'template:id,name,slug']);
+        $order->load(['items', 'package:id,name,slug', 'template:id,name,slug', 'invoice']);
 
         return view('client.orders.show', [
             'order' => $order,
