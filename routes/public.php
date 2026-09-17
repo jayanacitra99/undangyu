@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Public\MediaController;
 use App\Http\Controllers\Public\PricingController;
 use App\Http\Controllers\Public\TemplateGalleryController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,13 @@ Route::middleware('throttle:60,1')->group(function (): void {
 
     // The pricing table (M2.3), generated from the packages' feature flags.
     Route::get('/harga', PricingController::class)->name('pricing.index');
+
+    // Stored media (18.2). Uploads sit on the private disk, so this route is
+    // the only way one reaches a browser — and it asks whether the invitation
+    // is published, or the viewer owns it, before streaming a byte.
+    Route::get('/media/{media}/{variant?}', MediaController::class)
+        ->where('variant', 'thumb|medium|full')
+        ->name('media.show');
 
     // A debug endpoint is still a public endpoint (hard rule 2).
     Route::get('/ping', fn () => response()->json(['surface' => 'public']))->name('public.ping');

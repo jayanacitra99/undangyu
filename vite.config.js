@@ -37,6 +37,7 @@ export default defineConfig({
                 'resources/js/islands/feature-flags.js',
                 'resources/js/islands/persons-editor.js',
                 'resources/js/islands/event-sessions-editor.js',
+                'resources/js/islands/gallery-editor.js',
             ],
             refresh: true,
         }),
