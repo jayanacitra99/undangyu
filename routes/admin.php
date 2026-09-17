@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventTypeController;
 use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\PaymentVerificationController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TemplateCategoryController;
 use App\Http\Controllers\Admin\TemplateController;
@@ -60,6 +61,19 @@ Route::middleware('permission:templates.manage')->group(function (): void {
     Route::resource('templates', TemplateController::class)
         ->except('show')
         ->names('admin.templates');
+});
+
+// Manual transfer verification (M2.7). `payments.verify` is the finance
+// ability: admin holds it, support does not.
+Route::middleware('permission:payments.verify')->group(function (): void {
+    Route::get('/payments/pending', [PaymentVerificationController::class, 'index'])
+        ->name('admin.payments.pending');
+    Route::get('/payments/{payment}/proof', [PaymentVerificationController::class, 'proof'])
+        ->name('admin.payments.proof');
+    Route::post('/payments/{payment}/approve', [PaymentVerificationController::class, 'approve'])
+        ->name('admin.payments.approve');
+    Route::post('/payments/{payment}/reject', [PaymentVerificationController::class, 'reject'])
+        ->name('admin.payments.reject');
 });
 
 // Packages carry their own permission (M2.1, M2.2) — a support user who may

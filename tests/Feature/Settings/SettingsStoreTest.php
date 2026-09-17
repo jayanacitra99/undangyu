@@ -151,7 +151,21 @@ class SettingsStoreTest extends TestCase
     {
         $this->seed(SettingSeeder::class);
 
-        // Only the driver name belongs here; keys and secrets stay in env.
-        $this->assertSame(['driver', 'manual_transfer_enabled'], array_keys(Setting::group('payment')));
+        // The driver name and the manual-transfer destination belong here —
+        // finance edits the bank account without a deploy. Gateway keys and
+        // secrets stay in env, and none of them may appear in this group.
+        $this->assertSame([
+            'driver',
+            'manual_transfer_enabled',
+            'manual_bank_name',
+            'manual_account_number',
+            'manual_account_name',
+            'manual_instructions',
+        ], array_keys(Setting::group('payment')));
+
+        foreach (array_keys(Setting::group('payment')) as $key) {
+            $this->assertStringNotContainsString('key', $key);
+            $this->assertStringNotContainsString('secret', $key);
+        }
     }
 }
