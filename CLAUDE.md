@@ -49,10 +49,14 @@ Full specs in `docs/`. Read `docs/01` through `docs/05` before substantial work.
   for it and stays authoritative. Cloud images ship PostgreSQL and no MySQL, so cloud
   sessions install it via the setup script in `docs/06` § Cloud vs local — the schema is
   not portable by accident, write migrations for MySQL.
+- **Payment gateway: Midtrans.** Decided at Session 9. Snap popup, so there is no checkout UI
+  to build, and it is the name Indonesian buyers recognise. Affiliate payouts (M10.5) are
+  manual at first — that is the trade against Xendit's disbursement API. The driver sits
+  behind `App\Services\Payment\Contracts\PaymentGateway` and is bound from
+  `config('payment.driver')`, so swapping costs one class.
 
 ### Decisions still open — ask before assuming
 
-- Payment gateway: Midtrans vs Xendit → *(record the choice here when made)*
 - WhatsApp provider: Wablas / Fonnte / Cloud API → *(record here)*
 - Guest link format: `?to={token}` is the default assumption
 
