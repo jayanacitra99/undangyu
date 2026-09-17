@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Client\DashboardController;
+use App\Http\Controllers\Client\InvitationController;
 use App\Http\Controllers\Client\InvoiceController;
 use App\Http\Controllers\Client\ManualPaymentController;
 use App\Http\Controllers\Client\OrderController;
@@ -21,6 +22,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', DashboardController::class)->name('dashboard');
+
+// The invitation list and the builder shell (M4.1, M4.2). Binding resolves on
+// the slug, and OwnedByUserScope means another client's slug is a 404 before
+// the policy is ever asked.
+Route::get('/invitations', [InvitationController::class, 'index'])->name('client.invitations.index');
+Route::get('/invitations/{invitation}/edit', [InvitationController::class, 'edit'])
+    ->name('client.invitations.edit');
+Route::patch('/invitations/{invitation}', [InvitationController::class, 'update'])
+    ->name('client.invitations.update');
 
 // The client's own orders (M2.4). Ownership is enforced by OrderPolicy, and
 // the binding resolves on order_number rather than the id.
