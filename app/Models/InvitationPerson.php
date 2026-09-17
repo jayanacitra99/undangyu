@@ -44,6 +44,15 @@ class InvitationPerson extends Model implements BelongsToInvitation
      */
     protected $table = 'invitation_persons';
 
+    /**
+     * Person photos are public by definition — they are printed on the
+     * invitation. The gallery's real pipeline lands in Session 18; this is one
+     * column holding one path.
+     */
+    public const PHOTO_DISK = 'public';
+
+    public const PHOTO_DIRECTORY = 'invitation-persons';
+
     protected $fillable = [
         'invitation_id',
         'role',

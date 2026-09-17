@@ -31,7 +31,9 @@ abstract class InvitationChildPolicy
 
     public function view(User $user, BelongsToInvitation $child): bool
     {
-        return $this->parent->view($user, $this->invitation($child));
+        $invitation = $this->invitation($child);
+
+        return $invitation !== null && $this->parent->view($user, $invitation);
     }
 
     /**
@@ -50,12 +52,16 @@ abstract class InvitationChildPolicy
 
     public function update(User $user, BelongsToInvitation $child): bool
     {
-        return $this->parent->update($user, $this->invitation($child));
+        $invitation = $this->invitation($child);
+
+        return $invitation !== null && $this->parent->update($user, $invitation);
     }
 
     public function delete(User $user, BelongsToInvitation $child): bool
     {
-        return $this->parent->update($user, $this->invitation($child));
+        $invitation = $this->invitation($child);
+
+        return $invitation !== null && $this->parent->update($user, $invitation);
     }
 
     /**
@@ -71,11 +77,19 @@ abstract class InvitationChildPolicy
      * `withTrashed`, because a soft-deleted invitation's children must not
      * quietly become unauthorizable — the answer is still "the owner", and a
      * restore should not need a permissions story of its own.
+     *
+     * `acrossAllUsers`, because a policy has to see the row to refuse it. Under
+     * the tenant scope this lookup finds nothing for the very user it exists to
+     * turn away, and "not found" is the wrong answer to "may I edit this":
+     * deciding authorization is this class's job, and the scope is only the net
+     * beneath it. A parent that is genuinely gone returns null, and every
+     * ability below reads that as no.
      */
-    private function invitation(BelongsToInvitation $child): Invitation
+    private function invitation(BelongsToInvitation $child): ?Invitation
     {
-        return Invitation::withTrashed()
+        return Invitation::acrossAllUsers()
+            ->withTrashed()
             ->whereKey($child->invitationId())
-            ->sole();
+            ->first();
     }
 }

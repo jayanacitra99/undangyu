@@ -6,8 +6,11 @@ namespace App\Http\Controllers\Client;
 
 use App\Actions\Invitations\CheckPublishReadiness;
 use App\Actions\Invitations\UpdateInvitationBasics;
+use App\Enums\PersonRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\UpdateInvitationRequest;
+use App\Http\Resources\InvitationEventResource;
+use App\Http\Resources\InvitationPersonResource;
 use App\Models\Invitation;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -70,14 +73,16 @@ final class InvitationController extends Controller
         $invitation->load(['eventType', 'template:id,name,slug,status,min_package_id', 'package:id,name,sort_order', 'order']);
 
         $requirements = $readiness($invitation);
+        $tab = $this->resolveTab();
 
         return view('client.invitations.edit', [
             'invitation' => $invitation,
             'tabs' => self::TABS,
-            'tab' => $this->resolveTab(),
+            'tab' => $tab,
             'requirements' => $requirements,
             'isReady' => CheckPublishReadiness::isReady($requirements),
             'canEdit' => Gate::allows('update', $invitation),
+            ...$this->dataFor($tab, $invitation),
         ]);
     }
 
@@ -96,6 +101,41 @@ final class InvitationController extends Controller
         return redirect()
             ->route('client.invitations.edit', [$invitation, 'tab' => $this->resolveTab()])
             ->with('status', __('Perubahan tersimpan.'));
+    }
+
+    /**
+     * What one tab needs, loaded only for the tab being drawn: opening
+     * "Dasar" should not query every person, event and photo of the
+     * invitation.
+     *
+     * @return array<string, mixed>
+     */
+    private function dataFor(string $tab, Invitation $invitation): array
+    {
+        return match ($tab) {
+            'mempelai' => [
+                // resolve(), so the view gets a plain array to JSON-encode into
+                // a data-* attribute rather than a resource awaiting a response.
+                'persons' => InvitationPersonResource::collection(
+                    $invitation->persons()->get()
+                )->resolve(),
+                'personRoles' => array_map(
+                    fn (string $role): array => [
+                        'value' => $role,
+                        'label' => PersonRole::tryFrom($role)?->label() ?? $role,
+                    ],
+                    $invitation->eventType->person_roles,
+                ),
+            ],
+            'acara' => [
+                // chaperone() on the relation hydrates each event's invitation,
+                // which is what the resource reads the timezone from.
+                'events' => InvitationEventResource::collection(
+                    $invitation->events()->get()
+                )->resolve(),
+            ],
+            default => [],
+        };
     }
 
     private function resolveTab(): string
