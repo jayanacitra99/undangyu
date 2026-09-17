@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\InvitationBuilderController;
 use App\Http\Controllers\Api\InvitationEventController;
+use App\Http\Controllers\Api\InvitationGiftController;
 use App\Http\Controllers\Api\InvitationMediaController;
 use App\Http\Controllers\Api\InvitationPersonController;
+use App\Http\Controllers\Api\InvitationSectionController;
+use App\Http\Controllers\Api\InvitationStoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -82,4 +85,39 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         ->name('api.media.cover');
     Route::delete('/media/{media}', [InvitationMediaController::class, 'destroy'])
         ->name('api.media.destroy');
+
+    // Gifts (19.1).
+    Route::post('/invitations/{invitation}/gifts', [InvitationGiftController::class, 'store'])
+        ->name('api.gifts.store');
+    Route::post('/invitations/{invitation}/gifts/reorder', [InvitationGiftController::class, 'reorder'])
+        ->name('api.gifts.reorder');
+    Route::patch('/gifts/{gift}', [InvitationGiftController::class, 'update'])
+        ->name('api.gifts.update');
+    Route::delete('/gifts/{gift}', [InvitationGiftController::class, 'destroy'])
+        ->name('api.gifts.destroy');
+    Route::post('/gifts/{gift}/image', [InvitationGiftController::class, 'image'])
+        ->name('api.gifts.image');
+
+    // Story timeline (19.2).
+    Route::post('/invitations/{invitation}/stories', [InvitationStoryController::class, 'store'])
+        ->name('api.stories.store');
+    Route::post('/invitations/{invitation}/stories/reorder', [InvitationStoryController::class, 'reorder'])
+        ->name('api.stories.reorder');
+    Route::patch('/stories/{story}', [InvitationStoryController::class, 'update'])
+        ->name('api.stories.update');
+    Route::delete('/stories/{story}', [InvitationStoryController::class, 'destroy'])
+        ->name('api.stories.destroy');
+    Route::post('/stories/{story}/image', [InvitationStoryController::class, 'image'])
+        ->name('api.stories.image');
+
+    // Sections (19.3). Only a custom section is created or deleted; the rest
+    // are reordered, retitled and hidden.
+    Route::post('/invitations/{invitation}/sections', [InvitationSectionController::class, 'store'])
+        ->name('api.sections.store');
+    Route::post('/invitations/{invitation}/sections/reorder', [InvitationSectionController::class, 'reorder'])
+        ->name('api.sections.reorder');
+    Route::patch('/sections/{section}', [InvitationSectionController::class, 'update'])
+        ->name('api.sections.update');
+    Route::delete('/sections/{section}', [InvitationSectionController::class, 'destroy'])
+        ->name('api.sections.destroy');
 });

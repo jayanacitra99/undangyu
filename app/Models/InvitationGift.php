@@ -38,6 +38,15 @@ class InvitationGift extends Model implements BelongsToInvitation
 
     use PartOfInvitation;
 
+    /**
+     * A QRIS code is printed on the invitation for guests to scan, so it is
+     * public by the same logic as a person's photo. The gallery's private disk
+     * is for media a draft has not published yet.
+     */
+    public const IMAGE_DISK = 'public';
+
+    public const IMAGE_DIRECTORY = 'invitation-gifts';
+
     protected $fillable = [
         'invitation_id',
         'type',
