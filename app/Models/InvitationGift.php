@@ -7,7 +7,9 @@ namespace App\Models;
 use App\Enums\GiftType;
 use App\Models\Concerns\PartOfInvitation;
 use App\Models\Contracts\BelongsToInvitation;
+use App\Observers\InvalidatesInvitationCache;
 use Database\Factories\InvitationGiftFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $notes
  * @property int $sort_order
  */
+#[ObservedBy(InvalidatesInvitationCache::class)]
 class InvitationGift extends Model implements BelongsToInvitation
 {
     /** @use HasFactory<InvitationGiftFactory> */
