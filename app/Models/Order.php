@@ -104,6 +104,16 @@ class Order extends Model
     }
 
     /**
+     * What this order bought, once provisioning has run.
+     *
+     * @return HasOne<Invitation, $this>
+     */
+    public function invitation(): HasOne
+    {
+        return $this->hasOne(Invitation::class);
+    }
+
+    /**
      * @return HasOne<Invoice, $this>
      */
     public function invoice(): HasOne
