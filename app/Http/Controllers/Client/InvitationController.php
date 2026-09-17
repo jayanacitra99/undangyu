@@ -8,15 +8,21 @@ use App\Actions\Invitations\CheckPublishReadiness;
 use App\Actions\Invitations\UpdateInvitationBasics;
 use App\Actions\Media\AttachLibraryAudio;
 use App\Enums\FeatureKey;
+use App\Enums\GiftType;
 use App\Enums\PersonRole;
 use App\Facades\Setting;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\UpdateInvitationRequest;
 use App\Http\Resources\InvitationEventResource;
+use App\Http\Resources\InvitationGiftResource;
 use App\Http\Resources\InvitationMediaResource;
 use App\Http\Resources\InvitationPersonResource;
+use App\Http\Resources\InvitationSectionResource;
+use App\Http\Resources\InvitationStoryResource;
 use App\Models\Invitation;
 use App\Services\Media\MediaQuota;
+use App\Services\Templates\ThemeConfigValidator;
+use App\Support\InvitationSettings;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
@@ -75,7 +81,15 @@ final class InvitationController extends Controller
         // owner. The form inside is what gets disabled.
         Gate::authorize('view', $invitation);
 
-        $invitation->load(['eventType', 'template:id,name,slug,status,min_package_id', 'package:id,name,sort_order', 'order']);
+        // config_schema is in the column list because the "Tema" tab builds its
+        // controls from it — an unselected column reads back as null, which
+        // renders as "this template has no settings" rather than as an error.
+        $invitation->load([
+            'eventType',
+            'template:id,name,slug,status,min_package_id,config_schema',
+            'package:id,name,sort_order',
+            'order',
+        ]);
 
         $requirements = $readiness($invitation);
         $tab = $this->resolveTab();
@@ -147,6 +161,34 @@ final class InvitationController extends Controller
                 'events' => InvitationEventResource::collection(
                     $invitation->events()->get()
                 )->resolve(),
+            ],
+            'cerita' => [
+                'stories' => InvitationStoryResource::collection(
+                    $invitation->stories()->get()
+                )->resolve(),
+            ],
+            'hadiah' => [
+                'gifts' => InvitationGiftResource::collection(
+                    $invitation->gifts()->get()
+                )->resolve(),
+                'giftTypes' => array_map(
+                    fn (GiftType $type): array => ['value' => $type->value, 'label' => $type->label()],
+                    GiftType::cases(),
+                ),
+            ],
+            'tema' => [
+                // The schema is the template's; the config is this
+                // invitation's answer to it, defaulted where it has none yet.
+                'themeSchema' => $invitation->template->config_schema ?? [],
+                'themeConfig' => $invitation->theme_config
+                    ?? app(ThemeConfigValidator::class)->defaults($invitation->template),
+            ],
+            'pengaturan' => [
+                'sections' => InvitationSectionResource::collection(
+                    $invitation->sections()->get()
+                )->resolve(),
+                'settings' => InvitationSettings::for($invitation),
+                'settingsAvailability' => InvitationSettings::availability($invitation),
             ],
             default => [],
         };

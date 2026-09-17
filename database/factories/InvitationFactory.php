@@ -12,6 +12,7 @@ use App\Models\Package;
 use App\Models\Template;
 use App\Models\User;
 use App\Services\Entitlements\EntitlementResolver;
+use App\Support\InvitationSettings;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -23,22 +24,15 @@ class InvitationFactory extends Factory
     protected $model = Invitation::class;
 
     /**
-     * The feature toggles a new invitation starts with. Mirrors what the
-     * builder exposes; provisioning writes the same shape.
+     * The feature toggles a new invitation starts with — from the same
+     * definition the builder and the FormRequest use, so a new setting cannot
+     * exist in one place and not the other.
      *
      * @return array<string, mixed>
      */
     public static function defaultSettings(): array
     {
-        return [
-            'rsvp_enabled' => true,
-            'guestbook_enabled' => true,
-            'guestbook_moderation' => 'auto',
-            'music_enabled' => true,
-            'music_autoplay' => true,
-            'countdown_enabled' => true,
-            'gift_enabled' => true,
-        ];
+        return InvitationSettings::defaults();
     }
 
     /**

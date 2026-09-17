@@ -32,6 +32,10 @@ class InvitationStory extends Model implements BelongsToInvitation
 
     use PartOfInvitation;
 
+    public const IMAGE_DISK = 'public';
+
+    public const IMAGE_DIRECTORY = 'invitation-stories';
+
     protected $fillable = [
         'invitation_id',
         'date',

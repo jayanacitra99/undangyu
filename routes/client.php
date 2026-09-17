@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\Client\InvitationController;
+use App\Http\Controllers\Client\InvitationSettingsController;
+use App\Http\Controllers\Client\InvitationThemeController;
 use App\Http\Controllers\Client\InvoiceController;
 use App\Http\Controllers\Client\ManualPaymentController;
 use App\Http\Controllers\Client\OrderController;
@@ -31,6 +33,14 @@ Route::get('/invitations/{invitation}/edit', [InvitationController::class, 'edit
     ->name('client.invitations.edit');
 Route::patch('/invitations/{invitation}', [InvitationController::class, 'update'])
     ->name('client.invitations.update');
+
+// Theme and settings are form posts rather than autosaves (19.4, 19.5): one
+// carries a colour picker, the other a password, and neither wants a write per
+// keystroke.
+Route::patch('/invitations/{invitation}/theme', [InvitationThemeController::class, 'update'])
+    ->name('client.invitations.theme.update');
+Route::patch('/invitations/{invitation}/settings', [InvitationSettingsController::class, 'update'])
+    ->name('client.invitations.settings.update');
 
 // The client's own orders (M2.4). Ownership is enforced by OrderPolicy, and
 // the binding resolves on order_number rather than the id.
