@@ -49,6 +49,13 @@ return [
             'active' => ['admin/orders', 'admin/orders/*'],
         ],
         [
+            'label' => 'Verifikasi Pembayaran',
+            'route' => 'admin.payments.pending',
+            'icon' => 'bi-cash-stack',
+            'permission' => 'payments.verify',
+            'active' => ['admin/payments', 'admin/payments/*'],
+        ],
+        [
             'label' => 'Katalog',
             'icon' => 'bi-collection',
             'permission' => null,

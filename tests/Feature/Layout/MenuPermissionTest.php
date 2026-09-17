@@ -28,12 +28,15 @@ class MenuPermissionTest extends TestCase
         $admin->assignRole('admin');
 
         // Later sessions register these; until then the sidebar must not link to
-        // them. Session 5 registered the catalog taxonomy, so "Katalog" is here
-        // now — "Pengguna" and "Pesanan" still are not.
+        // them. Session 5 registered the catalog taxonomy and Session 12 the
+        // payment queue — "Pengguna" and "Pesanan" still are not registered.
         $this->assertFalse(Route::has('admin.users.index'));
         $this->assertFalse(Route::has('admin.orders.index'));
 
-        $this->assertSame(['Dashboard', 'Katalog'], $this->labels(Menu::for('admin', $admin)));
+        $this->assertSame(
+            ['Dashboard', 'Verifikasi Pembayaran', 'Katalog'],
+            $this->labels(Menu::for('admin', $admin)),
+        );
     }
 
     public function test_a_parent_disappears_once_every_child_is_filtered_out(): void
@@ -43,10 +46,13 @@ class MenuPermissionTest extends TestCase
 
         $this->registerRoute('admin.templates.index', '/admin/templates');
 
-        $this->assertSame(['Dashboard', 'Katalog'], $this->labels(Menu::for('admin', $admin)));
+        $this->assertSame(
+            ['Dashboard', 'Verifikasi Pembayaran', 'Katalog'],
+            $this->labels(Menu::for('admin', $admin)),
+        );
 
-        // support holds neither templates.manage nor packages.manage, so the
-        // whole "Katalog" branch goes with them.
+        // support holds neither templates.manage nor packages.manage, and no
+        // payments.verify either, so both go with them.
         $support = User::factory()->create();
         $support->assignRole('support');
 

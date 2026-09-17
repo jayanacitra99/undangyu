@@ -235,6 +235,8 @@ Polymorphic line items so add-ons work without schema change.
 | status | enum | `pending`, `settled`, `failed`, `expired`, `refunded` |
 | proof_path | varchar(255) null | manual transfer proof upload |
 | verified_by | bigint null FK users | manual verification |
+| verification_note | varchar(500) null | why an admin approved or rejected — a rejection has to tell the client what to fix |
+| verified_at | timestamp null | when that decision was made |
 | paid_at | timestamp null | |
 | raw_payload | json null | full gateway response, for disputes |
 | timestamps | | |

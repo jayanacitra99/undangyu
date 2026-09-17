@@ -85,6 +85,17 @@
                         <p class="text-secondary small mb-0 mt-2">
                             {{ __('Anda akan diarahkan ke halaman pembayaran.') }}
                         </p>
+
+                        @if (Setting::get('payment.manual_transfer_enabled', false))
+                            <hr>
+                            <a href="{{ route('client.orders.manual', $order) }}"
+                               class="btn btn-outline-secondary w-100">
+                                {{ __('Transfer Bank Manual') }}
+                            </a>
+                            <p class="text-secondary small mb-0 mt-2">
+                                {{ __('Verifikasi manual maksimal 1x24 jam pada hari kerja.') }}
+                            </p>
+                        @endif
                     </div>
                 @endif
             </div>

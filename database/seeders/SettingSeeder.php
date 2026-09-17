@@ -40,6 +40,17 @@ class SettingSeeder extends Seeder
             // Keys and secrets stay in env — this names the driver only.
             'driver' => ['manual', SettingType::String, false],
             'manual_transfer_enabled' => [true, SettingType::Bool, false],
+
+            // Where a manual transfer is sent. Shown to the client at
+            // checkout, so it is deliberately editable without a deploy.
+            'manual_bank_name' => ['BCA', SettingType::String, false],
+            'manual_account_number' => ['1234567890', SettingType::String, false],
+            'manual_account_name' => ['PT Undangyu Digital', SettingType::String, false],
+            'manual_instructions' => [
+                'Transfer sesuai nominal tagihan, lalu unggah bukti transfer. Verifikasi manual dilakukan maksimal 1x24 jam pada hari kerja.',
+                SettingType::String,
+                false,
+            ],
         ],
 
         'invitation' => [
