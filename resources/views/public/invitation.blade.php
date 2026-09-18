@@ -19,6 +19,14 @@
             ? __(':title · :venue', ['title' => $invitation['title'], 'venue' => $firstEvent['venue_name']])
             : $invitation['title']);
     $canonical = url('/'.$invitation['slug']);
+
+    // Whatever the resolved theme asked for, de-duplicated. A template with no
+    // font keys in its schema requests nothing.
+    $fontFamilies = collect($payload['theme']['fonts'] ?? [])
+        ->filter(fn ($family): bool => is_string($family) && $family !== '')
+        ->unique()
+        ->values()
+        ->all();
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $invitation['language'] }}" class="h-full">
@@ -55,6 +63,21 @@
     <meta name="twitter:description" content="{{ $description }}">
     @if ($meta['og_image'])
         <meta name="twitter:image" content="{{ $meta['og_image'] }}">
+    @endif
+
+    {{--
+        The template's chosen typefaces, requested by name from the theme the
+        payload already resolved. `display=swap` so text paints in a fallback
+        immediately rather than holding the largest element back — the cover
+        headline is the LCP.
+    --}}
+    @if ($fontFamilies !== [])
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?{{ collect($fontFamilies)->map(fn (string $family): string => 'family='.str_replace(' ', '+', $family).':wght@400;500;600')->implode('&') }}&display=swap"
+        >
     @endif
 
     @vite(['resources/css/public.css', 'resources/js/public.js'])

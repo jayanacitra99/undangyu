@@ -12,12 +12,13 @@ use Database\Factories\TemplateFactory;
 use Illuminate\Database\Seeder;
 
 /**
- * Three draft templates so the catalog is never empty on a fresh install
+ * Three templates so the catalog is never empty on a fresh install
  * (playbook 6.6).
  *
- * They are drafts on purpose: the Vue component folders under
- * resources/js/invitation/templates/ do not exist yet, so nothing here may be
- * reachable from the public gallery.
+ * `view_key` is the folder under resources/js/invitation/templates/, so a row
+ * may only be published once that folder exists — otherwise the renderer
+ * falls back and a buyer gets a template that is not the one they picked.
+ * `BUILT` is that list; everything else stays a draft.
  *
  * Idempotent on `view_key`, like the rest of the catalog seeders.
  */
@@ -59,9 +60,60 @@ class TemplateSeeder extends Seeder
         ],
     ];
 
+    /**
+     * "Sekar Ayu"'s own schema (22.7).
+     *
+     * This is the contract between the template and the "Tema" tab: the tab
+     * renders a control per key and ThemeConfigValidator refuses anything not
+     * declared here, so a key added to the component has to be added here too
+     * before a client can set it.
+     *
+     * The colour defaults are the template's actual palette — warm sand and
+     * cream — not placeholders, because `default_config` is what every
+     * invitation renders with until a client changes something.
+     *
+     * @return array<string, array<string, array<string, mixed>>>
+     */
+    public static function sekarAyuSchema(): array
+    {
+        return [
+            'colors' => [
+                'primary' => ['type' => 'color', 'default' => '#8B7355', 'label' => 'Warna utama'],
+                'secondary' => ['type' => 'color', 'default' => '#D4C5B0', 'label' => 'Warna aksen'],
+                'text' => ['type' => 'color', 'default' => '#3A3A3A', 'label' => 'Warna teks'],
+                'surface' => ['type' => 'color', 'default' => '#FBF8F4', 'label' => 'Warna latar'],
+            ],
+            'fonts' => [
+                'heading' => [
+                    'type' => 'select',
+                    'options' => ['Playfair Display', 'Cormorant Garamond', 'Marcellus'],
+                    'default' => 'Playfair Display',
+                    'label' => 'Font judul',
+                ],
+                'body' => [
+                    'type' => 'select',
+                    'options' => ['Lato', 'Montserrat', 'Inter'],
+                    'default' => 'Lato',
+                    'label' => 'Font isi',
+                ],
+            ],
+            'options' => [
+                'show_countdown' => ['type' => 'boolean', 'default' => true, 'label' => 'Tampilkan hitung mundur'],
+                'show_music_button' => ['type' => 'boolean', 'default' => true, 'label' => 'Tampilkan tombol musik'],
+            ],
+        ];
+    }
+
+    /**
+     * Which templates have a component folder under
+     * resources/js/invitation/templates/, and may therefore be published.
+     *
+     * @var list<string>
+     */
+    public const BUILT = ['sekar-ayu'];
+
     public function run(): void
     {
-        $schema = TemplateFactory::exampleConfigSchema();
         $categories = TemplateCategory::query()->pluck('id', 'slug');
         $eventTypes = EventType::query()->pluck('id', 'slug');
 
@@ -71,6 +123,12 @@ class TemplateSeeder extends Seeder
             if ($categoryId === null) {
                 continue;
             }
+
+            $isBuilt = in_array($definition['view_key'], self::BUILT, true);
+
+            // A template with a component folder gets its own schema; the rest
+            // keep the example one until they are built.
+            $schema = $isBuilt ? self::sekarAyuSchema() : TemplateFactory::exampleConfigSchema();
 
             $template = Template::query()->firstOrCreate(
                 ['view_key' => $definition['view_key']],
@@ -89,10 +147,24 @@ class TemplateSeeder extends Seeder
                     ],
                     'is_premium' => $definition['is_premium'],
                     'extra_price' => $definition['extra_price'],
-                    'status' => TemplateStatus::Draft,
+                    'status' => $isBuilt ? TemplateStatus::Published : TemplateStatus::Draft,
                     'sort_order' => $index,
                 ],
             );
+
+            /*
+            | A row seeded before its folder existed is still a draft with the
+            | example schema. Bring it up to date — but only while it is still
+            | a draft, so an admin who deliberately archived a template does
+            | not find it republished by a re-seed.
+            */
+            if ($isBuilt && $template->status === TemplateStatus::Draft) {
+                $template->update([
+                    'config_schema' => $schema,
+                    'default_config' => TemplateFactory::defaultsFor($schema),
+                    'status' => TemplateStatus::Published,
+                ]);
+            }
 
             $template->eventTypes()->syncWithoutDetaching(
                 $eventTypes->only($definition['event_types'])->values()->all(),

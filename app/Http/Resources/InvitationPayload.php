@@ -100,7 +100,11 @@ class InvitationPayload extends JsonResource
                 'full_name' => $person->full_name,
                 'nickname' => $person->nickname,
                 'display_name' => $person->displayName(),
-                'photo' => $person->photo,
+                // Resolved, like everything else here: the renderer must not
+                // have to know which disk a person's photo sits on.
+                'photo_url' => $person->photo === null
+                    ? null
+                    : Storage::disk(InvitationPerson::PHOTO_DISK)->url($person->photo),
                 'bio' => $person->bio,
                 'parents' => [
                     'father' => $person->parent_father,
@@ -132,7 +136,9 @@ class InvitationPayload extends JsonResource
                 'date' => $story->date?->format('Y-m-d'),
                 'title' => $story->title,
                 'description' => $story->description,
-                'image' => $story->image,
+                'image_url' => $story->image === null
+                    ? null
+                    : Storage::disk(InvitationStory::IMAGE_DISK)->url($story->image),
             ])->all(),
 
             'media' => $this->media->map(fn (InvitationMedia $media): array => [
@@ -156,7 +162,9 @@ class InvitationPayload extends JsonResource
                 'provider_name' => $gift->provider_name,
                 'account_name' => $gift->account_name,
                 'account_number' => $gift->account_number,
-                'qris_image' => $gift->qris_image,
+                'qris_url' => $gift->qris_image === null
+                    ? null
+                    : Storage::disk(InvitationGift::IMAGE_DISK)->url($gift->qris_image),
                 'recipient_name' => $gift->recipient_name,
                 'address' => $gift->address,
                 'notes' => $gift->notes,
