@@ -323,6 +323,17 @@ class Invitation extends Model
     }
 
     /**
+     * Guest spreadsheet uploads (M5.3), newest first: the panel shows the last
+     * one, and older imports are history.
+     *
+     * @return HasMany<GuestImport, $this>
+     */
+    public function guestImports(): HasMany
+    {
+        return $this->hasMany(GuestImport::class)->latest('id');
+    }
+
+    /**
      * What this invitation was sold, not what the package grants today.
      */
     public function entitlement(FeatureKey $key): int|bool|null

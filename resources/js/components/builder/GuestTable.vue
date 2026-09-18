@@ -12,6 +12,7 @@
 */
 import { computed, ref } from 'vue';
 import GuestGroupBar from '@/components/builder/GuestGroupBar.vue';
+import GuestImportPanel from '@/components/builder/GuestImportPanel.vue';
 import { useGuestTable } from '@/composables/useGuestTable';
 import { useClipboard } from '@/composables/useClipboard';
 
@@ -29,6 +30,13 @@ const props = defineProps({
     bulkGroupUrl: { type: String, required: true },
     groupStoreUrl: { type: String, required: true },
     groupItemUrlTemplate: { type: String, required: true },
+    latestImport: { type: Object, default: null },
+    templateUrl: { type: String, required: true },
+    templateCsvUrl: { type: String, required: true },
+    exportUrl: { type: String, required: true },
+    importUploadUrl: { type: String, required: true },
+    importStatusUrlTemplate: { type: String, required: true },
+    importErrorsUrlTemplate: { type: String, required: true },
     csrfToken: { type: String, required: true },
     canEdit: { type: Boolean, default: true },
 });
@@ -224,6 +232,14 @@ const sortIcon = (column) => {
 
 <template>
     <div>
+        <!-- Import, export and the template live above the table: they are
+             how a real list of 400 gets in there in the first place. -->
+        <GuestImportPanel :latest="latestImport" :template-url="templateUrl" :template-csv-url="templateCsvUrl"
+                          :export-url="exportUrl" :upload-url="importUploadUrl"
+                          :status-url-template="importStatusUrlTemplate"
+                          :errors-url-template="importErrorsUrlTemplate" :csrf-token="csrfToken" :can-edit="canEdit"
+                          @imported="load()" />
+
         <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
             <div class="input-group input-group-sm" style="max-width: 20rem">
                 <span class="input-group-text"><i class="bi bi-search"></i></span>
