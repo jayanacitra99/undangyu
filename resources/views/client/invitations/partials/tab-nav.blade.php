@@ -35,6 +35,18 @@
            href="{{ route('client.invitations.guests.index', $invitation) }}">
             <i class="bi bi-people me-2"></i>{{ __('Tamu') }}
         </a>
+        <a class="nav-link link-body-emphasis d-none d-lg-block"
+           href="{{ route('client.invitations.rsvps.index', $invitation) }}">
+            <i class="bi bi-clipboard-check me-2"></i>{{ __('RSVP') }}
+        </a>
+        <a class="nav-link link-body-emphasis d-none d-lg-block"
+           href="{{ route('client.invitations.wishes.index', $invitation) }}">
+            <i class="bi bi-chat-heart me-2"></i>{{ __('Ucapan') }}
+        </a>
+        <a class="nav-link link-body-emphasis d-none d-lg-block"
+           href="{{ route('client.invitations.analytics.index', $invitation) }}">
+            <i class="bi bi-graph-up me-2"></i>{{ __('Statistik') }}
+        </a>
     </div>
 </div>
 

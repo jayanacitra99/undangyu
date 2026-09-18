@@ -12,7 +12,9 @@ use App\Jobs\RecordGuestOpenJob;
 use App\Jobs\RecordInvitationViewJob;
 use App\Models\Guest;
 use App\Models\Invitation;
+use App\Models\Rsvp;
 use App\Services\Invitations\InvitationPayloadService;
+use App\Support\DeviceType;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -79,14 +81,22 @@ final class InvitationController extends Controller
             ]);
         }
 
-        // After the response, not during it. The job increments with the query
-        // builder so the counter does not flush the payload cache.
-        RecordInvitationViewJob::dispatch($payload['invitation']['uuid'])->afterResponse();
-
         // Who this link was sent to (27.1). Null for a shared link, a wrong
         // token or a deleted guest — all of which render the generic greeting,
         // because an error page here is a lost RSVP.
         $guest = $resolveToken($request->query('to'), $payload['invitation']['uuid']);
+
+        // After the response, not during it. The job increments with the query
+        // builder so the counter does not flush the payload cache, and writes
+        // the raw row the analytics rollup reads (M9.1).
+        RecordInvitationViewJob::dispatch(
+            $payload['invitation']['uuid'],
+            Rsvp::hashIp($request->ip()),
+            mb_substr((string) $request->userAgent(), 0, 255),
+            mb_substr((string) $request->headers->get('referer'), 0, 255) ?: null,
+            DeviceType::fromUserAgent($request->userAgent()),
+            $guest?->getKey(),
+        )->afterResponse();
 
         if ($guest !== null) {
             $this->recordOpen($request, $guest);

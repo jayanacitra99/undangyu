@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Client\AnalyticsController;
 use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\Client\GuestController;
 use App\Http\Controllers\Client\GuestImportController;
@@ -78,6 +79,10 @@ Route::get('/invitations/{invitation}/rsvps/export', [RsvpController::class, 'ex
     ->name('client.invitations.rsvps.export');
 Route::delete('/invitations/{invitation}/rsvps/{rsvp}', [RsvpController::class, 'destroy'])
     ->name('client.invitations.rsvps.destroy');
+
+// Analytics (M9.3). Reads the daily rollup, never the raw view log.
+Route::get('/invitations/{invitation}/analytics', [AnalyticsController::class, 'index'])
+    ->name('client.invitations.analytics.index');
 
 // The guestbook moderation queue (M6.5, 29.4).
 Route::get('/invitations/{invitation}/wishes', [WishController::class, 'index'])
