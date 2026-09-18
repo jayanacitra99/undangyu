@@ -303,6 +303,26 @@ class Invitation extends Model
     }
 
     /**
+     * The guest list (M5.1). Not ordered here: the guest page sorts by name,
+     * group or VIP flag on request, and a default order baked into the
+     * relation would be a sort the database does twice.
+     *
+     * @return HasMany<Guest, $this>
+     */
+    public function guests(): HasMany
+    {
+        return $this->hasMany(Guest::class);
+    }
+
+    /**
+     * @return HasMany<GuestGroup, $this>
+     */
+    public function guestGroups(): HasMany
+    {
+        return $this->hasMany(GuestGroup::class)->orderBy('sort_order');
+    }
+
+    /**
      * What this invitation was sold, not what the package grants today.
      */
     public function entitlement(FeatureKey $key): int|bool|null

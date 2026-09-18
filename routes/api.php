@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\GuestController;
+use App\Http\Controllers\Api\GuestGroupController;
 use App\Http\Controllers\Api\InvitationBuilderController;
 use App\Http\Controllers\Api\InvitationEventController;
 use App\Http\Controllers\Api\InvitationGiftController;
@@ -120,4 +122,32 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         ->name('api.sections.update');
     Route::delete('/sections/{section}', [InvitationSectionController::class, 'destroy'])
         ->name('api.sections.destroy');
+
+    // Guests (24.3, 24.4). The listing is a read of the invitation, so it is
+    // available on a suspended invitation too; everything that writes is not.
+    Route::get('/invitations/{invitation}/guests', [GuestController::class, 'index'])
+        ->name('api.guests.index');
+    Route::post('/invitations/{invitation}/guests', [GuestController::class, 'store'])
+        ->name('api.guests.store');
+    Route::patch('/guests/{guest}', [GuestController::class, 'update'])
+        ->name('api.guests.update');
+    Route::delete('/guests/{guest}', [GuestController::class, 'destroy'])
+        ->name('api.guests.destroy');
+
+    // Bulk operations are throttled below the rest: each one touches up to 500
+    // rows, and the table fires them from a checkbox selection.
+    Route::post('/invitations/{invitation}/guests/bulk-delete', [GuestController::class, 'bulkDestroy'])
+        ->middleware('throttle:30,1')
+        ->name('api.guests.bulk-delete');
+    Route::post('/invitations/{invitation}/guests/bulk-group', [GuestController::class, 'bulkAssignGroup'])
+        ->middleware('throttle:30,1')
+        ->name('api.guests.bulk-group');
+
+    // Guest groups (24.5).
+    Route::post('/invitations/{invitation}/guest-groups', [GuestGroupController::class, 'store'])
+        ->name('api.guest-groups.store');
+    Route::patch('/guest-groups/{group}', [GuestGroupController::class, 'update'])
+        ->name('api.guest-groups.update');
+    Route::delete('/guest-groups/{group}', [GuestGroupController::class, 'destroy'])
+        ->name('api.guest-groups.destroy');
 });

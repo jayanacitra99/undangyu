@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Client\DashboardController;
+use App\Http\Controllers\Client\GuestController;
 use App\Http\Controllers\Client\InvitationController;
 use App\Http\Controllers\Client\InvitationPublishController;
 use App\Http\Controllers\Client\InvitationSettingsController;
@@ -49,6 +50,11 @@ Route::patch('/invitations/{invitation}/theme', [InvitationThemeController::clas
     ->name('client.invitations.theme.update');
 Route::patch('/invitations/{invitation}/settings', [InvitationSettingsController::class, 'update'])
     ->name('client.invitations.settings.update');
+
+// The guest list (M5.1, M5.10). A page of its own rather than a builder tab:
+// it is a paginated table, not an autosaved form.
+Route::get('/invitations/{invitation}/guests', [GuestController::class, 'index'])
+    ->name('client.invitations.guests.index');
 
 // The client's own orders (M2.4). Ownership is enforced by OrderPolicy, and
 // the binding resolves on order_number rather than the id.

@@ -25,6 +25,16 @@
                 </a>
             @endforeach
         </nav>
+
+        {{--
+            The guest list is not a tab (M5.1): it is a paginated table of its
+            own. It still belongs in this strip, because "where are my guests"
+            is asked from the builder.
+        --}}
+        <a class="nav-link link-body-emphasis d-none d-lg-block mt-1"
+           href="{{ route('client.invitations.guests.index', $invitation) }}">
+            <i class="bi bi-people me-2"></i>{{ __('Tamu') }}
+        </a>
     </div>
 </div>
 

@@ -41,6 +41,7 @@ export default defineConfig({
                 'resources/js/islands/gifts-editor.js',
                 'resources/js/islands/story-editor.js',
                 'resources/js/islands/sections-manager.js',
+                'resources/js/islands/guest-table.js',
             ],
             refresh: true,
         }),

@@ -56,6 +56,10 @@
                                         </span>
                                     </td>
                                     <td class="text-end">
+                                        <a href="{{ route('client.invitations.guests.index', $invitation) }}"
+                                           class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-people me-1"></i>{{ __('Tamu') }}
+                                        </a>
                                         <a href="{{ route('client.invitations.edit', $invitation) }}"
                                            class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-pencil-square me-1"></i>{{ __('Kelola') }}
