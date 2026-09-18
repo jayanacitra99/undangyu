@@ -12,6 +12,7 @@ use App\Enums\GiftType;
 use App\Enums\PersonRole;
 use App\Facades\Setting;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Public\InvitationPreviewController;
 use App\Http\Requests\Client\UpdateInvitationRequest;
 use App\Http\Resources\InvitationEventResource;
 use App\Http\Resources\InvitationGiftResource;
@@ -101,6 +102,9 @@ final class InvitationController extends Controller
             'requirements' => $requirements,
             'isReady' => CheckPublishReadiness::isReady($requirements),
             'canEdit' => Gate::allows('update', $invitation),
+            // A signed, time-limited link to the draft (M4.15) — clients want
+            // to show their mother before they publish.
+            'previewUrl' => InvitationPreviewController::draftUrl($invitation),
             ...$this->dataFor($tab, $invitation),
         ]);
     }

@@ -61,13 +61,14 @@
     </div>
 
     {{--
-        Sticky preview button. The public renderer arrives in Session 21, so
-        this is disabled rather than pointed at a route that would 404.
+        Sticky preview button. The link is signed and expires in a week, so it
+        can be sent to whoever the client wants to show before publishing
+        (M4.15) without becoming a permanent public URL.
     --}}
     <div class="position-sticky bottom-0 py-3 d-flex justify-content-end pe-1" style="z-index: 1020;">
-        <button type="button" class="btn btn-primary shadow rounded-pill px-4" disabled
-                title="{{ __('Pratinjau hadir bersama penampil undangan.') }}">
+        <a href="{{ $previewUrl }}" target="_blank" rel="noopener"
+           class="btn btn-primary shadow rounded-pill px-4">
             <i class="bi bi-eye me-1"></i>{{ __('Pratinjau') }}
-        </button>
+        </a>
     </div>
 @endsection
