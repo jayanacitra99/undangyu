@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\GuestController;
 use App\Http\Controllers\Api\GuestGroupController;
 use App\Http\Controllers\Api\GuestImportController;
+use App\Http\Controllers\Api\GuestMessageController;
 use App\Http\Controllers\Api\InvitationBuilderController;
 use App\Http\Controllers\Api\InvitationEventController;
 use App\Http\Controllers\Api\InvitationGiftController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Api\InvitationMediaController;
 use App\Http\Controllers\Api\InvitationPersonController;
 use App\Http\Controllers\Api\InvitationSectionController;
 use App\Http\Controllers\Api\InvitationStoryController;
+use App\Http\Controllers\Api\MessageTemplateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -143,6 +145,26 @@ Route::middleware(['web', 'auth'])->group(function (): void {
     Route::post('/invitations/{invitation}/guests/bulk-group', [GuestController::class, 'bulkAssignGroup'])
         ->middleware('throttle:30,1')
         ->name('api.guests.bulk-group');
+
+    // Message templates and the share workflow (26.2-26.5). Resolving is a
+    // read that runs over a selection, so it is a POST with a body rather than
+    // a GET with 400 ids in the query string.
+    Route::get('/invitations/{invitation}/message-templates', [MessageTemplateController::class, 'index'])
+        ->name('api.message-templates.index');
+    Route::post('/invitations/{invitation}/message-templates', [MessageTemplateController::class, 'store'])
+        ->name('api.message-templates.store');
+    Route::patch('/message-templates/{template}', [MessageTemplateController::class, 'update'])
+        ->name('api.message-templates.update');
+    Route::delete('/message-templates/{template}', [MessageTemplateController::class, 'destroy'])
+        ->name('api.message-templates.destroy');
+
+    Route::post('/invitations/{invitation}/messages/resolve', [GuestMessageController::class, 'resolve'])
+        // The editor calls this on every keystroke of the preview, debounced.
+        ->middleware('throttle:120,1')
+        ->name('api.messages.resolve');
+    Route::post('/invitations/{invitation}/guests/mark-sent', [GuestMessageController::class, 'markSent'])
+        ->middleware('throttle:60,1')
+        ->name('api.guests.mark-sent');
 
     // Guest import (25.3, 25.5). The upload is throttled hardest of all: each
     // one stores a file and queues a job that writes hundreds of rows.

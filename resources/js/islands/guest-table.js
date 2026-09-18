@@ -26,6 +26,13 @@ document.querySelectorAll('[data-island="guest-table"]').forEach((el) => {
         importUploadUrl: el.dataset.importUploadUrl,
         importStatusUrlTemplate: el.dataset.importStatusUrlTemplate,
         importErrorsUrlTemplate: el.dataset.importErrorsUrlTemplate,
+        invitationKey: el.dataset.invitationKey,
+        messageVariables: JSON.parse(el.dataset.messageVariables),
+        templatesUrl: el.dataset.templatesUrl,
+        templateStoreUrl: el.dataset.templateStoreUrl,
+        templateItemUrlTemplate: el.dataset.templateItemUrlTemplate,
+        resolveUrl: el.dataset.resolveUrl,
+        markSentUrl: el.dataset.markSentUrl,
         csrfToken: el.dataset.csrfToken,
         canEdit: el.dataset.canEdit === '1',
     }).mount(el);
