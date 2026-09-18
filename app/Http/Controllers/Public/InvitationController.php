@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Public;
 
+use App\Actions\Guests\ResolveGuestToken;
 use App\Enums\InvitationStatus;
 use App\Enums\InvitationVisibility;
 use App\Http\Controllers\Controller;
+use App\Jobs\RecordGuestOpenJob;
 use App\Jobs\RecordInvitationViewJob;
+use App\Models\Guest;
 use App\Models\Invitation;
 use App\Services\Invitations\InvitationPayloadService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * The published invitation at `undangyu.id/{slug}` (21.1, 21.2).
@@ -32,9 +36,16 @@ use Illuminate\Http\Request;
  */
 final class InvitationController extends Controller
 {
+    /**
+     * How long one token's opens collapse into one. Half an hour covers a
+     * guest reading the page, opening the map and coming back, without
+     * hiding the fact that they returned the next day.
+     */
+    public const OPEN_WINDOW = 1800;
+
     public function __construct(private readonly InvitationPayloadService $payloads) {}
 
-    public function show(Request $request, string $slug): View
+    public function show(Request $request, string $slug, ResolveGuestToken $resolveToken): View
     {
         // A reserved word cannot be an invitation, and answering anything but
         // 404 would tell a prober which names the system keeps for itself.
@@ -72,10 +83,54 @@ final class InvitationController extends Controller
         // builder so the counter does not flush the payload cache.
         RecordInvitationViewJob::dispatch($payload['invitation']['uuid'])->afterResponse();
 
+        // Who this link was sent to (27.1). Null for a shared link, a wrong
+        // token or a deleted guest — all of which render the generic greeting,
+        // because an error page here is a lost RSVP.
+        $guest = $resolveToken($request->query('to'), $payload['invitation']['uuid']);
+
+        if ($guest !== null) {
+            $this->recordOpen($request, $guest);
+        }
+
         return view('public.invitation', [
             'payload' => $payload,
             'isPreview' => false,
+            'guest' => $guest === null ? null : [
+                'name' => $guest->displayName(),
+                'token' => $guest->token,
+            ],
         ]);
+    }
+
+    /**
+     * One open per guest per session (27.3, 27.5).
+     *
+     * A guest scrolling the page, reloading it or coming back from the RSVP
+     * form is one open, not four. The session flag is what makes that true for
+     * an ordinary visitor; the cache guard is what makes it true for the ones
+     * whose browser refuses cookies, where every request would otherwise look
+     * like a first visit.
+     *
+     * Both are checks, not writes to the invitation, and the job itself runs
+     * after the response — hard rule 1 holds.
+     */
+    private function recordOpen(Request $request, Guest $guest): void
+    {
+        $sessionKey = 'invitation.opened.'.$guest->token;
+
+        if ($request->session()->get($sessionKey, false) === true) {
+            return;
+        }
+
+        $request->session()->put($sessionKey, true);
+
+        // add() is atomic: the first caller for this token in the window wins,
+        // everyone else is told the key already exists.
+        if (! Cache::add('guest-open:'.$guest->token, true, self::OPEN_WINDOW)) {
+            return;
+        }
+
+        RecordGuestOpenJob::dispatch($guest->getKey())->afterResponse();
     }
 
     /**

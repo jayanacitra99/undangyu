@@ -34,6 +34,8 @@ export function useGuestTable({
         search: '',
         group: '',
         vip: '',
+        opened: '',
+        sent: '',
         sort: 'name',
         direction: 'asc',
     });
@@ -64,6 +66,8 @@ export function useGuestTable({
         if (filters.search !== '') params.set('search', filters.search);
         if (filters.group !== '') params.set('group', filters.group);
         if (filters.vip !== '') params.set('vip', filters.vip);
+        if (filters.opened !== '') params.set('opened', filters.opened);
+        if (filters.sent !== '') params.set('sent', filters.sent);
 
         params.set('sort', filters.sort);
         params.set('direction', filters.direction);
@@ -127,7 +131,7 @@ export function useGuestTable({
     );
 
     watch(
-        () => [filters.group, filters.vip, filters.sort, filters.direction],
+        () => [filters.group, filters.vip, filters.opened, filters.sent, filters.sort, filters.direction],
         () => load(1),
     );
 
