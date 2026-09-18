@@ -115,6 +115,10 @@ class InvitationPayload extends JsonResource
             ])->all(),
 
             'events' => $this->events->map(fn (InvitationEvent $event): array => [
+                // The id is here for the RSVP form (28.2): a guest answering
+                // "coming to the resepsi" has to name which one, and the only
+                // handle the renderer has is what this payload gave it.
+                'id' => $event->id,
                 'name' => $event->name,
                 'description' => $event->description,
                 // Wall clock in the invitation's own timezone: a Jakarta

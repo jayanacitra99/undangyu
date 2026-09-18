@@ -323,6 +323,17 @@ class Invitation extends Model
     }
 
     /**
+     * Attendance answers (M6.1). Not ordered here: the dashboard sorts by
+     * when they came in, the totals do not care.
+     *
+     * @return HasMany<Rsvp, $this>
+     */
+    public function rsvps(): HasMany
+    {
+        return $this->hasMany(Rsvp::class);
+    }
+
+    /**
      * Guest spreadsheet uploads (M5.3), newest first: the panel shows the last
      * one, and older imports are history.
      *

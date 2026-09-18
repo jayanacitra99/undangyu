@@ -20,6 +20,14 @@ const props = defineProps({
     // Session 27 resolves the ?to= token into a name; the slot is here so the
     // cover already has somewhere to put it.
     guestName: { type: String, default: null },
+    // The rest of what a personalised visit knows about itself, for the RSVP
+    // form (28.3): who is answering, how many they may bring, and where to
+    // post it.
+    guestToken: { type: String, default: null },
+    guestMaxPax: { type: Number, default: null },
+    rsvpStoreUrl: { type: String, default: '' },
+    rsvpLookupUrl: { type: String, default: '' },
+    csrfToken: { type: String, default: '' },
 });
 
 const template = shallowRef(null);
@@ -65,6 +73,11 @@ function openInvitation() {
             :payload="payload"
             :is-open="isOpen"
             :guest-name="guestName"
+            :guest-token="guestToken"
+            :guest-max-pax="guestMaxPax"
+            :rsvp-store-url="rsvpStoreUrl"
+            :rsvp-lookup-url="rsvpLookupUrl"
+            :csrf-token="csrfToken"
             @open="openInvitation"
         />
 

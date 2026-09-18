@@ -23,5 +23,10 @@ if (el?.dataset.payload) {
     createApp(InvitationApp, {
         payload: JSON.parse(el.dataset.payload),
         guestName: guest?.name ?? null,
+        guestToken: guest?.token ?? null,
+        guestMaxPax: guest?.max_pax ?? null,
+        rsvpStoreUrl: el.dataset.rsvpStoreUrl,
+        rsvpLookupUrl: el.dataset.rsvpLookupUrl,
+        csrfToken: el.dataset.csrfToken,
     }).mount(el);
 }

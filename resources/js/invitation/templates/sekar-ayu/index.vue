@@ -33,6 +33,11 @@ const props = defineProps({
     payload: { type: Object, required: true },
     isOpen: { type: Boolean, default: false },
     guestName: { type: String, default: null },
+    guestToken: { type: String, default: null },
+    guestMaxPax: { type: Number, default: null },
+    rsvpStoreUrl: { type: String, default: '' },
+    rsvpLookupUrl: { type: String, default: '' },
+    csrfToken: { type: String, default: '' },
 });
 
 defineEmits(['open']);
@@ -160,7 +165,17 @@ const showCountdown = computed(
                 :gifts="payload.gifts"
             />
 
-            <RsvpSection v-if="has('rsvp') && settings.rsvp_enabled" :heading="headingFor('rsvp')" />
+            <RsvpSection
+                v-if="has('rsvp') && settings.rsvp_enabled"
+                :heading="headingFor('rsvp')"
+                :store-url="rsvpStoreUrl"
+                :lookup-url="rsvpLookupUrl"
+                :csrf-token="csrfToken"
+                :token="guestToken"
+                :guest-name="guestName"
+                :max-pax="guestMaxPax ?? 5"
+                :events="payload.events"
+            />
 
             <WishesSection v-if="has('guestbook') && settings.guestbook_enabled" :heading="headingFor('guestbook')" />
 
