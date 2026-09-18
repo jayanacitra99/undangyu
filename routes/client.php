@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\Client\InvitationController;
+use App\Http\Controllers\Client\InvitationPublishController;
 use App\Http\Controllers\Client\InvitationSettingsController;
 use App\Http\Controllers\Client\InvitationThemeController;
 use App\Http\Controllers\Client\InvoiceController;
@@ -33,6 +34,13 @@ Route::get('/invitations/{invitation}/edit', [InvitationController::class, 'edit
     ->name('client.invitations.edit');
 Route::patch('/invitations/{invitation}', [InvitationController::class, 'update'])
     ->name('client.invitations.update');
+
+// Publish and unpublish (M4.14). The gate is re-checked in the action, so a
+// stale builder tab cannot publish an invitation that stopped being ready.
+Route::post('/invitations/{invitation}/publish', [InvitationPublishController::class, 'store'])
+    ->name('client.invitations.publish');
+Route::delete('/invitations/{invitation}/publish', [InvitationPublishController::class, 'destroy'])
+    ->name('client.invitations.unpublish');
 
 // Theme and settings are form posts rather than autosaves (19.4, 19.5): one
 // carries a colour picker, the other a password, and neither wants a write per
