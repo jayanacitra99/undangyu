@@ -294,6 +294,22 @@ const sortIcon = (column) => {
                 <option value="0">Tanpa VIP</option>
             </select>
 
+            <!-- Follow-up (27.4): who has not opened their link yet, and who
+                 has not been sent one at all. -->
+            <select v-model="filters.sent" class="form-select form-select-sm" style="max-width: 11rem"
+                    aria-label="Saring status kirim">
+                <option value="">Terkirim & belum</option>
+                <option value="yes">Sudah dikirim</option>
+                <option value="no">Belum dikirim</option>
+            </select>
+
+            <select v-model="filters.opened" class="form-select form-select-sm" style="max-width: 11rem"
+                    aria-label="Saring status buka">
+                <option value="">Dibuka & belum</option>
+                <option value="yes">Sudah dibuka</option>
+                <option value="no">Belum dibuka</option>
+            </select>
+
             <span class="badge text-bg-light">{{ quotaLabel }}</span>
             <span v-if="loading" class="text-secondary small">Memuat…</span>
             <span v-if="failed" class="text-danger small">Gagal memuat. Coba lagi.</span>

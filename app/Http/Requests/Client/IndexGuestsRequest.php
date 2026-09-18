@@ -59,6 +59,10 @@ class IndexGuestsRequest extends FormRequest
                 ),
             ],
             'vip' => ['nullable', 'boolean'],
+            // Who has and has not opened their link (27.4, M5.11) — the filter
+            // a client chases non-openers with.
+            'opened' => ['nullable', Rule::in(['yes', 'no'])],
+            'sent' => ['nullable', Rule::in(['yes', 'no'])],
             'sort' => ['nullable', Rule::in(array_keys(self::SORTS))],
             'direction' => ['nullable', Rule::in(['asc', 'desc'])],
             'per_page' => ['nullable', 'integer', 'min:1', 'max:'.self::MAX_PER_PAGE],
@@ -84,6 +88,10 @@ class IndexGuestsRequest extends FormRequest
             ->when($group !== null && $group !== 'none', fn ($query) => $query->where('guest_group_id', $group))
             ->when(array_key_exists('vip', $validated) && $validated['vip'] !== null,
                 fn ($query) => $query->where('is_vip', $this->boolean('vip')))
+            ->when(($validated['opened'] ?? null) === 'yes', fn ($query) => $query->whereNotNull('opened_at'))
+            ->when(($validated['opened'] ?? null) === 'no', fn ($query) => $query->whereNull('opened_at'))
+            ->when(($validated['sent'] ?? null) === 'yes', fn ($query) => $query->whereNotNull('sent_at'))
+            ->when(($validated['sent'] ?? null) === 'no', fn ($query) => $query->whereNull('sent_at'))
             ->orderBy(
                 self::SORTS[$validated['sort'] ?? 'name'],
                 ($validated['direction'] ?? 'asc') === 'desc' ? 'desc' : 'asc',

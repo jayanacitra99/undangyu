@@ -89,12 +89,24 @@
         </div>
     @endif
 
-    <div id="invitation" data-payload="{{ json_encode($payload) }}">
+    {{--
+        The guest this link was sent to (27.2), or nothing at all. The preview
+        route renders this same view without one, hence the default — and a
+        shared link has no token by definition.
+    --}}
+    <div id="invitation" data-payload="{{ json_encode($payload) }}"
+         @if (($guest ?? null) !== null) data-guest="{{ json_encode($guest) }}" @endif>
         {{--
             Replaced by the Vue app on mount. The template components land in
             Session 22; until then this is also what the page looks like.
         --}}
         <main class="mx-auto max-w-2xl px-6 py-16 text-center">
+            @if (($guest ?? null) !== null)
+                <p class="text-sm text-stone-500">
+                    {{ __('Kepada Yth. :name', ['name' => $guest['name']]) }}
+                </p>
+            @endif
+
             <h1 class="text-3xl font-semibold tracking-tight">{{ $invitation['title'] }}</h1>
 
             @foreach ($payload['events'] as $event)
