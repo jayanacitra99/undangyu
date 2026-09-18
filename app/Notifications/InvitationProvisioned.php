@@ -62,11 +62,11 @@ class InvitationProvisioned extends Notification implements ShouldQueue
     }
 
     /**
-     * The builder lands in Session 17. Until its route exists, both channels
-     * point at the dashboard rather than at a URL that would 404.
+     * Straight into the builder for this invitation — the client's next step
+     * is filling it in, not finding it in a list.
      */
     private function builderUrl(): string
     {
-        return route('dashboard');
+        return route('client.invitations.edit', $this->invitation);
     }
 }
