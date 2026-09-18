@@ -13,6 +13,7 @@
 import { computed, ref } from 'vue';
 import GuestGroupBar from '@/components/builder/GuestGroupBar.vue';
 import GuestImportPanel from '@/components/builder/GuestImportPanel.vue';
+import GuestShareWorkflow from '@/components/builder/GuestShareWorkflow.vue';
 import { useGuestTable } from '@/composables/useGuestTable';
 import { useClipboard } from '@/composables/useClipboard';
 
@@ -37,6 +38,13 @@ const props = defineProps({
     importUploadUrl: { type: String, required: true },
     importStatusUrlTemplate: { type: String, required: true },
     importErrorsUrlTemplate: { type: String, required: true },
+    invitationKey: { type: String, required: true },
+    messageVariables: { type: Object, required: true },
+    templatesUrl: { type: String, required: true },
+    templateStoreUrl: { type: String, required: true },
+    templateItemUrlTemplate: { type: String, required: true },
+    resolveUrl: { type: String, required: true },
+    markSentUrl: { type: String, required: true },
     csrfToken: { type: String, required: true },
     canEdit: { type: Boolean, default: true },
 });
@@ -221,6 +229,31 @@ async function bulkAssign() {
     }
 }
 
+/*
+| One guest, from the row (26.4). The message is resolved server-side against
+| the workflow's current template, so the row button and the bulk run cannot
+| send different wording.
+*/
+async function sendOne(guest) {
+    const { ok, payload } = await request(props.resolveUrl, {
+        method: 'POST',
+        body: { ids: [guest.id] },
+    });
+
+    const message = ok ? payload?.data?.[0] : null;
+
+    if (!message?.whatsapp_url) {
+        window.alert(`${guest.display_name} belum punya nomor WhatsApp.`);
+
+        return;
+    }
+
+    window.open(message.whatsapp_url, '_blank', 'noopener');
+
+    await request(props.markSentUrl, { method: 'POST', body: { ids: [guest.id] } });
+    await load();
+}
+
 const sortIcon = (column) => {
     if (filters.sort !== column) {
         return 'bi-arrow-down-up text-secondary';
@@ -239,6 +272,13 @@ const sortIcon = (column) => {
                           :status-url-template="importStatusUrlTemplate"
                           :errors-url-template="importErrorsUrlTemplate" :csrf-token="csrfToken" :can-edit="canEdit"
                           @imported="load()" />
+
+        <!-- Distribution (26.3-26.5): the template, and the run down the list. -->
+        <GuestShareWorkflow :invitation-key="invitationKey" :selected-ids="selectedIds" :templates-url="templatesUrl"
+                            :template-store-url="templateStoreUrl"
+                            :template-item-url-template="templateItemUrlTemplate" :resolve-url="resolveUrl"
+                            :mark-sent-url="markSentUrl" :variables="messageVariables" :request="request"
+                            :can-edit="canEdit" @sent="load()" />
 
         <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
             <div class="input-group input-group-sm" style="max-width: 20rem">
@@ -386,6 +426,8 @@ const sortIcon = (column) => {
                             </td>
                             <td>
                                 <span v-if="guest.is_vip" class="badge text-bg-warning me-1">VIP</span>
+                                <i v-if="guest.sent_at" class="bi bi-send-check text-success me-1"
+                                   title="Undangan sudah dikirim"></i>
                                 {{ guest.display_name }}
                                 <div class="text-secondary small font-monospace">{{ guest.token }}</div>
                             </td>
@@ -407,6 +449,11 @@ const sortIcon = (column) => {
                                 <button type="button" class="btn btn-sm btn-outline-secondary"
                                         :aria-label="`Salin tautan ${guest.display_name}`" @click="copy(linkFor(guest))">
                                     <i class="bi bi-link-45deg"></i>
+                                </button>
+                                <button v-if="canEdit" type="button" class="btn btn-sm btn-outline-success ms-1"
+                                        :aria-label="`Kirim WhatsApp ke ${guest.display_name}`"
+                                        :disabled="!guest.whatsapp_phone" @click="sendOne(guest)">
+                                    <i class="bi bi-whatsapp"></i>
                                 </button>
                                 <button v-if="canEdit" type="button" class="btn btn-sm btn-outline-secondary ms-1"
                                         :aria-label="`Ubah ${guest.display_name}`"

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             TemplateCategorySeeder::class,
             TemplateSeeder::class,
             PackageSeeder::class,
+            MessageTemplateSeeder::class,
             DemoInvitationSeeder::class,
             AdminUserSeeder::class,
         ]);

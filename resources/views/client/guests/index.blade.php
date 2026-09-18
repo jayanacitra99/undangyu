@@ -55,6 +55,13 @@
                 data-import-upload-url="{{ route('api.guest-imports.store', $invitation) }}"
                 data-import-status-url-template="{{ route('api.guest-imports.show', ['import' => '__ID__']) }}"
                 data-import-errors-url-template="{{ route('client.guest-imports.errors', ['import' => '__ID__']) }}"
+                data-invitation-key="{{ $invitation->slug }}"
+                data-message-variables="{{ json_encode($messageVariables) }}"
+                data-templates-url="{{ route('api.message-templates.index', $invitation) }}"
+                data-template-store-url="{{ route('api.message-templates.store', $invitation) }}"
+                data-template-item-url-template="{{ route('api.message-templates.update', ['template' => '__ID__']) }}"
+                data-resolve-url="{{ route('api.messages.resolve', $invitation) }}"
+                data-mark-sent-url="{{ route('api.guests.mark-sent', $invitation) }}"
                 data-csrf-token="{{ csrf_token() }}"
                 data-can-edit="{{ $canEdit ? '1' : '0' }}"
             ></div>

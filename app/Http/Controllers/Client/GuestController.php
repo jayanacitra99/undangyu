@@ -12,6 +12,7 @@ use App\Http\Resources\GuestResource;
 use App\Models\Guest;
 use App\Models\Invitation;
 use App\Services\Guests\GuestQuota;
+use App\Services\Messaging\MessageVariables;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 
@@ -52,6 +53,9 @@ final class GuestController extends Controller
             // The last upload, so a client who reloads while an import runs
             // still sees its progress rather than an empty panel.
             'latestImport' => $this->latestImport($invitation),
+            // The variable palette the template editor offers (26.2). One
+            // list, defined next to the resolver that honours it.
+            'messageVariables' => MessageVariables::VARIABLES,
             'quota' => $quota->summary($invitation),
             'canEdit' => Gate::allows('update', $invitation),
         ]);
