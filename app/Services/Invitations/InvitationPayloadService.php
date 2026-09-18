@@ -46,7 +46,7 @@ final class InvitationPayloadService
      * every published invitation until they expire. The version is part of the
      * key, so old entries are simply never asked for again.
      */
-    public const SHAPE_VERSION = 3;
+    public const SHAPE_VERSION = 4;
 
     public static function key(string $slug): string
     {

@@ -7,6 +7,7 @@ use App\Http\Controllers\Public\InvitationPreviewController;
 use App\Http\Controllers\Public\InvitationUnlockController;
 use App\Http\Controllers\Public\MediaController;
 use App\Http\Controllers\Public\PricingController;
+use App\Http\Controllers\Public\RsvpController;
 use App\Http\Controllers\Public\TemplateGalleryController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,7 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 | The published invitation renderer and its public endpoints. No prefix,
 | "web" middleware only. Every endpoint here must be rate limited, and
-| nothing here may write to the database synchronously — queue it.
+| nothing here may write to the database synchronously on a page *view* —
+| queue it. A form the guest submitted is the exception: an RSVP they are not
+| told was recorded is an RSVP they send four times.
 | Controllers live in App\Http\Controllers\Public.
 |
 */
@@ -63,6 +66,18 @@ Route::middleware('throttle:60,1')->group(function () use ($slugPattern): void {
     Route::get('/preview/invitation/{uuid}', [InvitationPreviewController::class, 'draft'])
         ->middleware('signed')
         ->name('preview.invitation');
+
+    // RSVP (28.2). Its own limiter, keyed by IP and invitation together: a
+    // reception full of guests shares one hotel Wi-Fi, and a per-IP-only cap
+    // would lock the room out of its own invitation.
+    Route::post('/{publicInvitation}/rsvp', [RsvpController::class, 'store'])
+        ->withoutMiddleware('throttle:60,1')
+        ->middleware('throttle:rsvp')
+        ->where('publicInvitation', $slugPattern)
+        ->name('invitation.rsvp.store');
+    Route::get('/{publicInvitation}/rsvp', [RsvpController::class, 'show'])
+        ->where('publicInvitation', $slugPattern)
+        ->name('invitation.rsvp.show');
 
     // The passphrase gate (21.4). Throttled hard: this is a guessing surface.
     Route::post('/{slug}/unlock', InvitationUnlockController::class)

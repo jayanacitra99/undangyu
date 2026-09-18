@@ -98,6 +98,9 @@ final class InvitationController extends Controller
             'guest' => $guest === null ? null : [
                 'name' => $guest->displayName(),
                 'token' => $guest->token,
+                // What this guest was invited for, so the RSVP form offers the
+                // right numbers rather than the anonymous cap (28.2).
+                'max_pax' => $guest->max_pax,
             ],
         ]);
     }

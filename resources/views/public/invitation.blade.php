@@ -95,7 +95,10 @@
         shared link has no token by definition.
     --}}
     <div id="invitation" data-payload="{{ json_encode($payload) }}"
-         @if (($guest ?? null) !== null) data-guest="{{ json_encode($guest) }}" @endif>
+         @if (($guest ?? null) !== null) data-guest="{{ json_encode($guest) }}" @endif
+         data-rsvp-store-url="{{ route('invitation.rsvp.store', ['publicInvitation' => $invitation['slug']]) }}"
+         data-rsvp-lookup-url="{{ route('invitation.rsvp.show', ['publicInvitation' => $invitation['slug']]) }}"
+         data-csrf-token="{{ csrf_token() }}">
         {{--
             Replaced by the Vue app on mount. The template components land in
             Session 22; until then this is also what the page looks like.
