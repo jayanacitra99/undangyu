@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\GuestController;
 use App\Http\Controllers\Api\GuestGroupController;
+use App\Http\Controllers\Api\GuestImportController;
 use App\Http\Controllers\Api\InvitationBuilderController;
 use App\Http\Controllers\Api\InvitationEventController;
 use App\Http\Controllers\Api\InvitationGiftController;
@@ -142,6 +143,17 @@ Route::middleware(['web', 'auth'])->group(function (): void {
     Route::post('/invitations/{invitation}/guests/bulk-group', [GuestController::class, 'bulkAssignGroup'])
         ->middleware('throttle:30,1')
         ->name('api.guests.bulk-group');
+
+    // Guest import (25.3, 25.5). The upload is throttled hardest of all: each
+    // one stores a file and queues a job that writes hundreds of rows.
+    Route::post('/invitations/{invitation}/guest-imports', [GuestImportController::class, 'store'])
+        ->middleware('throttle:10,1')
+        ->name('api.guest-imports.store');
+    // Polled every couple of seconds while an import runs, so it carries a
+    // ceiling of its own rather than eating the shared API budget.
+    Route::get('/guest-imports/{import}', [GuestImportController::class, 'show'])
+        ->middleware('throttle:120,1')
+        ->name('api.guest-imports.show');
 
     // Guest groups (24.5).
     Route::post('/invitations/{invitation}/guest-groups', [GuestGroupController::class, 'store'])

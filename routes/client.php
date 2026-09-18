@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\Client\GuestController;
+use App\Http\Controllers\Client\GuestImportController;
 use App\Http\Controllers\Client\InvitationController;
 use App\Http\Controllers\Client\InvitationPublishController;
 use App\Http\Controllers\Client\InvitationSettingsController;
@@ -55,6 +56,17 @@ Route::patch('/invitations/{invitation}/settings', [InvitationSettingsController
 // it is a paginated table, not an autosaved form.
 Route::get('/invitations/{invitation}/guests', [GuestController::class, 'index'])
     ->name('client.invitations.guests.index');
+
+// The file downloads around import and export (M5.3, M5.9). Browser
+// navigations rather than fetches, so they answer with a file, not JSON.
+Route::get('/invitations/{invitation}/guests/template/{format?}', [GuestImportController::class, 'template'])
+    ->whereIn('format', ['csv', 'xlsx'])
+    ->name('client.invitations.guests.template');
+Route::get('/invitations/{invitation}/guests/export', [GuestImportController::class, 'export'])
+    ->middleware('throttle:20,1')
+    ->name('client.invitations.guests.export');
+Route::get('/guest-imports/{import}/errors', [GuestImportController::class, 'errors'])
+    ->name('client.guest-imports.errors');
 
 // The client's own orders (M2.4). Ownership is enforced by OrderPolicy, and
 // the binding resolves on order_number rather than the id.

@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\IndexGuestsRequest;
 use App\Http\Resources\GuestGroupResource;
+use App\Http\Resources\GuestImportResource;
 use App\Http\Resources\GuestResource;
 use App\Models\Guest;
 use App\Models\Invitation;
@@ -48,8 +49,24 @@ final class GuestController extends Controller
                 $invitation->guestGroups()->withCount('guests')->get()
             )->resolve(),
             'titles' => Guest::TITLES,
+            // The last upload, so a client who reloads while an import runs
+            // still sees its progress rather than an empty panel.
+            'latestImport' => $this->latestImport($invitation),
             'quota' => $quota->summary($invitation),
             'canEdit' => Gate::allows('update', $invitation),
         ]);
+    }
+
+    /**
+     * An invitation that has never been imported into has no panel state, and
+     * a resource over null resolves to a row of nulls rather than to nothing.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function latestImport(Invitation $invitation): ?array
+    {
+        $import = $invitation->guestImports()->first();
+
+        return $import === null ? null : GuestImportResource::make($import)->resolve();
     }
 }

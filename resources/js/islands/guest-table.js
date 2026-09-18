@@ -19,6 +19,13 @@ document.querySelectorAll('[data-island="guest-table"]').forEach((el) => {
         bulkGroupUrl: el.dataset.bulkGroupUrl,
         groupStoreUrl: el.dataset.groupStoreUrl,
         groupItemUrlTemplate: el.dataset.groupItemUrlTemplate,
+        latestImport: el.dataset.latestImport ? JSON.parse(el.dataset.latestImport) : null,
+        templateUrl: el.dataset.templateUrl,
+        templateCsvUrl: el.dataset.templateCsvUrl,
+        exportUrl: el.dataset.exportUrl,
+        importUploadUrl: el.dataset.importUploadUrl,
+        importStatusUrlTemplate: el.dataset.importStatusUrlTemplate,
+        importErrorsUrlTemplate: el.dataset.importErrorsUrlTemplate,
         csrfToken: el.dataset.csrfToken,
         canEdit: el.dataset.canEdit === '1',
     }).mount(el);

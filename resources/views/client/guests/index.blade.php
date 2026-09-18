@@ -48,6 +48,13 @@
                 data-bulk-group-url="{{ route('api.guests.bulk-group', $invitation) }}"
                 data-group-store-url="{{ route('api.guest-groups.store', $invitation) }}"
                 data-group-item-url-template="{{ route('api.guest-groups.update', ['group' => '__ID__']) }}"
+                data-latest-import="{{ $latestImport === null ? '' : json_encode($latestImport) }}"
+                data-template-url="{{ route('client.invitations.guests.template', $invitation) }}"
+                data-template-csv-url="{{ route('client.invitations.guests.template', [$invitation, 'format' => 'csv']) }}"
+                data-export-url="{{ route('client.invitations.guests.export', $invitation) }}"
+                data-import-upload-url="{{ route('api.guest-imports.store', $invitation) }}"
+                data-import-status-url-template="{{ route('api.guest-imports.show', ['import' => '__ID__']) }}"
+                data-import-errors-url-template="{{ route('client.guest-imports.errors', ['import' => '__ID__']) }}"
                 data-csrf-token="{{ csrf_token() }}"
                 data-can-edit="{{ $canEdit ? '1' : '0' }}"
             ></div>
