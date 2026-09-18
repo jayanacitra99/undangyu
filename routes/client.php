@@ -14,6 +14,7 @@ use App\Http\Controllers\Client\ManualPaymentController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Client\RsvpController;
+use App\Http\Controllers\Client\WishController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -77,6 +78,17 @@ Route::get('/invitations/{invitation}/rsvps/export', [RsvpController::class, 'ex
     ->name('client.invitations.rsvps.export');
 Route::delete('/invitations/{invitation}/rsvps/{rsvp}', [RsvpController::class, 'destroy'])
     ->name('client.invitations.rsvps.destroy');
+
+// The guestbook moderation queue (M6.5, 29.4).
+Route::get('/invitations/{invitation}/wishes', [WishController::class, 'index'])
+    ->name('client.invitations.wishes.index');
+Route::post('/invitations/{invitation}/wishes/moderate', [WishController::class, 'moderate'])
+    ->name('client.invitations.wishes.moderate');
+Route::get('/invitations/{invitation}/wishes/export', [WishController::class, 'export'])
+    ->middleware('throttle:20,1')
+    ->name('client.invitations.wishes.export');
+Route::delete('/invitations/{invitation}/wishes/{wish}', [WishController::class, 'destroy'])
+    ->name('client.invitations.wishes.destroy');
 
 // The client's own orders (M2.4). Ownership is enforced by OrderPolicy, and
 // the binding resolves on order_number rather than the id.

@@ -37,6 +37,9 @@ const props = defineProps({
     guestMaxPax: { type: Number, default: null },
     rsvpStoreUrl: { type: String, default: '' },
     rsvpLookupUrl: { type: String, default: '' },
+    wishStoreUrl: { type: String, default: '' },
+    wishFeedUrl: { type: String, default: '' },
+    wishMaxLength: { type: Number, default: 500 },
     csrfToken: { type: String, default: '' },
 });
 
@@ -177,7 +180,16 @@ const showCountdown = computed(
                 :events="payload.events"
             />
 
-            <WishesSection v-if="has('guestbook') && settings.guestbook_enabled" :heading="headingFor('guestbook')" />
+            <WishesSection
+                v-if="has('guestbook') && settings.guestbook_enabled"
+                :heading="headingFor('guestbook')"
+                :store-url="wishStoreUrl"
+                :feed-url="wishFeedUrl"
+                :csrf-token="csrfToken"
+                :token="guestToken"
+                :guest-name="guestName"
+                :max-length="wishMaxLength"
+            />
 
             <section
                 v-for="section in customSections"
