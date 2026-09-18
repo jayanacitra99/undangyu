@@ -334,6 +334,17 @@ class Invitation extends Model
     }
 
     /**
+     * Guestbook messages (M6.4), in every status — the public feed filters
+     * itself, and the moderation queue needs the ones the feed hides.
+     *
+     * @return HasMany<Wish, $this>
+     */
+    public function wishes(): HasMany
+    {
+        return $this->hasMany(Wish::class);
+    }
+
+    /**
      * Guest spreadsheet uploads (M5.3), newest first: the panel shows the last
      * one, and older imports are history.
      *

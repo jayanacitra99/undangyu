@@ -72,6 +72,21 @@ class SettingSeeder extends Seeder
             ],
         ],
 
+        // The guestbook (M6.4, M6.6). A word list rather than a library: the
+        // words that matter here are Indonesian, the list is short, and an
+        // admin adding one after a bad afternoon should not need a deploy.
+        // A match holds the message for review rather than rejecting it —
+        // context beats a substring, and "kontol" inside a place name is a
+        // false positive somebody has to be able to release.
+        'wishes' => [
+            'blocked_words' => [
+                ['anjing', 'bangsat', 'kontol', 'memek', 'babi', 'tolol', 'goblok', 'bajingan'],
+                SettingType::Json,
+                false,
+            ],
+            'max_length' => [500, SettingType::Int, false],
+        ],
+
         'media' => [
             'max_upload_mb' => [10, SettingType::Int, false],
             'allowed_mimes' => [

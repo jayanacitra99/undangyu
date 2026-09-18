@@ -27,6 +27,9 @@ const props = defineProps({
     guestMaxPax: { type: Number, default: null },
     rsvpStoreUrl: { type: String, default: '' },
     rsvpLookupUrl: { type: String, default: '' },
+    wishStoreUrl: { type: String, default: '' },
+    wishFeedUrl: { type: String, default: '' },
+    wishMaxLength: { type: Number, default: 500 },
     csrfToken: { type: String, default: '' },
 });
 
@@ -77,6 +80,9 @@ function openInvitation() {
             :guest-max-pax="guestMaxPax"
             :rsvp-store-url="rsvpStoreUrl"
             :rsvp-lookup-url="rsvpLookupUrl"
+            :wish-store-url="wishStoreUrl"
+            :wish-feed-url="wishFeedUrl"
+            :wish-max-length="wishMaxLength"
             :csrf-token="csrfToken"
             @open="openInvitation"
         />

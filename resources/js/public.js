@@ -27,6 +27,9 @@ if (el?.dataset.payload) {
         guestMaxPax: guest?.max_pax ?? null,
         rsvpStoreUrl: el.dataset.rsvpStoreUrl,
         rsvpLookupUrl: el.dataset.rsvpLookupUrl,
+        wishStoreUrl: el.dataset.wishStoreUrl,
+        wishFeedUrl: el.dataset.wishFeedUrl,
+        wishMaxLength: Number(el.dataset.wishMaxLength ?? 500),
         csrfToken: el.dataset.csrfToken,
     }).mount(el);
 }

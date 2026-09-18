@@ -9,6 +9,7 @@ use App\Http\Controllers\Public\MediaController;
 use App\Http\Controllers\Public\PricingController;
 use App\Http\Controllers\Public\RsvpController;
 use App\Http\Controllers\Public\TemplateGalleryController;
+use App\Http\Controllers\Public\WishController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -78,6 +79,18 @@ Route::middleware('throttle:60,1')->group(function () use ($slugPattern): void {
     Route::get('/{publicInvitation}/rsvp', [RsvpController::class, 'show'])
         ->where('publicInvitation', $slugPattern)
         ->name('invitation.rsvp.show');
+
+    // The guestbook (29.2, 29.3). The feed is a cached read on the shared
+    // budget; writing shares the RSVP limiter, because both are the same kind
+    // of guest action from the same room of people.
+    Route::get('/{publicInvitation}/wishes', [WishController::class, 'index'])
+        ->where('publicInvitation', $slugPattern)
+        ->name('invitation.wishes.index');
+    Route::post('/{publicInvitation}/wishes', [WishController::class, 'store'])
+        ->withoutMiddleware('throttle:60,1')
+        ->middleware('throttle:rsvp')
+        ->where('publicInvitation', $slugPattern)
+        ->name('invitation.wishes.store');
 
     // The passphrase gate (21.4). Throttled hard: this is a guessing surface.
     Route::post('/{slug}/unlock', InvitationUnlockController::class)

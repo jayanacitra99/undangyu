@@ -98,6 +98,9 @@
          @if (($guest ?? null) !== null) data-guest="{{ json_encode($guest) }}" @endif
          data-rsvp-store-url="{{ route('invitation.rsvp.store', ['publicInvitation' => $invitation['slug']]) }}"
          data-rsvp-lookup-url="{{ route('invitation.rsvp.show', ['publicInvitation' => $invitation['slug']]) }}"
+         data-wish-store-url="{{ route('invitation.wishes.store', ['publicInvitation' => $invitation['slug']]) }}"
+         data-wish-feed-url="{{ route('invitation.wishes.index', ['publicInvitation' => $invitation['slug']]) }}"
+         data-wish-max-length="{{ (int) Setting::get('wishes.max_length', 500) }}"
          data-csrf-token="{{ csrf_token() }}">
         {{--
             Replaced by the Vue app on mount. The template components land in

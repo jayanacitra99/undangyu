@@ -31,13 +31,17 @@ final class InvitationCache
     }
 
     /**
+     * `$ttl` defaults to the payload's hour. The guestbook feed passes a
+     * minute instead: it changes while guests are reading it, and an hour of
+     * staleness there is a guest who cannot see their own message.
+     *
      * @param  Closure(): array<string, mixed>  $callback
      * @return array<string, mixed>
      */
-    public static function remember(int $invitationId, string $key, Closure $callback): array
+    public static function remember(int $invitationId, string $key, Closure $callback, ?int $ttl = null): array
     {
         /** @var array<string, mixed> $payload */
-        $payload = self::store($invitationId)->remember($key, self::TTL, $callback);
+        $payload = self::store($invitationId)->remember($key, $ttl ?? self::TTL, $callback);
 
         return $payload;
     }
